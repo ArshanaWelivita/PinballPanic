@@ -39,10 +39,4 @@ For testing, have an idea of a game player and testing the grid-size, and the bo
 Make a functor from grid module type (all the way at the end - not priority right now)
 --> for future, may need ball type to show the visual movement of the ball through the grid
 
-Module type: bumper
-- needs position and orientation as the input
-- type position (which row-col it is in the entire grid)
-- type orientation (down_right = '╲' and up_right = '╱')
-- function: generate_directions(user input direction)
-    - create a map of all possible input and output directions which is returned to the grid module
 *)
