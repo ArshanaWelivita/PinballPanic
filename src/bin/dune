@@ -1,0 +1,10 @@
+(executable
+  (name pinball_panic)
+  (modules
+    pinball_panic)
+  (libraries
+    core
+    core_unix
+    grid
+    bumper
+    ))

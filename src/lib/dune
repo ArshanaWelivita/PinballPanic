@@ -1,0 +1,15 @@
+(library
+  (name bumper)
+  (modules
+    bumper)
+  (libraries core))
+
+(library
+  (name grid)
+  (modules grid)
+  (libraries 
+    core
+    bumper)
+  (preprocess
+  (pps bisect_ppx ppx_jane)))
+
