@@ -1,18 +1,22 @@
-(* 
-Module type: bumper
-- needs position and orientation as the input
-- type position (which row-col it is in the entire grid)
-- type orientation (down_right = '╲' and up_right = '╱')
-- function: generate_directions(user input direction)
-    - create a map of all possible input and output directions which is returned to the grid module
-*)
-
 open Core
 
-
+(* Type representing a position on the grid *)
 type pos = int * int
 
-type orientation = char
+(* Type representing orientation *)
+type orientation =
+  | DownRight  (* corresponds to '╲' *)
+  | UpRight    (* corresponds to '╱' *)
 
-val generate_directions : orientation -> Map.t (* TODO: fix *)
+(* Type representing direction *)
+type direction =
+  | Up
+  | Down
+  | Left
+  | Right
 
+(* Type that maps the input direction to the output direction *)
+type direction_map = (direction, direction) Map.Poly.t
+
+(* Function to generate direction mappings based on a bumper's orientation *)
+val generate_directions : orientation -> direction_map
