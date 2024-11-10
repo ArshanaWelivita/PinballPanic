@@ -6,6 +6,11 @@ type orientation =
   | DownRight
   | UpRight
 
+let orientation_to_string (orientation : orientation) : string =
+  match orientation with
+  | DownRight -> "DownRight"
+  | UpRight -> "UpRight"
+
 type direction =
   | Up
   | Down

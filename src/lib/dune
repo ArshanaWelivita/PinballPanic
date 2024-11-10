@@ -11,5 +11,5 @@
     core
     bumper)
   (preprocess
-  (pps bisect_ppx ppx_jane)))
+  (pps ppx_jane)))
 

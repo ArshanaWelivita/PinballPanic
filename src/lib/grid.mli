@@ -40,3 +40,15 @@ Make a functor from grid module type (all the way at the end - not priority righ
 --> for future, may need ball type to show the visual movement of the ball through the grid
 
 *)
+
+(* Define a position as a tuple of integers *)
+type pos = int * int
+
+val compare_pos : pos -> pos -> bool
+
+(* Function to generate a grid for a given level
+   Returns a matrix (2D array) representing the grid with bumpers 
+   and the exit position of the ball *)
+val generate_grid : int -> int array array * pos * pos * Bumper.direction
+
+val get_grid_size : int -> int

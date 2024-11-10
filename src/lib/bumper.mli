@@ -15,6 +15,8 @@ type direction =
   | Left
   | Right
 
+val orientation_to_string : orientation -> string 
+
 (* Type that maps the input direction to the output direction *)
 type direction_map = (direction, direction) Map.Poly.t
 
