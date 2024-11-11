@@ -4,10 +4,10 @@ open Bumper
 let round_num = ref 1
 
 let arrow_of_direction (initial_direction : direction) : string = match initial_direction with 
-  | Up -> "↑"
-  | Down -> "↓"
-  | Left -> "←"
-  | Right -> "→"
+  | Up -> "↑🟢"
+  | Down -> "↓🟢"
+  | Left -> "←🟢"
+  | Right -> "→🟢"
 ;; 
 
 let display_grid_with_arrow_and_bumper (grid_size: int) (entry_pos: pos) (initial_direction: direction) (bumper_positions: (int * int * int) list) : unit =
@@ -32,7 +32,7 @@ let display_grid_with_arrow_and_bumper (grid_size: int) (entry_pos: pos) (initia
       if i = 0 || i = full_size || j = 0 || j = full_size then
         (* Print the entry arrow if the position matches *)
         if Grid.compare_pos (i, j) entry_pos then
-          printf " %s  " arrow
+          printf "%s " arrow
         else
           printf " .  "  (* Buffer cell *)
       else if List.exists bumper_positions ~f:(fun (br, bc, btype) -> br = i && bc = j && btype = 1) then
@@ -40,7 +40,7 @@ let display_grid_with_arrow_and_bumper (grid_size: int) (entry_pos: pos) (initia
       else if List.exists bumper_positions ~f:(fun (br, bc, btype) -> br = i && bc = j && btype = -1) then
         printf " ╱  "  (* UpRight bumper *)
       else
-        printf " _  "  (* Empty cell *)
+        printf " -  "  (* Empty cell *)
     done;
     Out_channel.newline stdout
   done;
@@ -163,13 +163,13 @@ let display_sample_grid () =
     (* Print the grid row with values *)
     for j = 0 to Array.length grid.(i) - 1 do
       match grid.(i).(j) with
-      | 3 -> printf "  %s  " (arrow_of_direction Down) (* Entry *)
-      | 2 -> printf " %s " (arrow_of_direction Right)   (* Exit *)
+      | 3 -> printf "%s " (arrow_of_direction Down) (* Entry *)
+      | 2 -> printf "%s " (arrow_of_direction Right)   (* Exit *)
       | 1 -> printf "  ╲  "   (* DownRight bumper *)
       | -1 -> printf "  ╱  " (* UpRight bumper *)
-      | 0 -> printf "  _  "   (* Empty cell *)
+      | 0 -> printf "  -  "   (* Empty cell *)
       | 4 -> printf "  .  "
-      | _ -> printf "  _  "   (* Unknown value (for safety) *)
+      | _ -> printf "  -  "   (* Unknown value (for safety) *)
     done;
 
     Out_channel.newline stdout

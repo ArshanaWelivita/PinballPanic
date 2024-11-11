@@ -1,0 +1,13 @@
+(executable
+ (name pinball_server)
+ (public_name "Pinball Panic server")
+ (package pinball_server)
+ (libraries dream core bumper grid)
+ (preprocess
+  (pps ppx_jane lwt_ppx)))
+
+(rule
+ (targets pinball_server.ml)
+ (deps pinball_server.eml.ml)
+ (action
+  (run dream_eml %{deps} --workspace %{workspace_root})))
