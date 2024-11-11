@@ -8,86 +8,41 @@ let arrow_of_direction (initial_direction : direction) : string = match initial_
   | Down -> "↓"
   | Left -> "←"
   | Right -> "→"
-;;
+;; 
 
-let display_sample_grid () =
-  let grid_size = 3 in
-  
-  (* Print top column labels *)
-  printf "   ";  (* Padding for row labels *)
-  for j = 0 to grid_size - 1 do
-    printf "  %d   " j
-  done;
-  Out_channel.newline stdout;
-
-  (* Display the grid with row and column indices *)
-  for i = 0 to grid_size - 1 do
-    (* Print left row label *)
-    printf "%d  " i;
-
-    (* Print the grid row with cell indices *)
-    for j = 0 to grid_size - 1 do
-      printf "[%d,%d] " i j
-    done;
-
-    Out_channel.newline stdout
-  done;
-  Out_channel.newline stdout
-
-let display_grid_with_arrow_and_bumper grid_size entry_pos initial_direction bumper_positions =
-  let (entry_row, entry_col) = entry_pos in
+let display_grid_with_arrow_and_bumper (grid_size: int) (entry_pos: pos) (initial_direction: direction) (bumper_positions: (int * int * int) list) : unit =
   let arrow = arrow_of_direction initial_direction in
 
-  printf "%d %d" entry_row entry_col;
-  Out_channel.newline stdout;
+  let full_size = grid_size + 1 in
 
-  (* Print the arrow if the entry position is from the top and display it above the column labels *)
-  printf "    ";  
-  for j = 0 to grid_size - 1 do
-    if entry_row = 0 && j = entry_col - 1 then
-      printf "   %s" arrow  (* Print entry arrow below the grid *)
-    else
-      printf "    "  (* Empty space for alignment *)
+  (* Print column labels *)
+  printf "   ";  
+  for j = 0 to full_size do
+    printf "  %d " (j)
   done;
   Out_channel.newline stdout;
 
-  printf "    ";  
-  for j = 0 to grid_size - 1 do
-      printf "   %d" j  (* Print column labels *)
-  done;
-  Out_channel.newline stdout;
-
-  (* Display each row with left and right row labels and all bumpers *)
-  for i = 0 to grid_size - 1 do
-    (* Print left row label and arrow if entry is on the left *)
-    if entry_col = 0 && i = entry_row - 1 then
-      printf " %s  %d  " arrow i
-    else
-      printf "    %d  " i;
+  (* Display each row with left and right buffer columns and all bumpers *)
+  for i = 0 to full_size do
+    (* Print row label for actual grid rows *)
+    printf "%d   " (i);
 
     (* Print each cell in the row *)
-    for j = 0 to grid_size - 1 do
-      if List.exists bumper_positions ~f:(fun (br, bc, btype) -> br = i && bc = j && btype = 1) then
-        printf "/  "  
+    for j = 0 to full_size do
+      if i = 0 || i = full_size || j = 0 || j = full_size then
+        (* Print the entry arrow if the position matches *)
+        if Grid.compare_pos (i, j) entry_pos then
+          printf " %s  " arrow
+        else
+          printf " .  "  (* Buffer cell *)
+      else if List.exists bumper_positions ~f:(fun (br, bc, btype) -> br = i && bc = j && btype = 1) then
+        printf " ╲  "  (* DownRight bumper *)
       else if List.exists bumper_positions ~f:(fun (br, bc, btype) -> br = i && bc = j && btype = -1) then
-        printf "\\  "
+        printf " ╱  "  (* UpRight bumper *)
       else
-        printf "_   "  
+        printf " _  "  (* Empty cell *)
     done;
-
-    (* Print right row label and arrow if entry is on the right *)
-    if entry_col = grid_size + 1 && i = entry_row - 1 then
-      printf " %s" arrow;
     Out_channel.newline stdout
-  done;
-
-  (* Print the bottom row with the arrow if entry is at the bottom *)
-  printf "    ";  
-  for j = 0 to grid_size - 1 do
-    if entry_row = grid_size + 1 && j = entry_col - 1 then
-      printf "   %s" arrow  
-    else
-      printf "    "  
   done;
   Out_channel.newline stdout
 
@@ -111,15 +66,11 @@ let handle_command command =
     (* Display the grid with entry arrow and bumper positions *)
     display_grid_with_arrow_and_bumper grid_size entry_pos initial_direction bumper_positions;
 
-    (* Print the correct exit position after displaying the grid *)
-    print_endline ("Exit Position: " ^ "(" ^ Int.to_string (fst correct_exit_pos) ^ ", " ^ Int.to_string (snd correct_exit_pos) ^ ")");
-
     (* Print ending grid with label end positions *)
-    print_endline "Enter your answer as 'row,col': ";
+    print_endline "Enter your answer as [row, col]: ";
     let answer = In_channel.input_line_exn In_channel.stdin in
     print_endline ("Answer received: " ^ answer);
-    let correct_answer = Printf.sprintf "%d,%d" (fst correct_exit_pos) (snd correct_exit_pos) in
-
+    let correct_answer = Printf.sprintf "[%d, %d]" (fst correct_exit_pos) (snd correct_exit_pos) in
 
     match String.equal answer correct_answer with
       | true ->
@@ -146,15 +97,104 @@ let handle_command command =
     | _ -> 
       print_endline "Invalid command, please try again."
 
+(* let display_grid_check () =
+  (* let (grid, entry_pos, correct_exit_pos, initial_direction) = Grid.generate_grid !round_num in *)
+  let (grid, entry_pos, _, _) = Grid.generate_grid 3 in
+  let grid_size = Grid.get_grid_size !round_num in 
+  printf "grid size: %d " grid_size;
+  Out_channel.newline stdout;
+  printf "entry pos: %d %d" (fst entry_pos) (snd entry_pos);
+  Out_channel.newline stdout;
+
+  (* Print each cell's value in the grid *)
+  for i = 0 to Array.length grid - 1 do
+    for j = 0 to Array.length grid.(i) - 1 do
+      printf "%d " grid.(i).(j)  (* Assuming the grid cells hold integers *)
+    done;
+    Out_channel.newline stdout  (* New line after each row *)
+  done *)
+
+let display_indices_grid () =
+  let grid_size = 3 in
+  
+  (* Print top column labels *)
+  printf "   ";  (* Padding for row labels *)
+  for j = 0 to grid_size - 1 do
+    printf "  %d   " j
+  done;
+  Out_channel.newline stdout;
+
+  (* Display the grid with row and column indices *)
+  for i = 0 to grid_size - 1 do
+    (* Print left row label *)
+    printf "%d  " i;
+
+    (* Print the grid row with cell indices *)
+    for j = 0 to grid_size - 1 do
+      printf "[%d,%d] " i j
+    done;
+
+    Out_channel.newline stdout
+  done;
+  Out_channel.newline stdout
+
+let display_sample_grid () =
+  (* Define a sample 5x5 grid with a 3x3 actual grid (buffer rows and columns around) *)
+  let grid = [|
+    [|4; 4; 3; 4; 4|];
+    [|4; 0; 0; 0; 4|];
+    [|4; 0; 1; 0; 2|];
+    [|4; 0; 0; 0; 4|];
+    [|4; 4; 4; 4; 4|];
+  |] in
+
+  (* Print top column labels *)
+  printf "     ";  (* Padding for row labels *)
+  for j = 0 to Array.length grid.(0) - 1 do
+    printf "%d    " j
+  done;
+  Out_channel.newline stdout;
+
+  (* Display the grid with row and column indices *)
+  for i = 0 to Array.length grid - 1 do
+    (* Print left row label *)
+    printf "%d  " i;
+
+    (* Print the grid row with values *)
+    for j = 0 to Array.length grid.(i) - 1 do
+      match grid.(i).(j) with
+      | 3 -> printf "  %s  " (arrow_of_direction Down) (* Entry *)
+      | 2 -> printf " %s " (arrow_of_direction Right)   (* Exit *)
+      | 1 -> printf "  ╲  "   (* DownRight bumper *)
+      | -1 -> printf "  ╱  " (* UpRight bumper *)
+      | 0 -> printf "  _  "   (* Empty cell *)
+      | 4 -> printf "  .  "
+      | _ -> printf "  _  "   (* Unknown value (for safety) *)
+    done;
+
+    Out_channel.newline stdout
+  done;
+  Out_channel.newline stdout
+
+let display_sample_grid_game () = 
+  print_endline ("The following is an example sample grid of size 3 x 3 which shows the indices related to each cell in the form [row, col].");
+  display_indices_grid ();
+  print_endline ("Consider the following example case, the entry and exit positions are marked by arrows.");
+  display_sample_grid ();
+  print_endline 
+  ("The above example has entry position at [0, 2] and a bumper at position at [2, 2]. This means the ball starts from the entry position, bounces
+off the bumper in a perpendicular direction and then exits the grid at position [3, 4]. In order to pass to the next level, you need to correctly 
+identify the exit position of the ball from the grid where it is given in the form [row, col]. In the actual game, the grid will only be displayed 
+for a couple seconds, so be speedy when determining the end position. Good luck!\n")
+
 (* Main loop to read and parse user input *)
 let rec main_loop () =
-  print_endline ("Example sample grid and the indices related to each row,col.");
-  display_sample_grid ();
-
-  print_endline "Enter 's' to start the game: ";
+  if !round_num = 1 then print_endline "Enter 's' to start the game: " else print_endline "";
   match In_channel.input_line In_channel.stdin with
     | None -> print_endline "Error reading input"; main_loop ()
     | Some command -> handle_command command; main_loop ()
 
 (* Entry point for the game *)
-let () = main_loop ()
+let () = 
+  display_sample_grid_game ();
+  main_loop ()

@@ -32,7 +32,7 @@ let get_grid_size (level: int) : int =
   grid_size
   
 let out_of_bounds_check (row, col : pos) (grid_size: int) : bool = 
-  if row < 1 || col < 1 || row >= grid_size || col >= grid_size then true else false 
+  if row < 0 || col < 0 || row > grid_size + 1 || col > grid_size + 1 then true else false (* might not be >= check later!! *)
 
 let move (row, col : pos) (direction: direction) : pos =
   match direction with
@@ -41,165 +41,149 @@ let move (row, col : pos) (direction: direction) : pos =
   | Left -> (row, col - 1)
   | Right -> (row, col + 1)
 
-(* let rec trace_ball (pos: pos) (direction: direction) (grid: int array array) (grid_size: int) : pos =
-  if out_of_bounds_check pos grid_size then pos  (* Ball exits the grid here *)
-  else
-    let (row, col) = pos in
-    match grid.(row).(col) with
-    | 1 ->  (* Ball hits a bumper *)
-      let orientation = random_orientation () in
-      let direction_map = generate_directions orientation in
-      let next_direction = Map.find_exn direction_map direction in
-      trace_ball (move pos next_direction) next_direction grid grid_size
-    | _ ->  (* Ball moves in the current direction *)
-      trace_ball (move pos direction) direction grid grid_size
-
-  
-
-let rec place_bumpers (row: int) (col: int) (bumpers_left: int) (grid_size: int) (grid: int array array) : bool =
-  if bumpers_left = 0 then true
-  else
-    let valid_positions = [(row + 1, col); (row - 1, col); (row, col + 1); (row, col - 1)]
-                        |> List.filter ~f:(fun (r, c) -> r >= 1 && r <= grid_size && c >= 1 && c <= grid_size && grid.(r).(c) = 0) in
-    let shuffled_positions = List.permute valid_positions in
-    List.exists shuffled_positions ~f:(fun (new_row, new_col) ->
-      grid.(new_row).(new_col) <- 1;
-      let placed = place_bumpers new_row new_col (bumpers_left - 1) grid_size grid in
-      if placed then true
-      else (
-        grid.(new_row).(new_col) <- 0;
-        false
-      )) *)
-
-(* let check_answer (correct_pos : pos) (answer : string) : bool =
-  match String.split ~on:',' answer with
-  | [row_str; col_str] -> 
-    let row = Int.of_string row_str in
-    let col = Int.of_string col_str in
-    (row, col) = correct_pos
-  | _ -> false *)
-(* 
-let rec generate_grid (level: int) : int array array * pos * pos * direction =
-  let (grid_size, min_bounces, max_bounces) = get_level_settings level in
-  let grid = Array.make_matrix ~dimx:(grid_size + 2) ~dimy:(grid_size + 2) 0 in
-
-  let bumper_count = Random.int_incl min_bounces max_bounces in
-  let start_row = Random.int_incl 1 grid_size in
-  let start_col = Random.int_incl 1 grid_size in
-  grid.(start_row).(start_col) <- 1; 
-
-  let is_viable = place_bumpers start_row start_col (bumper_count - 1) grid_size grid in
-
-  if is_viable then
-    let possible_entries = [
-      ((0, Random.int_incl 1 grid_size), Down);               (* Entry from the top *)
-      ((grid_size + 1, Random.int_incl 1 grid_size), Up);     (* Entry from the bottom *)
-      ((Random.int_incl 1 grid_size, 0), Right);              (* Entry from the left *)
-      ((Random.int_incl 1 grid_size, grid_size + 1), Left);   (* Entry from the right *)
-    ] in
-
-    let (entry_pos, initial_direction) = List.random_element_exn possible_entries in
-    
-    let exit_pos = trace_ball entry_pos initial_direction grid grid_size in
-    (grid, entry_pos, exit_pos, initial_direction)
-  else
-    generate_grid level
- *)
-
- (* let update_direction (direction: direction) (orientation: orientation) : direction =
-  let direction_map = generate_directions orientation in
-  Map.find_exn direction_map direction *)
-
 let place_initial_bumper (grid: int array array) (entry_pos: pos) (direction: direction) (grid_size: int) : pos * orientation =
   let (entry_row, entry_col) = entry_pos in
   let bumper_pos, orientation =
     match direction with
-    | Left -> let col = Random.int_incl 0 (grid_size - 1) in
-              let pos = (entry_row - 1, col) in
-              grid.(entry_row - 1).(col) <- -1;  (* Place bumper with value 1 *)
+    | Left -> let col = Random.int_incl 1 grid_size in
+              let pos = (entry_row, col) in
+              grid.(entry_row).(col) <- -1;  
               (pos, UpRight)
-    | Right -> let col = Random.int_incl 0 (grid_size - 1) in
-               let pos = (entry_row - 1, col) in
-               grid.(entry_row - 1).(col) <- 1;  (* Place bumper with value 1 *)
+    | Right -> let col = Random.int_incl 1 grid_size in
+               let pos = (entry_row, col) in
+               grid.(entry_row).(col) <- 1;  
                (pos, DownRight)
-    | Up -> let row = Random.int_incl 0 (grid_size - 1) in
-            let pos = (row, entry_col - 1) in
-            grid.(row).(entry_col - 1) <- -1;  (* Place bumper with value -1 *)
-            (pos, UpRight)  (* Assign UpRight orientation *)
-    | Down -> let row = Random.int_incl 0 (grid_size - 1) in
-              let pos = (row, entry_col - 1) in
-              grid.(row).(entry_col - 1) <- -1;  (* Place bumper with value -1 *)
-              (pos, DownRight)  (* Assign UpRight orientation *)
+    | Up -> let row = Random.int_incl 1 grid_size in
+            let pos = (row, entry_col) in
+            grid.(row).(entry_col) <- -1;  
+            (pos, UpRight)  
+    | Down -> let row = Random.int_incl 1 grid_size in
+              let pos = (row, entry_col) in
+              grid.(row).(entry_col) <- 1;  
+              (pos, DownRight)  
   in
-  (bumper_pos, orientation)  (* Return the bumper position and orientation *)
-
- (* let rec simulate_ball_path (grid: int array array) (pos: pos) (direction: direction) (bumpers_left: int) (grid_size: int) (orientation: orientation) : pos =
-  if out_of_bounds_check pos grid_size || bumpers_left <= 0 then
-    pos  (* Ball has exited the grid or no bumpers left to place *)
-  else
-    (* Determine the next direction based on the current bumper's orientation *)
-    let direction_map = generate_directions orientation in
-    let new_direction = Map.find_exn direction_map direction in
-
-    (* Move to the next position based on the updated direction *)
-    let next_pos = move pos new_direction in
-
-    (* Choose a position for the bumper in the same row or column as next_pos based on new_direction *)
-    let (bumper_row, bumper_col) =
-      match new_direction with
-      | Left | Right ->  (* Place the bumper in the same row *)
-          (fst next_pos, Random.int_incl 0 (grid_size - 1))
-      | Up | Down ->  (* Place the bumper in the same column *)
-          (Random.int_incl 0 (grid_size - 1), snd next_pos)
-    in
-
-    (* Place the bumper at the calculated position if it’s within bounds and unoccupied *)
-    if not (out_of_bounds_check (bumper_row, bumper_col) grid_size) && grid.(bumper_row).(bumper_col) = 0 then
-      grid.(bumper_row).(bumper_col) <- if compare_orientation orientation DownRight then 1 else -1;
-
-    (* Alternate orientation for the next bumper *)
-    let next_orientation = if bumpers_left mod 2 = 0 then DownRight else UpRight in
-
-    (* Continue the path simulation *)
-    simulate_ball_path grid next_pos new_direction (bumpers_left - 1) grid_size next_orientation *)
+  (bumper_pos, orientation)  
 
 let orientation_for_direction (direction: direction) : orientation =
   match direction with
-  | Up | Right -> UpRight
-  | Down | Left -> DownRight
+  | Up | Right -> UpRight (*  ╱ is upright *)
+  | Down | Left -> DownRight (*  ╲ is downright*)
 
-(* Recursively simulate the ball's path and place bumpers *)
-let rec simulate_ball_path (grid: int array array) (pos: pos) (direction: direction) (bumpers_left: int) (grid_size: int) (orientation: orientation) (visited: (pos * direction) Set.Poly.t) (bounce_limit: int) : pos =
-  if out_of_bounds_check pos grid_size || bumpers_left <= 0 then
-    pos  (* Ball has exited the grid or stopped due to limits *)
-  else if Set.mem visited (pos, direction) then
-    (0, 0)  (* Ball revisited a position and direction, break the cycle *)
+let is_within_actual_grid (row: int) (col: int) (grid_size: int) : bool =
+  if row >= 1 && row <= grid_size && col >= 1 && col <= grid_size then true else false
+
+let rec collect_positions_along_path (grid: int array array) (start_pos: pos) (direction: direction) (grid_size: int) : pos list =
+  let (row, col) = start_pos in
+  if not (is_within_actual_grid row col grid_size) then 
+    []
+  else if grid.(row).(col) = 0 then
+    (* Add current position if unoccupied and continue along the path *)
+    start_pos :: collect_positions_along_path grid (move start_pos direction) direction grid_size
   else
+    []  (* Stop if the cell has a bumper *)
+  
+let place_random_bumper_along_path (grid: int array array) (start_pos: pos) (direction: direction) (grid_size: int) (orientation: orientation) : unit =
+  let potential_positions = collect_positions_along_path grid start_pos direction grid_size in
+  match List.random_element potential_positions with
+  | Some (row, col) ->
+      grid.(row).(col) <- if compare_orientation orientation DownRight then 1 else -1
+  | None -> ()  (* No valid position found, do nothing *)
+
+let string_of_orientation (orientation : orientation) : string =
+  match orientation with
+  | UpRight -> "UpRight"
+  | DownRight -> "DownRight"
+(* 
+let string_of_direction (dir: direction) : string = 
+  match dir with 
+    |Up -> "Up"
+    |Down -> "Down"
+    |Left -> "Left"
+    |Right -> "Right" *)
+        
+let rec simulate_ball_path (grid: int array array) (pos: pos) (direction: direction) 
+      (bumpers_left: int) (grid_size: int) (orientation: orientation) 
+      (visited: (pos * direction) Set.Poly.t) (bounce_limit: int) : pos =
+  (* Print the current position of the ball *)
+  (* printf "Ball position: %d %d | Direction: %s | Bumpers left: %d | Bounce limit: %d\n"
+  (fst pos) (snd pos) (string_of_direction direction) bumpers_left bounce_limit; *)
+
+  (* Check if the ball is out of bounds *)
+  if out_of_bounds_check pos grid_size then
+    begin
+    (* printf "Out of bounds at position %d %d, returning.\n" (fst pos) (snd pos); *)
+    pos  (* Ball has exited the grid *)
+    end
+  else if bumpers_left = -1 then  
+    pos  (* Stopping if bumpers are exhausted *)
+  else if Set.mem visited (pos, direction) then
+    begin
+    (* printf "Loop detected at position %d %d, stopping.\n" (fst pos) (snd pos); *)
+    (-1, -1)  (* Stop if a loop is detected *)
+    end
+  else
+    begin
     let visited = Set.add visited (pos, direction) in
 
-    (* Determine the next direction based on the current bumper's orientation *)
-    let direction_map = generate_directions orientation in
-    let new_direction = Map.find_exn direction_map direction in
-    let next_pos = move pos new_direction in
+    (* Check if the current cell contains a bumper *)
+    let (row, col) = pos in
+    if grid.(row).(col) = 1 || grid.(row).(col) = -1 then
+      begin
+      (* Bounce off the bumper *)
+      printf "Bumper encountered at %d %d, orientation: %s\n" row col (string_of_orientation orientation);
 
-    (* Choose a position for the bumper in the same row or column as next_pos based on new_direction *)
-    let (bumper_row, bumper_col) =
-      match new_direction with
-      | Left | Right ->  (* Place the bumper in the same row *)
-          (fst next_pos, Random.int_incl 0 (grid_size - 1))
-      | Up | Down ->  (* Place the bumper in the same column *)
-          (Random.int_incl 0 (grid_size - 1), snd next_pos)
-    in
+      (* Determine new direction based on orientation *)
+      let direction_map = generate_directions orientation in
+      let new_direction = Map.find_exn direction_map direction in
+      (* printf "New direction after bounce: %s\n" (string_of_direction new_direction); *)
 
-    (* Place the bumper at the calculated position if it’s within bounds and unoccupied *)
-    if not (out_of_bounds_check (bumper_row, bumper_col) grid_size) && grid.(bumper_row).(bumper_col) = 0 then
-      grid.(bumper_row).(bumper_col) <- if compare_orientation orientation DownRight then 1 else -1;
+      let next_pos = move pos new_direction in
 
-    (* Alternate orientation for the next bumper *)
-    let next_orientation = orientation_for_direction new_direction in 
+      (* Check if bumpers_left is 0: Follow the path without placing new bumpers *)
+      if bumpers_left = 0 then
+        begin
+        (* printf "No bumpers left; following path until exit.\n"; *)
+        if out_of_bounds_check next_pos grid_size then
+          begin
+          (* printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos);
+          printf "end pos: %d %d" (fst pos) (snd pos); *)
+          pos
+          end
+        else
+        (* Continue path simulation in the new direction without placing a new bumper *)
+        simulate_ball_path grid next_pos new_direction 0 grid_size orientation visited bounce_limit
+        end
+      else
+      (* Place a bumper if bumpers_left > 0 *)
+        begin
+        (* Place a bumper randomly along the new direction *)
+        (* printf "Placing bumper along path from position %d %d\n" (fst next_pos) (snd next_pos); *)
+        (* Set the new orientation for the next bumper placement *)
+        let next_orientation = orientation_for_direction new_direction in
+        place_random_bumper_along_path grid next_pos new_direction grid_size next_orientation;
 
-    (* Continue the path simulation *)
-    simulate_ball_path grid next_pos new_direction (bumpers_left - 1) grid_size next_orientation visited (bounce_limit - 1)
+        (* printf "Next bumper orientation: %s\n" (string_of_orientation next_orientation); *)
+
+        (* Continue path simulation in the new direction with one less bumper *)
+        simulate_ball_path grid next_pos new_direction (bumpers_left - 1) grid_size next_orientation visited (bounce_limit - 1)
+        end
+      end
+      else
+      begin
+      (* Move in the current direction if no bumper is encountered *)
+      let next_pos = move pos direction in
+      if out_of_bounds_check next_pos grid_size then
+        begin
+        (* printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos); *)
+        pos
+        end
+      else
+        begin
+          (* printf "No bumper encountered, continuing straight from position %d %d\n" row col; *)
+          simulate_ball_path grid next_pos direction bumpers_left grid_size orientation visited bounce_limit
+        end
+      end
+  end
 
 let rec generate_grid level =
   let (grid_size, min_bounces, max_bounces) = get_level_settings level in
@@ -215,19 +199,21 @@ let rec generate_grid level =
     ((Random.int_incl 1 grid_size, grid_size + 1), Left);   (* Entry from the right *)
   ] in
   let (entry_pos, initial_direction) = List.random_element_exn possible_entries in
-  let (first_bumper_pos, first_orientation) = place_initial_bumper grid entry_pos initial_direction grid_size in
+  grid.(fst entry_pos).(snd entry_pos) <- 3;
+
+  let (_, first_orientation) = place_initial_bumper grid entry_pos initial_direction grid_size in
 
   let bounce_limit = 10 in
   let visited = Set.Poly.empty in
 
   (* Run the simulation to place bumpers along the ball's path *)
-  let exit_pos = simulate_ball_path grid first_bumper_pos initial_direction (bumper_count - 1) grid_size first_orientation visited bounce_limit in
-  
-  if compare_pos exit_pos (0, 0) then generate_grid level 
-  else
+  let exit_pos = simulate_ball_path grid entry_pos initial_direction (bumper_count - 1) grid_size first_orientation visited bounce_limit in
+  grid.(fst exit_pos).(snd exit_pos) <- 2;
+  if compare_pos exit_pos (-1, -1) then generate_grid level 
+  else 
     (* Count the bumpers placed on the grid *)
     let bumpers_placed = Array.fold grid ~init:0 ~f:(fun acc row ->
-      acc + Array.count row ~f:((=) 1)) in
+      acc + Array.count row ~f:(fun x -> x = 1 || x = -1)) in
 
     (* Check if the number of bumpers placed meets the minimum requirement *)
     if bumpers_placed = bumper_count then
