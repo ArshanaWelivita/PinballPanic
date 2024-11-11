@@ -73,8 +73,28 @@ Level 10 - 9 x 9 grid with 9 bumpers
 
 Implementation Plan:
 
-- Create main file to parse user input
-- Create function to generate grid
+Week 1 - November 13th:
+Add complex features to .mli files
+- Activated Bumper
+- Tunnel
+- Teleporter
+Change grid int values to types
+
+Week 2:
+Implement advanced features in grid generation
+- Tunnel
+- Teleporter
+Start on web app
+
+Week 3
+Activated bumper feature implementation 
+Add grid.ml tests
+Finish web app
+
+Week 4:
+Code cleanup
+Add more testing
+Search for edge cases
 
 Libraries:
 
