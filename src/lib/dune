@@ -5,6 +5,12 @@
   (libraries core))
 
 (library
+  (name tunnel)
+  (modules
+    tunnel)
+  (libraries core))
+
+(library
   (name grid)
   (modules grid)
   (libraries 
