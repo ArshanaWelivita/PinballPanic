@@ -32,8 +32,24 @@ To execute the game, use: dune exec _build/default/src/bin/pinball_panic.exe
 
 # Mock Use
 
-TODO
+**Advanced Features:**
 
+1. Activated bumpers:
+These bumpers allow for the ball to pass through ONCE, before it materializes into a regular bumper.
+Below are the unactivated versions of the bumpers what will be shown in the grid:
+⧄ ⧅
+
+2. Tunnels:
+The orientation is either horizontal or vertical. The ball will be able to pass through in one direction, but will bounce off and reverse direction if it is hit from the side.
+These are the characters for the tunnels:
+|| =
+
+3. Teleporter:
+Teleporters preserve the direction of the ball, but changes its location. There will always be a maximum of one teleporter pair per grid.
+
+  - ★ = The entry location
+
+  - ☆ = The exit location
 
 # Technical
 
