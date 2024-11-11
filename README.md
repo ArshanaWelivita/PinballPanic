@@ -69,15 +69,18 @@ Grids will be randomly generated and checked for degeneracy. Grid generation con
 For a grid of size n x n and k bumpers, the grid is degerate if the following condition holds:
   - the number of bumpers the ball interacts with is <= k/2
 
-Level Progression:
+Level Progression: (Not including advanced features at the moment)
 
-Level 1 - 3 x 3 grid with 1 bumper
-Level 2 - 4 x 4 grid with 2 bumpers
-Level 3 - 5 x 5 grid with 3 bumpers
-Level 4 - 5 x 5 grid with 4 bumpers
-Level 5 - 6 x 6 grid with 4 bumpers
-...
-Level 10 - 9 x 9 grid with 9 bumpers
+Level 1  - 3 x 3 grid with 1 bumper
+Level 2  - 4 x 4 grid with 1-2 bumpers
+Level 3  - 4 x 4 grid with 2-3 bumpers
+Level 4  - 4 x 4 grid with 3-4 bumpers
+Level 5  - 5 x 5 grid with 4-5 bumpers
+Level 6  - 5 x 5 grid with 5-6 bumpers
+Level 7  - 6 x 6 grid with 6-8 bumpers
+Level 8  - 7 x 7 grid with 7-9 bumpers
+Level 9  - 7 x 7 grid with 8-10 bumpers
+Level 10 - 8 x 8 grid with 9-12 bumpers
 
 Libraries:
 
