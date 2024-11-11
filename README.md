@@ -32,6 +32,16 @@ To execute the game, use: dune exec _build/default/src/bin/pinball_panic.exe
 
 # Mock Use
 
+**Example Run:**
+
+<img width="1030" alt="Screenshot 2024-11-11 at 2 42 24 PM" src="https://github.com/user-attachments/assets/8b736015-b043-4df8-b74e-5a04f72fc24e">
+
+<img width="1030" alt="Screenshot 2024-11-11 at 2 42 44 PM" src="https://github.com/user-attachments/assets/817cd05b-9add-46df-9cd1-3a93f7f27ea4">
+
+<img width="1030" alt="Screenshot 2024-11-11 at 2 42 57 PM" src="https://github.com/user-attachments/assets/d0121615-f25e-4b19-bf3b-9c4d8726f3ea">
+
+<img width="1030" alt="Screenshot 2024-11-11 at 2 43 17 PM" src="https://github.com/user-attachments/assets/d4d26608-fb22-441d-8377-f383d34c7827">
+
 **Advanced Features:**
 
 1. Activated bumpers:
