@@ -12,33 +12,17 @@ correct ending location of the ball.
 
 How to play:
 
-The arrow ( -> ) indicates starting position and trajectory.
-The bumpers ( ╲ and ╱ ) deflect the ball at a 90 degree angle.
+The following is an example sample grid of size 3 x 3 which shows the indices related to each cell in the form [row, col].
 
-'-> [ ] [╲] [ ] [ ]'
+ <img width="160" alt="Screenshot 2024-11-11 at 2 25 41 PM" src="https://github.com/user-attachments/assets/8e2b5c0e-fa72-4029-a4ea-46d0607a6be6">
 
-  '[ ] [ ] [ ] [ ]'
-  
-  '[ ] [╲] [ ] [╱]'
-  
-  '[ ] [ ] [ ] [ ]'
+The arrow ( ->🟢 ) indicates starting position and trajectory of the ball.
+The bumpers ( ╲ and ╱ ) deflect the ball at a 90 degree angle (changes the trajectory in a perpendicular direction).
+An example grid can be seen as follows: 
 
-After 3 seconds, the bumpers in the grid will disappear. And the user will be prompted to enter the ball's ending location.
+<img width="202" alt="Screenshot 2024-11-11 at 2 23 59 PM" src="https://github.com/user-attachments/assets/7eb41bad-2995-46e7-a0b1-18bc9fc723fb">
 
-   'a   b   c   d'
-   
-'A [ ] [ ] [ ] [ ] AA'
-
-'B [ ] [ ] [ ] [ ] BB'
-
-'C [ ] [ ] [ ] [ ] CC'
-
-'D [ ] [ ] [ ] [ ] DD'
-
- 'aa  bb  cc  dd'
-
-In this case, the answer is "d". So the user would enter "!a d" to move on to the next round.
-If the user enters the correct answer, they will move on to a harder level, otherwise they are presented with a "GAME OVER".
+After a few seconds, the bumpers in the grid will disappear, and the user will be prompted to enter the ball's ending location. In this case, the answer is [2, 4] where the answer is given in the form [row, col]. So the user would enter "[2, 4]" to move on to the next round. If the user enters the correct answer, they will need to press 'c' to move onto the next level, otherwise they are presented with a "GAME OVER".
 
 Commands:
 
@@ -71,32 +55,32 @@ Level 5 - 6 x 6 grid with 4 bumpers
 ...
 Level 10 - 9 x 9 grid with 9 bumpers
 
-Implementation Plan:
-
-Week 1 - November 13th:
-Add complex features to .mli files
-- Activated Bumper
-- Tunnel
-- Teleporter
-Change grid int values to types
-
-Week 2:
-Implement advanced features in grid generation
-- Tunnel
-- Teleporter
-Start on web app
-
-Week 3
-Activated bumper feature implementation 
-Add grid.ml tests
-Finish web app
-
-Week 4:
-Code cleanup
-Add more testing
-Search for edge cases
-
 Libraries:
 
 - Dream
 - Core
+
+# Implementation Plan:
+
+Week 1 - November 13th:
+1. Add complex features to .mli files
+  - Activated Bumper
+  - Tunnel
+  - Teleporter
+2. Change grid int values to types (make it a more abstract implementation)
+
+Week 2:
+1. Implement advanced features in grid generation
+  - Tunnel
+  - Teleporter
+2. Start on web app
+
+Week 3
+1. Activated bumper feature implementation 
+2. Add grid.ml tests
+3. Finish web app
+
+Week 4:
+1. Code cleanup
+2. Add more testing
+3. Search for edge cases
