@@ -2,7 +2,7 @@
 
 Authors:
 
-Arshana W. and Kenneth Elsman
+Arshana Welivita and Kenneth Elsman
 
 Overview:
 
