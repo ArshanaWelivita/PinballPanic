@@ -1,16 +1,14 @@
 # PinballPanic
 
-Authors:
+Authors: Arshana Welivita and Kenneth Elsman
 
-Arshana Welivita and Kenneth Elsman
-
-Overview:
+# Overview:
 
 Pinball Panic is a memory game inspired by Lumionisity's Pinball Recall.
 Given a starting position and an assortment of bumpers that will disappear after a short amount of time, your goal is to find the
 correct ending location of the ball.
 
-How to play:
+# How to play:
 
 The following is an example sample grid of size 3 x 3 which shows the indices related to each cell in the form [row, col].
 
@@ -24,15 +22,15 @@ An example grid can be seen as follows:
 
 After a few seconds, the bumpers in the grid will disappear, and the user will be prompted to enter the ball's ending location. In this case, the answer is [2, 4] where the answer is given in the form [row, col]. So the user would enter "[2, 4]" to move on to the next round. If the user enters the correct answer, they will need to press 'c' to move onto the next level, otherwise they are presented with a "GAME OVER".
 
-Commands:
+To execute the game, use: dune exec _build/default/src/bin/pinball_panic.exe 
 
-run ppanic (to run the application)
-!r (to start a new game)
-!q (to quit)
-!a _ (to submit an answer)
-!c (to continue after completing a level)
+**List of CLI Commands:**
 
-Mock Use:
+- s (to start a new game)
+- q or Ctrl-C (to quit)
+- c (to move onto a harder level)
+
+# Mock Use
 
 TODO
 
