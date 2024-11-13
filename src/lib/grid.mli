@@ -1,93 +1,166 @@
-(* Functor for the grid where we have module type for every single object inside the grid (rn only implementing bumpers)
-This is all for the command-line ascii implementation
-
-Module type: grid
-- type n (row and col are the same as it is a square sized grid)
-- type entry_pos (where the ball starts initially in grid where it is outside the grid bounds )
-(grid extension start at 0,0 where the actual grid bounds starts at (1,1) so all row cols have an offset of index 1 where
- there is an blank row/col perimeter axes of the grid so that we don't need to do negative numbers for the entry position
- so our generated grid is going to be 1 larger than the actual size of the grid)
- - have a set limit on the number of bumpers in each row is at most n/2 so we don't end up generating rows which are full of bumpers by accident
- - have a hard-coded number of bounces for every level and it is: 
-    {   1: (3, 1, 1), 
-        2: (4, 1, 2), 
-        3: (4, 2, 3), 
-        4: (4, 3, 4),
-        5: (5, 4, 5),
-        6: (5, 5, 6),
-        7: (6, 6, 8),
-        8: (7, 7, 9),
-        9: (7, 8, 10),
-        10: (8, 9, 12)
-                        }
-    - where it is organized like {level: (grid size, min bounces, max bounces)
-
- - function: out_of_bounds_check(current ball position)
-        - checks if any part of the [row, col] index is greater than n or < 1 which tells us that the ball has exited the grid 
-        - we can use this to compare the actual end position with the user input end position to decide whether they succeeded and moved to next level or game over/highest level reached
-
-- function: generate_grid() 
-        - use Core.random to generate the initial bumper position and generate the grid from that position onwards
-        - when we generate the bumper, we determine the positional movement of the ball and generate another bumper within that same row using Core.random over a specified range of numbers 
-        - check if the bumpers generated matches the range of min/max bumpers needed for each level
-        - return the generated grid object to the main file and return a separate end position which determines where the ball exits 
-        - depending on level of the game, get bumpers closer to min or max in the range where rule of thumb is after level 5 should always be > n/2
-
-For testing, have an idea of a game player and testing the grid-size, and the bounces alone 
-- function: randomization function to actually 
-
-Make a functor from grid module type (all the way at the end - not priority right now)
---> for future, may need ball type to show the visual movement of the ball through the grid
-
-*)
 open Grid_cell
+open Core
 
-(* represents the actual pinball game grid *)
+(* Type representing the actual pinball game grid *)
 type grid = grid_cell array array 
 
-(* Define a position as a tuple of integers *)
+(* Type representing a position as a tuple of integers where it is used to find the position in the grid *)
 type pos = int * int
 
-(* Function to fetch the specified grid size, minimum grid objects, maximum grid objects and grid object type list for a specific level depending on the level the user is in
-   Returns the grid size, minimum grid objects,  maximum grid objects and list of grid object types for that level *)
-val get_level_settings : int -> int * int * int * grid_cell_type list 
+(* Function to retrieve the game settings for a specified level.
+   - grid size (int)
+   - minimum grid objects (int)
+   - maximum grid objects (int)
+   - list of grid object types allowed for that level (grid_cell_type list)
+ *)
+val get_level_settings : int -> int * int * int * (grid_cell_type list)
 
-(* Function to fetch the grid size given the current level
-   Returns grid size n for a square grid *)
+(* Function to get the grid size (n x n) given the current level.
+   Returns grid size n for a square grid 
+*)
 val get_grid_size : int -> int
 
-(* Function to check if the ball has gone outside the bounds of the grid and if it *)
+(* Function to check if the position is outside the grid bounds.
+   - row (int)
+   - col (int)
+   - grid size (int) 
+   Returns true if outside grid, else it returns false.
+*)
 val out_of_bounds_check : pos -> int -> bool
 
+(* Function to check if the position is within the grid bounds.
+   - row (int)
+   - col (int)
+   - grid size (int)
+   Returns true if it is within grid, else it returns false.
+*)
+val is_within_actual_grid : int -> int -> int -> bool 
+
+(* Function to get a specific cell from the grid given the row and col indices 
+   of its position in the grid.
+   - row (int)
+   - col (int)
+   Returns the associated cell in the grid (grid_cell) at that specified grid position.
+*)
 val get_cell : grid -> int -> int -> grid_cell
 
-val move : pos -> Bumper.direction -> pos
+(* Function to calculate the next position based off the current position and direction of the ball.
+   - current ball position (pos)
+   - current ball direction (direction)
+   Returns new ball position (pos).
+*)
+val move : pos -> direction -> pos
 
+(* Function to compare two positions to see if they're pointing to the same position. *)
 val compare_pos : pos -> pos -> bool
 
-val compare_orientation : Bumper.orientation -> Bumper.orientation -> bool
+(* Function to compare two orientations of two grid cell objects to see if they have the same orientation. *)
+val compare_orientation : orientation -> orientation -> bool
 
-val is_activated_bumper_active : pos
+(* Function to check if the activated bumper grid object is activated and returns true/false.
+   - ball position (pos)
+   - activated bumper position (pos)
+   Calls the is_it_active function in activated_bumper.mli and checks if the positions are the same. 
+   Checks the is_active boolean type in activated_bumper.mli bumper directly and returns its boolean value.
+*)
+val is_activated_bumper_active : pos -> pos -> bool 
 
+(* Function to convert the orientation of a grid object to string.
+   - orientation of grid object (orientation)
+   Returns the string value of the orientation.
+*)
+val string_of_orientation : orientation -> string 
 
-val place_initial_bumper : grid_cell array array -> pos -> grid_cell.cell_type.direction -> int -> grid_cell pos * orientation
+(* Function to convert the direction of a grid object to string.
+   - direction of grid object (direction)
+   Returns the string value of the direction.
+*)
+val string_of_direction : direction -> string
 
-(* Function that convert the activated bumper to an ordinary bumper if the activated bumper is now active. So now at that position
-   there would exist an ordinary bumper *)
-val convert_activated_to_regular_bumper: pos -> grid
+(* Function to place an initial grid object on the grid at a specified position and orientation.
+   - initial pinball game grid (grid)
+   - entry position (pos)
+   - entry direction (direction)
+   - grid size (int)
+   Returns the initial grid object position and orientation (pos * orientation). 
+   It directly modifies that position in the grid so the modified grid does not need to be returned.
+*)
+val place_initial_grid_object : grid -> pos -> direction -> int -> pos * orientation
 
-(*
+(* Function that convert the activated bumper to an ordinary bumper if the activated bumper is now active.
+   Calls the is_activated_bumper_active to check the state of the activated bumper.
+   - activated bumper position (pos)
+   - current pinball grid (grid)
+   Returns true if the bumper is converted and false otherwise. 
+   If the activated bumper is active, changes the bumper to an ordinary one, modifies the grid and returns true as the bumper 
+   at that position is now ordinary. Otherwise, it returns false as the activated bumper is still not activated. 
+*)
+val convert_activated_to_regular_bumper : pos -> grid -> bool 
+
+(* Function that given the direction the ball is moving in, it randomly selects the orientation of the next grid object.
+   - ball direction (direction)
+   Returns randomly generated next grid object orientation (orientation).
+*)
 val orientation_for_direction : direction -> orientation
 
-val simulate_ball_path : int array array -> pos -> direction -> int -> int -> orientation -> (pos * direction) Set.Poly.t -> int -> pos
+(* Function to get a list of positions ahead of the current path of the ball which can be used to randomly select the position
+   where the next grid object is placed.
+   - current pinball game grid (grid)
+   - ball position in grid (pos)
+   - ball direction (direction)
+   - grid size (int)
+   Returns a list of possible positions for the next grid object to be placed that doesn't affect the previously placed 
+   objects or the overall path of the ball. It checks the grid_cell_types of each cell and only returns the positions of the
+   cells which have type Empty. 
+*)
+val collect_positions_along_path : grid -> pos -> direction -> int -> pos list
 
-(* Function to generate a grid for a given level
-   Returns a matrix (2D array) representing the grid with bumpers 
-   and the exit position of the ball *)
-val generate_grid : int -> int array array * pos * pos * Bumper.direction *)
+(* Function to place a grid element randomly in the next eligible position in the ball's path determined 
+   by collect_positions_along_path.
+   - current pinball grid (grid)
+   - current ball position (pos)
+   - current ball direction (direction)
+   - grid size (int)
+   - orientation of the new grid object (orientation) -> this orientation is created from orientation_for_direction function which
+   uses the current ball position to determine the next grid object's orientation
+   - grid object type (grid_cell_type) - the type of grid object that should be placed in the grid
+   Returns true/false.
+   Directly modifies the grid in the function and returns true if it was able to place a grid object and false if not.
+*)
+val place_random_grid_element_along_path : grid -> pos -> direction -> int -> orientation -> grid_cell_type -> bool
 
+(* Function that simulates the ball's path through the grid and places the grid objects dynamically based on the ball's position. 
+This function is recursive so it will continue simulating the ball's path and placing the grid objects until it either goes out of bounds 
+of the grid, case of infinite bounces between two grid objects or there is a loop detected (keeps visiting the same positions in the grid) and never exits. 
+This function also calls place_random_grid_element_along_path as a helper function to place the next grid object in the balls path and continues to simulate
+the ball's movement. The function will also return an invalid position if the collect_positions_along_path was not able to place a grid object as that would 
+change the affect the accuracy of the grid generated.
+   - current pinball grid (grid)
+   - current ball position (pos)
+   - current ball direction (direction)
+   - grid size (int)
+   - number of grid objects left to add to the graph (int)
+   - orientation of the next grid object (orientation)
+   - bounce limit (int) which is used to prevent infinite bounces between two grid objects
+   and returns an invalid position to stop generating this ball's path
+   - set of visited positions ((pos * direction) Set.Poly.t) which is used to keep track of whether the ball is going in a loop
+   Returns the exit position of the ball from the grid. This position could either be a valid exit position or be invalid to represent
+   that this simulation was unsuccessful.
+*)
+val simulate_ball_path : grid -> pos -> direction -> int -> int -> orientation -> int -> (pos * direction) Set.Poly.t -> pos
 
-| - - | <-
-- - - - 
-- - - -
-- - - -
+(* Function that takes the level from the pinball_panic.ml file and then creates the specific grid for that level using the 
+   specified settings in the get_level_settings function. This function is also recursive and will continue generating grids until it 
+   finds a valid grid. 
+   This function creates the grid and randomly selects the entry position of the ball from various directions of the grid. It then calls
+   the place_initial_grid_object function to place the initial grid object based on the entry position of the ball. It then calls simulate_ball_path
+   to generate the rest of the grid dynamically given the entry position and first grid object position. It also gives a maximum number of bounces limit
+   which is 10 as a variable into this function.
+   A grid is not valid if the exit position returned by the simulate_ball_path function is invalid. Similarly, if the number of grid objects 
+   placed in the grid does not meet the minimum required for that level, the grid is not valid. 
+   - level (int)
+   Returns a viable, valid pinball panic game grid that doesn't cause loops, no infinite bounces, has a valid exit position and meets
+   all the requirements for that specific level. This grid will then be given the the pinball_panic.ml game and then it will generate the grid to be printed
+   on the command line.
+*)
+val generate_grid : int -> grid 

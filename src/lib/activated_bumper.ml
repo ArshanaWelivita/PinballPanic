@@ -1,4 +1,5 @@
 type pos = int * int
+type is_active = bool
 
 type orientation =
   | DownRight  (* corresponds to '⧅' *)

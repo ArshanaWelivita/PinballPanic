@@ -4,18 +4,17 @@ open Grid_cell
 type pos = int * int
 
 let level_bounce_settings = [
-  (1, (3, 1, 1));
-  (2, (4, 1, 2));
-  (3, (4, 2, 3));
-  (4, (4, 3, 4));
-  (5, (5, 4, 5));
-  (6, (5, 5, 6));
-  (7, (6, 6, 8));
-  (8, (7, 7, 9));
-  (9, (7, 8, 10));
-  (10, (8, 9, 12)) 
+  (1, (3, 1, 1, [BumperLevelMarker]));
+  (2, (4, 1, 2, [BumperLevelMarker]));
+  (3, (4, 2, 3, [BumperLevelMarker; TunnelLevelMarker]));
+  (4, (4, 3, 4, [BumperLevelMarker; TunnelLevelMarker]));
+  (5, (5, 4, 5, [BumperLevelMarker; Teleporter]));
+  (6, (5, 5, 6, [BumperLevelMarker; Teleporter]));
+  (7, (6, 6, 8, [BumperLevelMarker; ActivatedBumperLevelMarker]));
+  (8, (7, 7, 9, [BumperLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]));
+  (9, (7, 8, 10, [BumperLevelMarker; Teleporter; ActivatedBumperLevelMarker]));
+  (10, (8, 9, 12, [BumperLevelMarker; Teleporter; TunnelLevelMarker; ActivatedBumperLevelMarker]))
 ]
-
 (* let compare_pos (p1 : pos) (p2 : pos) : bool =
   let (x1, y1) = p1 in
   let (x2, y2) = p2 in
