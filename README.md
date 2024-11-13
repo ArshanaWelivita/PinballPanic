@@ -34,6 +34,8 @@ To execute the game, use: dune exec _build/default/src/bin/pinball_panic.exe
 
 This is our current basic command line implementation of the game without the grid disappearing and only using bumpers in the generated grids. We will build on this code and update this section as we add more advanced features and functionality.
 
+Note: The command line interface that we implemented in the grid.ml and pinball_panic.ml files doesn't work anymore as we changed the related mli files to include abstract types for the grid objects and grid type. This is from our previous implementation which used numbers to represent the different grid objects instead of types.
+
 **Example Run:**
 
 <img width="1030" alt="Screenshot 2024-11-11 at 2 42 24 PM" src="https://github.com/user-attachments/assets/8b736015-b043-4df8-b74e-5a04f72fc24e">
