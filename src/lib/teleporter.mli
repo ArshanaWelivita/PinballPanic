@@ -1,4 +1,6 @@
-(*** kenneth add explanation why we cant define more studd and this needs to be handled in grid mli *)
+(* Note: we cannot define more information here because the teleporter has no knowledge
+the location of the other teleporter and vice-versa. Implementation of the teleportation
+mechanics will occur in the grid.ml and grid.mli files. *)
 
 (* Type representing a position on the grid *)
 type pos = int * int

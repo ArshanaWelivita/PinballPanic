@@ -67,7 +67,7 @@ These are the characters for the tunnels:
 
 3. **Teleporter:**
 Teleporters preserve the direction of the ball, but changes its location. There will always be a maximum of one teleporter pair per grid. Each teleporter can act as an entry or exit location so it can always enter/exit from either teleporter in the pair. 
-  - ★ ☆- entry/exit location character of teleporter
+  - ★ ★ - entry/exit location character of teleporter
 
 ### Level Progression
 
@@ -75,7 +75,7 @@ A grid object represents the type of object that the ball can interact with in t
 
 Level 1  - 3 x 3 grid with 1 grid object (type: bumper)
 
-Level 2  - 4 x 4 grid with 1-2 grid object  (type: bumper)
+Level 2  - 4 x 4 grid with 1-2 grid object (type: bumper)
 
 Level 3  - 4 x 4 grid with 2-3 grid object (type: bumper, tunnel)
 
