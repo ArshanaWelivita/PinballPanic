@@ -36,9 +36,9 @@ let display_grid_with_arrow_and_bumper (grid_size: int) (entry_pos: pos) (initia
         else
           printf " .  "  (* Buffer cell *)
       else if List.exists bumper_positions ~f:(fun (br, bc, btype) -> br = i && bc = j && btype = 1) then
-        printf " ╲  "  (* DownRight bumper *)
+        printf " ⟍  "  (* DownRight bumper *)
       else if List.exists bumper_positions ~f:(fun (br, bc, btype) -> br = i && bc = j && btype = -1) then
-        printf " ╱  "  (* UpRight bumper *)
+        printf " ⟋  "  (* UpRight bumper *)
       else
         printf " -  "  (* Empty cell *)
     done;
@@ -81,6 +81,8 @@ let handle_command command =
       | false ->
         (* case 2: incorrect *)
         print_endline ("Incorrect! The correct answer was: " ^ correct_answer);
+        print_endline ("GAME OVER!");
+        exit 0;
         (* print_endline "Enter 's' to play again"; *)
   in
 
@@ -163,10 +165,10 @@ let display_sample_grid () =
     (* Print the grid row with values *)
     for j = 0 to Array.length grid.(i) - 1 do
       match grid.(i).(j) with
-      | 3 -> printf "%s " (arrow_of_direction Down) (* Entry *)
-      | 2 -> printf "%s " (arrow_of_direction Right)   (* Exit *)
-      | 1 -> printf "  ╲  "   (* DownRight bumper *)
-      | -1 -> printf "  ╱  " (* UpRight bumper *)
+      | 3 -> printf " %s " (arrow_of_direction Down) (* Entry *)
+      | 2 -> printf "  .  "
+      | 1 -> printf "  ⟍  "   (* DownRight bumper *)
+      | -1 -> printf "  ⟋  " (* UpRight bumper *)
       | 0 -> printf "  -  "   (* Empty cell *)
       | 4 -> printf "  .  "
       | _ -> printf "  -  "   (* Unknown value (for safety) *)
@@ -183,7 +185,7 @@ let display_sample_grid_game () =
   display_sample_grid ();
   print_endline 
   ("The above example has entry position at [0, 2] and a bumper at position at [2, 2]. This means the ball starts from the entry position, bounces
-off the bumper in a perpendicular direction and then exits the grid at position [3, 4]. In order to pass to the next level, you need to correctly 
+off the bumper in a perpendicular direction and then exits the grid at position [2, 4]. In order to pass to the next level, you need to correctly 
 identify the exit position of the ball from the grid where it is given in the form [row, col]. In the actual game, the grid will only be displayed 
 for a couple seconds, so be speedy when determining the end position. Good luck!\n")
 
