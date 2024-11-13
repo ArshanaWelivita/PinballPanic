@@ -42,19 +42,21 @@ Make a functor from grid module type (all the way at the end - not priority righ
 *)
 open Grid_cell
 
+(* represents the actual pinball game grid *)
 type grid = grid_cell array array 
 
 (* Define a position as a tuple of integers *)
 type pos = int * int
 
-(* Function to fetch the specified grid size, minimum and maximum bounces for a specific level depending on the level the user is in
-   Returns the grid size, minimum bounces and maximum bounces *)
-val get_level_settings : int -> int * int * int
+(* Function to fetch the specified grid size, minimum grid objects, maximum grid objects and grid object type list for a specific level depending on the level the user is in
+   Returns the grid size, minimum grid objects,  maximum grid objects and list of grid object types for that level *)
+val get_level_settings : int -> int * int * int * grid_cell_type list 
 
 (* Function to fetch the grid size given the current level
    Returns grid size n for a square grid *)
 val get_grid_size : int -> int
 
+(* Function to check if the ball has gone outside the bounds of the grid and if it *)
 val out_of_bounds_check : pos -> int -> bool
 
 val get_cell : grid -> int -> int -> grid_cell
@@ -65,9 +67,16 @@ val compare_pos : pos -> pos -> bool
 
 val compare_orientation : Bumper.orientation -> Bumper.orientation -> bool
 
+val is_activated_bumper_active : pos
 
-(* val place_initial_bumper : int array array -> pos -> direction -> int -> pos * orientation
 
+val place_initial_bumper : grid_cell array array -> pos -> grid_cell.cell_type.direction -> int -> grid_cell pos * orientation
+
+(* Function that convert the activated bumper to an ordinary bumper if the activated bumper is now active. So now at that position
+   there would exist an ordinary bumper *)
+val convert_activated_to_regular_bumper: pos -> grid
+
+(*
 val orientation_for_direction : direction -> orientation
 
 val simulate_ball_path : int array array -> pos -> direction -> int -> int -> orientation -> (pos * direction) Set.Poly.t -> int -> pos
@@ -76,3 +85,9 @@ val simulate_ball_path : int array array -> pos -> direction -> int -> int -> or
    Returns a matrix (2D array) representing the grid with bumpers 
    and the exit position of the ball *)
 val generate_grid : int -> int array array * pos * pos * Bumper.direction *)
+
+
+| - - | <-
+- - - - 
+- - - -
+- - - -

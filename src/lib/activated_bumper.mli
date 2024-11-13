@@ -1,11 +1,21 @@
+(* Type representing a position on the grid *)
 type pos = int * int
 
-type orientation =
-  | DownRight  (* corresponds to '╲' *)
-  | UpRight    (* corresponds to '╱' *)
+type is_active = bool
 
+(* Type representing orientation *)
+type orientation =
+  | DownRight  (* corresponds to '⧅' *)
+  | UpRight    (* corresponds to '⧄' *)
+
+(* Type representing direction *)
 type direction =
   | Up
   | Down
   | Left
   | Right
+
+(* Function to check the ball's position and the activated bumper's position to check if the ball is at the activated bumper's 
+position and if so returns true. Otherwise returns false. *)
+val is_it_active : pos -> pos -> bool 
+

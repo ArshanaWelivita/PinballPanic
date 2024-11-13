@@ -1,4 +1,4 @@
-open Core
+(* open Core
 open Bumper
 
 let round_num = ref 1
@@ -199,4 +199,4 @@ let rec main_loop () =
 (* Entry point for the game *)
 let () = 
   display_sample_grid_game ();
-  main_loop ()
+  main_loop () *)

@@ -15,10 +15,11 @@ type direction =
   | Left
   | Right
 
-val orientation_to_string : orientation -> string 
-
 (* Type that maps the input direction to the output direction *)
 type direction_map = (direction, direction) Map.Poly.t
+
+(* Function to converts the orientation to a string value *)
+val orientation_to_string : orientation -> string 
 
 (* Function to generate direction mappings based on a bumper's orientation *)
 val generate_directions : orientation -> direction_map

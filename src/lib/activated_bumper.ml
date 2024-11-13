@@ -9,3 +9,6 @@ type direction =
   | Down
   | Left
   | Right
+
+let is_it_active (ball_pos: pos) (activated_bumper_pos: pos) : bool =
+  true

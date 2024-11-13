@@ -1,5 +1,5 @@
 open Core 
-open Bumper
+open Grid_cell
 
 type pos = int * int
 
