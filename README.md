@@ -66,7 +66,7 @@ These are the characters for the tunnels:
   - = - horizontal orientation 
 
 3. **Teleporter:**
-Teleporters preserve the direction of the ball, but changes its location. There will always be a maximum of one teleporter pair per grid. Each teleporter can act as an entry or exit location so it can always enter/exit from the second teleporter in the pair. 
+Teleporters preserve the direction of the ball, but changes its location. There will always be a maximum of one teleporter pair per grid. Each teleporter can act as an entry or exit location so it can always enter/exit from either teleporter in the pair. 
   - ★ ☆- entry/exit location character of teleporter
 
 ### Level Progression
