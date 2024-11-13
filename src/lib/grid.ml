@@ -16,7 +16,7 @@ let level_bounce_settings = [
   (10, (8, 9, 12)) 
 ]
 
-let compare_pos (p1 : pos) (p2 : pos) : bool =
+(* let compare_pos (p1 : pos) (p2 : pos) : bool =
   let (x1, y1) = p1 in
   let (x2, y2) = p2 in
   x1 = x2 && y1 = y2
@@ -39,8 +39,10 @@ let move (row, col : pos) (direction: direction) : pos =
   | Up -> (row - 1, col)
   | Down -> (row + 1, col)
   | Left -> (row, col - 1)
-  | Right -> (row, col + 1)
+  | Right -> (row, col + 1) *)
 
+
+(*
 let place_initial_bumper (grid: int array array) (entry_pos: pos) (direction: direction) (grid_size: int) : pos * orientation =
   let (entry_row, entry_col) = entry_pos in
   let bumper_pos, orientation =
@@ -220,4 +222,4 @@ let rec generate_grid level =
       (grid, entry_pos, exit_pos, initial_direction)  (* Return the viable grid *)
     else
       generate_grid level
-
+ *)

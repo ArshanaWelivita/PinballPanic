@@ -40,16 +40,15 @@ Make a functor from grid module type (all the way at the end - not priority righ
 --> for future, may need ball type to show the visual movement of the ball through the grid
 
 *)
-open Core
-open Bumper
+open Grid_cell
+
+type grid = grid_cell array array 
 
 (* Define a position as a tuple of integers *)
 type pos = int * int
 
-val compare_pos : pos -> pos -> bool
-
-val compare_orientation : orientation -> orientation -> bool
-
+(* Function to fetch the specified grid size, minimum and maximum bounces for a specific level depending on the level the user is in
+   Returns the grid size, minimum bounces and maximum bounces *)
 val get_level_settings : int -> int * int * int
 
 (* Function to fetch the grid size given the current level
@@ -58,9 +57,16 @@ val get_grid_size : int -> int
 
 val out_of_bounds_check : pos -> int -> bool
 
-val move : pos -> direction -> pos
+val get_cell : grid -> int -> int -> grid_cell
 
-val place_initial_bumper : int array array -> pos -> direction -> int -> pos * orientation
+val move : pos -> Bumper.direction -> pos
+
+val compare_pos : pos -> pos -> bool
+
+val compare_orientation : Bumper.orientation -> Bumper.orientation -> bool
+
+
+(* val place_initial_bumper : int array array -> pos -> direction -> int -> pos * orientation
 
 val orientation_for_direction : direction -> orientation
 
@@ -69,4 +75,4 @@ val simulate_ball_path : int array array -> pos -> direction -> int -> int -> or
 (* Function to generate a grid for a given level
    Returns a matrix (2D array) representing the grid with bumpers 
    and the exit position of the ball *)
-val generate_grid : int -> int array array * pos * pos * Bumper.direction
+val generate_grid : int -> int array array * pos * pos * Bumper.direction *)

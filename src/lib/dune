@@ -11,11 +11,29 @@
   (libraries core))
 
 (library
+  (name teleporter)
+  (modules
+    teleporter)
+  (libraries core))
+
+(library
+  (name activated_bumper)
+  (modules
+    activated_bumper)
+  (libraries core))
+
+(library
+  (name grid_cell)
+  (modules
+    grid_cell)
+  (libraries core bumper tunnel teleporter activated_bumper))
+
+(library
   (name grid)
   (modules grid)
   (libraries 
     core
-    bumper)
+    grid_cell)
   (preprocess
   (pps ppx_jane)))
 
