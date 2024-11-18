@@ -32,3 +32,7 @@ type grid_cell = {
     cell_type: grid_cell_type; (* the type of grid cell *)
 }
 
+let orientation_to_string (orientation : orientation) : string =
+  match orientation with
+  | DownRight -> "DownRight"
+  | UpRight -> "UpRight"

@@ -1,6 +1,7 @@
 open Core 
 open Grid_cell
 
+type grid = grid_cell array array 
 type pos = int * int
 
 let level_bounce_settings = [
@@ -15,63 +16,84 @@ let level_bounce_settings = [
   (9, (7, 8, 10, [BumperLevelMarker; Teleporter; ActivatedBumperLevelMarker]));
   (10, (8, 9, 12, [BumperLevelMarker; Teleporter; TunnelLevelMarker; ActivatedBumperLevelMarker]))
 ]
-(* let compare_pos (p1 : pos) (p2 : pos) : bool =
-  let (x1, y1) = p1 in
-  let (x2, y2) = p2 in
-  x1 = x2 && y1 = y2
 
-let compare_orientation (o1: orientation) (o2: orientation) : bool = 
-  String.compare (Bumper.orientation_to_string o1) (Bumper.orientation_to_string o2) = 0
-
-let get_level_settings (level: int) : int * int * int =
+let get_level_settings (level: int) : int * int * int * (grid_cell_type list) =
   List.Assoc.find_exn level_bounce_settings ~equal:Int.equal level
 
 let get_grid_size (level: int) : int = 
-  let grid_size, _, _ = get_level_settings level in
+  let grid_size, _, _ , _ = get_level_settings level in 
   grid_size
-  
+
 let out_of_bounds_check (row, col : pos) (grid_size: int) : bool = 
-  if row < 0 || col < 0 || row > grid_size + 1 || col > grid_size + 1 then true else false (* might not be >= check later!! *)
+  if row < 0 || col < 0 || row > grid_size + 1 || col > grid_size + 1 then true else false 
+
+let is_within_actual_grid (row: int) (col: int) (grid_size: int) : bool =
+  if row >= 1 && row <= grid_size && col >= 1 && col <= grid_size then true else false
+
+let get_cell  (grid: grid) (row: int) (col: int) : grid_cell = 
+  grid.(row).(col)
 
 let move (row, col : pos) (direction: direction) : pos =
   match direction with
   | Up -> (row - 1, col)
   | Down -> (row + 1, col)
   | Left -> (row, col - 1)
-  | Right -> (row, col + 1) *)
+  | Right -> (row, col + 1) 
+
+let compare_pos (p1 : pos) (p2 : pos) : bool =
+  let (x1, y1) = p1 in
+  let (x2, y2) = p2 in
+  x1 = x2 && y1 = y2
+
+let compare_orientation (o1: orientation) (o2: orientation) : bool = 
+  String.compare (orientation_to_string o1) (orientation_to_string o2) = 0
 
 
-(*
-let place_initial_bumper (grid: int array array) (entry_pos: pos) (direction: direction) (grid_size: int) : pos * orientation =
+let is_activated_bumper_active (ball_pos: pos) (bumper_pos: pos) : bool = 
+  false (* will implement this later when doing the activated bumper feature in week 3 of implementation *)
+  
+let string_of_orientation (orientation : orientation) : string =
+  match orientation with
+  | UpRight -> "UpRight"
+  | DownRight -> "DownRight"
+
+let string_of_direction (dir: direction) : string = 
+  match dir with 
+    |Up -> "Up"
+    |Down -> "Down"
+    |Left -> "Left"
+    |Right -> "Right"
+
+let place_initial_grid_object (grid: int array array) (entry_pos: pos) (direction: direction) (grid_size: int) (grid_cell_type : grid_cell_type) : pos * orientation =
   let (entry_row, entry_col) = entry_pos in
-  let bumper_pos, orientation =
+  let grid_cell_object_pos, orientation =
     match direction with
     | Left -> let col = Random.int_incl 1 grid_size in
               let pos = (entry_row, col) in
-              grid.(entry_row).(col) <- -1;  
+              let grid_cell of {position: pos; cell_type: grid_cell_type} in
+              grid.(entry_row).(col) <- grid_cell;  
               (pos, UpRight)
     | Right -> let col = Random.int_incl 1 grid_size in
-               let pos = (entry_row, col) in
-               grid.(entry_row).(col) <- 1;  
-               (pos, DownRight)
+                let pos = (entry_row, col) in
+                grid.(entry_row).(col) <- cell_type;  
+                (pos, DownRight)
     | Up -> let row = Random.int_incl 1 grid_size in
             let pos = (row, entry_col) in
-            grid.(row).(entry_col) <- -1;  
+            grid.(row).(entry_col) <- cell_type;  
             (pos, UpRight)  
     | Down -> let row = Random.int_incl 1 grid_size in
               let pos = (row, entry_col) in
-              grid.(row).(entry_col) <- 1;  
+              grid.(row).(entry_col) <- cell_type;  
               (pos, DownRight)  
   in
-  (bumper_pos, orientation)  
+  (grid_cell_object_pos, orientation) 
+
+(* 
 
 let orientation_for_direction (direction: direction) : orientation =
   match direction with
   | Up | Right -> UpRight (*  ╱ is upright *)
   | Down | Left -> DownRight (*  ╲ is downright*)
-
-let is_within_actual_grid (row: int) (col: int) (grid_size: int) : bool =
-  if row >= 1 && row <= grid_size && col >= 1 && col <= grid_size then true else false
 
 let rec collect_positions_along_path (grid: int array array) (start_pos: pos) (direction: direction) (grid_size: int) : pos list =
   let (row, col) = start_pos in
@@ -90,17 +112,6 @@ let place_random_bumper_along_path (grid: int array array) (start_pos: pos) (dir
       grid.(row).(col) <- if compare_orientation orientation DownRight then 1 else -1
   | None -> ()  (* No valid position found, do nothing *)
 
-let string_of_orientation (orientation : orientation) : string =
-  match orientation with
-  | UpRight -> "UpRight"
-  | DownRight -> "DownRight"
-(* 
-let string_of_direction (dir: direction) : string = 
-  match dir with 
-    |Up -> "Up"
-    |Down -> "Down"
-    |Left -> "Left"
-    |Right -> "Right" *)
         
 let rec simulate_ball_path (grid: int array array) (pos: pos) (direction: direction) 
       (bumpers_left: int) (grid_size: int) (orientation: orientation) 

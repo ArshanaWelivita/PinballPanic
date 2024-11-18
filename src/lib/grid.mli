@@ -85,7 +85,7 @@ val string_of_direction : direction -> string
    Returns the initial grid object position and orientation (pos * orientation). 
    It directly modifies that position in the grid so the modified grid does not need to be returned.
 *)
-val place_initial_grid_object : grid -> pos -> direction -> int -> pos * orientation
+val place_initial_grid_object : grid -> pos -> direction -> int -> grid_cell_type -> pos * orientation
 
 (* Function that convert the activated bumper to an ordinary bumper if the activated bumper is now active.
    Calls the is_activated_bumper_active to check the state of the activated bumper.

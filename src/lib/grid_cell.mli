@@ -47,3 +47,6 @@ type grid_cell = {
     position: pos; (* relative position of the cell in the grid *)
     cell_type: grid_cell_type; (* the type of grid cell *)
 }
+
+(* Function to converts the orientation to a string value *)
+val orientation_to_string : orientation -> string 
