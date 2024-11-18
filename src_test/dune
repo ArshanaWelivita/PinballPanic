@@ -1,0 +1,15 @@
+(test
+  (name pinball_tests)
+  (modules pinball_tests)
+  (libraries
+    core
+    ounit2
+    activated_bumper
+    bumper
+    grid_cell
+    grid
+    teleporter
+    tunnel
+    utils
+  )
+  )
