@@ -101,7 +101,7 @@ val convert_activated_to_regular_bumper : pos -> grid -> bool
    - ball direction (direction)
    Returns randomly generated next grid object orientation (orientation).
 *)
-val orientation_for_direction : direction -> orientation
+val orientation_for_direction : (*direction ->*) unit -> orientation
 
 (* Function to get a list of positions ahead of the current path of the ball which can be used to randomly select the position
    where the next grid object is placed.
@@ -127,7 +127,7 @@ val collect_positions_along_path : grid -> pos -> direction -> int -> pos list
    Returns true/false.
    Directly modifies the grid in the function and returns true if it was able to place a grid object and false if not.
 *)
-val place_random_grid_element_along_path : grid -> pos -> direction -> int -> orientation -> grid_cell_type -> bool
+val place_random_grid_element_along_path : grid -> pos -> direction -> int -> orientation -> grid_cell_type -> unit
 
 (* Function that simulates the ball's path through the grid and places the grid objects dynamically based on the ball's position. 
 This function is recursive so it will continue simulating the ball's path and placing the grid objects until it either goes out of bounds 
@@ -147,7 +147,7 @@ change the affect the accuracy of the grid generated.
    Returns the exit position of the ball from the grid. This position could either be a valid exit position or be invalid to represent
    that this simulation was unsuccessful.
 *)
-val simulate_ball_path : grid -> pos -> direction -> int -> int -> orientation -> int -> (pos * direction) Set.Poly.t -> pos
+val simulate_ball_path : grid -> pos -> direction -> int -> int -> orientation -> int -> (pos * direction) Set.Poly.t -> grid_cell_type list -> pos * direction 
 
 (* Function that takes the level from the pinball_panic.ml file and then creates the specific grid for that level using the 
    specified settings in the get_level_settings function. This function is also recursive and will continue generating grids until it 
@@ -163,4 +163,6 @@ val simulate_ball_path : grid -> pos -> direction -> int -> int -> orientation -
    all the requirements for that specific level. This grid will then be given the the pinball_panic.ml game and then it will generate the grid to be printed
    on the command line.
 *)
-val generate_grid : int -> grid 
+val generate_grid : int -> grid * pos * pos * direction 
+
+val orientation_for_tunnel_direction :(*(direction: direction)*) unit -> Tunnel.orientationTunnel
