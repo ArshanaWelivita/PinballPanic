@@ -2,9 +2,9 @@
 
 (package
  (name pinball_server)
- (synopsis "A web app for playing the classical game Sudoku")
+ (synopsis "A web app for playing our game PinballPanic")
  (description
-  "A web app for playing the classical game Sudoku. Features include a Hint system and a highscore list")
+  "A web app for playing our game PinballPanic. The deeper you go into the game, the harder the levels get.")
  (depends
   (core
    (>= 0.16.2))

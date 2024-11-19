@@ -2,17 +2,12 @@ open Grid
 open Grid_cell
 open Lwt.Syntax
 
-(* let grid_cell id =
-  <td class="cell <%s if String.(id = "00") then "selected" else ""%>" id="<%s id %>" onclick="changeSelectedCell(this)"/> *)
+let grid_cell id =
+  <td class="cell <%s if String.(id = "00") then "selected" else ""%>" id="<%s id %>" onclick="changeSelectedCell(this)"/>
 
 let table_row id = 
   <tr id="<%s id %>">
-    <%s! 
-    List.range 0 9
-    |> List.map ~f: string_of_int 
-    |> List.map ~f: ((^) id)
-    |> List.map ~f: single_cell 
-    |> List.fold ~init: "" ~f: (^) %>
+    (* TODO: Implement *)
   </tr>
 
 let render _ =
@@ -40,11 +35,7 @@ let render _ =
     <div class="container">
       <div class="grid">
         <table class="pinballgrid">
-        <%s! 
-        List.range 0 (grid_size + 2)
-          |> List.map ~f: string_of_int 
-          |> List.map ~f: table_row 
-          |> List.fold ~init: "" ~f: (^) %>
+        (* TODO: create grid *)
         </table>
       </div>
       <div class="right-container">

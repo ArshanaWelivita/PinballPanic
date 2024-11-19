@@ -1,4 +1,4 @@
-open Ounit2
+open OUnit2
 
 let test _ =
   assert_equal true true
