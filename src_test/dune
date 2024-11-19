@@ -1,3 +1,19 @@
+(library
+  (name bumper_tests)
+  (modules bumper_tests)
+  (libraries
+    bumper
+    ounit2
+    core))
+
+(library
+  (name tunnel_tests)
+  (modules tunnel_tests)
+  (libraries
+    tunnel
+    ounit2
+    core))
+
 (test
   (name pinball_tests)
   (modules pinball_tests)
@@ -10,6 +26,7 @@
     grid
     teleporter
     tunnel
-    utils
+    bumper_tests
+    tunnel_tests
   )
   )

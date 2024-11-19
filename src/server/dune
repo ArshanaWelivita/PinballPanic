@@ -2,7 +2,7 @@
  (name pinball_server)
  (public_name "Pinball Panic server")
  (package pinball_server)
- (libraries dream core bumper grid)
+ (libraries dream core bumper grid grid_cell teleporter tunnel activated_bumper)
  (preprocess
   (pps ppx_jane lwt_ppx)))
 
