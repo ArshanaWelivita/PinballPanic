@@ -115,3 +115,21 @@ let bumper_direction_to_direction (dir: Bumper.direction) : direction =
   | Bumper.Down -> Down
   | Bumper.Left -> Left
   | Bumper.Right -> Right
+
+let to_string (cell: grid_cell) : string = match cell.cell_type with 
+  | Entry _ -> "Entry"
+  | Exit _ -> "Exit"
+  | Empty -> "Empty" 
+  | InBallPath -> "InBallPath"
+  | Bumper _ -> "Bumper"
+  | Tunnel _ -> "Tunnel"
+  | Teleporter -> "Teleporter"
+  | ActivatedBumper _ -> "ActivatedBumper"
+  | BumperLevelMarker -> "BumperLevelMarker"
+  | TunnelLevelMarker -> "TunnelLevelMarker"
+  | ActivatedBumperLevelMarker -> "ActivatedBumperLevelMarker"
+
+let get_bumper_orientation_string (b: grid_cell_type) : string = match b with 
+  | Bumper {orientation = DownRight; _} -> "⟍"
+  | Bumper {orientation = UpRight; _} -> "⟋"
+  | _ -> failwith "Error: bumper can only have orientation DownRight or UpRight."

@@ -74,3 +74,7 @@ val orientation_to_bumper_orientation : orientation -> Bumper.orientation
 val orientation_to_activated_bumper_orientation : orientation -> Activated_bumper.orientation
 
 val bumper_direction_to_direction : Bumper.direction -> direction 
+
+val to_string : grid_cell -> string
+
+val get_bumper_orientation_string : grid_cell_type -> string
