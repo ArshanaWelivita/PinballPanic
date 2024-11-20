@@ -20,5 +20,5 @@ type direction =
   through its position once. Otherwise returns false.
   It also correctly updates the is_active type which is used in grid.ml to check if the bumper is active or not.
 *)
-val is_it_active : pos -> pos -> bool 
+(* val is_it_active : pos -> pos -> bool  *)
 

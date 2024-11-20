@@ -49,9 +49,9 @@ let compare_orientation (o1: orientation) (o2: orientation) : bool =
   String.compare (orientation_to_string o1) (orientation_to_string o2) = 0
 
 
-let is_activated_bumper_active (ball_pos: pos) (bumper_pos: pos) : bool = 
+(* let is_activated_bumper_active (ball_pos: pos) (bumper_pos: pos) : bool = 
   false (* will implement this later when doing the activated bumper feature in week 3 of implementation *)
-  
+   *)
 let string_of_orientation (orientation : orientation) : string =
   match orientation with
   | UpRight -> "UpRight"
@@ -111,8 +111,8 @@ let place_initial_grid_object (grid: grid) (entry_pos: pos) (direction: directio
   in
   (grid_cell_object_pos, orientation) 
 
-let convert_activated_to_regular_bumper (bumper_pos: pos) (grid: grid) : bool =
-  false  (* implement this later in week 3 when we do activated bumper stuff *)
+(* let convert_activated_to_regular_bumper (bumper_pos: pos) (grid: grid) : bool =
+  false  implement this later in week 3 when we do activated bumper stuff *)
 
 let orientation_for_direction (*(direction: direction)*) () : orientation =
   (* match direction with
@@ -214,6 +214,8 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction)
             (* | ActivatedBumper { orientation; _ } -> let direction_map = Activated_bumper.generate_directions orientation in
                                                     Map.find_exn direction_map (direction_to_bumper_direction direction)
                                                     |> bumper_direction_to_direction *)
+            | Entry _ -> direction
+            | Exit _ -> direction                                        
             | _ -> failwith "Grid cell type doesn't have directions."
           in 
           (* printf "New direction after bounce: %s\n" (string_of_direction new_direction); *)

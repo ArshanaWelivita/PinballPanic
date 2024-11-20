@@ -63,7 +63,7 @@ val compare_orientation : orientation -> orientation -> bool
    Calls the is_it_active function in activated_bumper.mli and checks if the positions are the same. 
    Checks the is_active boolean type in activated_bumper.mli bumper directly and returns its boolean value.
 *)
-val is_activated_bumper_active : pos -> pos -> bool 
+(* val is_activated_bumper_active : pos -> pos -> bool  *)
 
 (* Function to convert the orientation of a grid object to string.
    - orientation of grid object (orientation)
@@ -95,7 +95,7 @@ val place_initial_grid_object : grid -> pos -> direction -> int -> grid_cell_typ
    If the activated bumper is active, changes the bumper to an ordinary one, modifies the grid and returns true as the bumper 
    at that position is now ordinary. Otherwise, it returns false as the activated bumper is still not activated. 
 *)
-val convert_activated_to_regular_bumper : pos -> grid -> bool 
+(* val convert_activated_to_regular_bumper : pos -> grid -> bool  *)
 
 (* Function that given the direction the ball is moving in, it randomly selects the orientation of the next grid object.
    - ball direction (direction)
