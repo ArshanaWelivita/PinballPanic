@@ -1,8 +1,36 @@
+(library
+ (name bumper)
+ (modules bumper)
+ (libraries core)
+ (preprocess
+  (pps bisect_ppx)))
+
+(library
+ (name tunnel)
+ (modules tunnel)
+ (libraries core)
+ (preprocess
+  (pps bisect_ppx)))
+
+(library
+ (name grid_cell)
+ (modules grid_cell)
+ (libraries core)
+ (preprocess
+  (pps bisect_ppx)))
+
+(library
+ (name grid)
+ (modules grid)
+ (libraries core)
+ (preprocess
+  (pps bisect_ppx)))
+
 (executable
  (name pinball_server)
  (public_name "Pinball Panic server")
  (package pinball_server)
- (libraries dream core bumper grid grid_cell teleporter tunnel activated_bumper)
+ (libraries dream core bumper grid grid_cell)
  (preprocess
   (pps ppx_jane lwt_ppx)))
 

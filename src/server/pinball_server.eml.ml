@@ -12,19 +12,20 @@ let render _ =
       reset_grid();
     }
 
-    (* Listen to user input, and check if answer is correct *)
-    (* document.addEventListener('keydown', function(event) {
-      let coords = getSelectedCellCoords();
-      let row = parseInt(coords[0]);
-      let col = parseInt(coords[1]);
+    (* Add javascript timer here *)
 
-      if (isCorrect(row, col)) {level += 1;}
-      else {endGame(level, correct_answer);}
-    }) *)
+    (* Listen to user input, and check if answer is correct *)
+
     </script> *)
   </head>
 
   <body>
+    (* Div box for game name *)
+    <div class="game name">
+      <%s! "Pinball Panic" %>
+    </div>
+
+    (* Div box for the grid *)
     <div class="container">
       <div class="grid">
         <table class="pinballgrid">
@@ -35,9 +36,13 @@ let render _ =
         <div class="level-container">
           <%s! "Level:" level %>
     </div>
+
+    (* Button to start a new game *)
     <div class="new-game-container">
       <%s! new_game_area () %>
     </div> 
+
+    (* Form to handle user inputted answer *)
     </div>
     <form>
       <label for="x coordinate">x:</label><br>
@@ -54,16 +59,12 @@ let render _ =
 let parse_generate_level _ =
   (* TODO: function displays grid, disappears after 3 seconds and replaces with empty grid *)
 
-let parse_input _ =
-  (* TODO: use input parsing from pinball_panic.ml as inspiration *)
-
-
 let () =
   Dream.run
   @@ Dream.logger
   @@ Dream.router
      [
+       (* TODO: handle different phases of the game *)
        Dream.get "/start" (fun _ -> Dream.html (render ()));
        get_api "generate level" parse_generate_level;
-       get_api "input" parse_input;
      ]
