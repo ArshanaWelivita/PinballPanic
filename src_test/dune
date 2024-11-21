@@ -2,6 +2,7 @@
   (name bumper_tests)
   (modules bumper_tests)
   (libraries
+    grid
     bumper
     ounit2
     core))
@@ -10,6 +11,7 @@
   (name tunnel_tests)
   (modules tunnel_tests)
   (libraries
+    grid
     tunnel
     ounit2
     core))
