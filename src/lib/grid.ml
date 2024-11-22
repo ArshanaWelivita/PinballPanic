@@ -318,3 +318,68 @@ let rec generate_grid (level: int) : grid * pos * pos * direction =
     else
       generate_grid level
 
+let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: direction) (grid_size : int) : pos * direction =
+  (* Check if the ball is out of bounds *)
+  if out_of_bounds_check pos grid_size then
+    begin
+      (* printf "Out of bounds at position %d %d, returning.\n" (fst pos) (snd pos); *)
+      (pos, direction)  (* Ball has exited the grid *)
+    end
+  else
+      begin
+        (* Check if the current cell contains an object *)
+        let (row, col) = pos in
+        let current_grid_cell = grid.(row).(col) in 
+        if not (compare_grid_cell_type current_grid_cell Empty) then
+          begin
+            (* Bounce off the grid object *)
+
+            (* Determine new direction based on orientation *)
+            let new_direction = match current_grid_cell.cell_type with 
+              | Tunnel { orientation; _ } -> let direction_map = Tunnel.generate_directions orientation in 
+                                             Map.find_exn direction_map (direction_to_tunnel_direction direction)
+                                             |> tunnel_direction_to_direction
+              | Bumper { orientation; _ } -> let direction_map = Bumper.generate_directions orientation in
+                                             Map.find_exn direction_map (direction_to_bumper_direction direction)
+                                             |> bumper_direction_to_direction
+              (* | ActivatedBumper { orientation; _ } -> let direction_map = Activated_bumper.generate_directions orientation in
+                                                      Map.find_exn direction_map (direction_to_bumper_direction direction)
+                                                      |> bumper_direction_to_direction *)
+              | Entry _ -> direction
+              | Exit _ -> direction                                        
+              | _ -> failwith "Grid cell type doesn't have directions."
+            in 
+            (* printf "New direction after bounce: %s\n" (string_of_direction new_direction); *)
+  
+            let next_pos = move pos new_direction in
+  
+            (* Check if bumpers_left is 0: Follow the path without placing new bumpers *)
+            begin
+              (* printf "No bumpers left; following path until exit.\n"; *)
+                if out_of_bounds_check next_pos grid_size then
+                  begin
+                    (* printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos);
+                    printf "end pos: %d %d" (fst pos) (snd pos); *)
+                    (pos, direction)
+                  end
+                else
+                  (* Continue path simulation in the new direction without placing a new bumper *)
+                  simulate_ball_path_post_generation grid next_pos new_direction grid_size 
+            end
+          end
+        else
+          begin
+          (* Move in the current direction if no object is encountered *)
+            let next_pos = move pos direction in
+            if out_of_bounds_check next_pos grid_size then
+              begin
+                (* printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos); *)
+                (pos, direction)
+              end
+            else
+              begin
+                (* printf "No object encountered, continuing straight from position %d %d\n" row col; *)
+                simulate_ball_path_post_generation grid next_pos direction grid_size
+              end
+          end
+      end

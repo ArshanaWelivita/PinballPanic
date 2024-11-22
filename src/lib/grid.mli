@@ -159,10 +159,21 @@ val simulate_ball_path : grid -> pos -> direction -> int -> int -> orientation -
    A grid is not valid if the exit position returned by the simulate_ball_path function is invalid. Similarly, if the number of grid objects 
    placed in the grid does not meet the minimum required for that level, the grid is not valid. 
    - level (int)
-   Returns a viable, valid pinball panic game grid that doesn't cause loops, no infinite bounces, has a valid exit position and meets
+   Returns a viable, valid pinball panic game grid that doesn't cause loops, has no infinite bounces, has a valid exit position and meets
    all the requirements for that specific level. This grid will then be given the the pinball_panic.ml game and then it will generate the grid to be printed
    on the command line.
 *)
-val generate_grid : int -> grid * pos * pos * direction 
+val generate_grid : int -> grid * pos * pos * direction
+
+(* Function that simulates the ball path post-grid generation. Used for testing purposes. 
+   Inputs:
+   - Valid pinball panic game grid that doesn't cause loops, has no infinite bounces, and has a valid exit position
+   - Starting position of the ball
+   - Starting direction of the ball
+   - Grid size
+   Returns:
+   - Tuple of ending position and direction of the ball
+*)
+val simulate_ball_path_post_generation : grid -> pos -> direction -> int -> pos * direction
 
 val orientation_for_tunnel_direction :(*(direction: direction)*) unit -> Tunnel.orientationTunnel
