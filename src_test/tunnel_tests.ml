@@ -8,7 +8,7 @@ let tunnel_test_passthrough _ =
       ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
   
   grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
-  grid.(1).(2) <- {position = (1, 2); cell_type = Tunnel {direction = Tunnel.Down; orientation = Tunnel.Vertical}};
+  grid.(1).(2) <- {position = (1, 2); cell_type = Tunnel {direction = Down; orientation = Vertical}};
 
   let answer = (4, 2) in
 
@@ -22,7 +22,7 @@ let tunnel_test_bounce_off _ =
       ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
   
   grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
-  grid.(1).(2) <- {position = (1, 2); cell_type = Tunnel {direction = Tunnel.Down; orientation = Tunnel.Horizontal}};
+  grid.(1).(2) <- {position = (1, 2); cell_type = Tunnel {direction = Down; orientation = Horizontal}};
 
   let answer = (0, 2) in
 

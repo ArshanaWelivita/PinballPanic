@@ -127,7 +127,7 @@ val collect_positions_along_path : grid -> pos -> direction -> int -> pos list
    Returns true/false.
    Directly modifies the grid in the function and returns true if it was able to place a grid object and false if not.
 *)
-val place_random_grid_element_along_path : grid -> pos -> direction -> int -> orientation -> grid_cell_type -> unit
+val place_random_grid_element_along_path : grid -> pos -> direction -> int -> orientation -> grid_cell_type -> bool
 
 (* Function that simulates the ball's path through the grid and places the grid objects dynamically based on the ball's position. 
 This function is recursive so it will continue simulating the ball's path and placing the grid objects until it either goes out of bounds 

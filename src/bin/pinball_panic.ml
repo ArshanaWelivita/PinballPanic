@@ -2,7 +2,7 @@ open Core
 open Grid_cell
 
 (* let round_num = ref 1 *)
-let round_num = 3
+let round_num = 10
 
 let arrow_of_direction (initial_direction : direction) : string = match initial_direction with 
   | Up -> "↑🟢"

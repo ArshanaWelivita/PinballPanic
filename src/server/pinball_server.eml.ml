@@ -11,8 +11,9 @@ let render_grid (grid : Grid.grid) : string =
       | Empty -> "<td class='empty'>*</td>"
       | Bumper { direction = _; orientation } ->
           let symbol = match orientation with
-            | Bumper.DownRight -> "╲"
-            | Bumper.UpRight -> "╱"
+            | DownRight -> "╲"
+            | UpRight -> "╱"
+            | _ -> failwith "Bumper can only be downright or upright in orientation."
           in
           "<td class='bumper'>" ^ symbol ^ "</td>"
       | Entry { direction = Down } -> "<td class='entry'>o</td>"
@@ -30,7 +31,7 @@ let render_grid (grid : Grid.grid) : string =
 let generate_level _ =
   let grid = Array.init 5 ~f:(fun x -> Array.init 5 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
   grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
-  grid.(2).(2) <- {position = (2, 2); cell_type = Bumper {direction = Bumper.Down; orientation = Bumper.UpRight}};
+  grid.(2).(2) <- {position = (2, 2); cell_type = Bumper {direction = Down; orientation = UpRight}};
   (* let grid = Grid.create_test_grid () in *)
   let grid_html = render_grid grid in
   ("<div id='grid-container'>" ^ grid_html ^ "</div>"

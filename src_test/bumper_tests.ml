@@ -8,7 +8,7 @@ let simple_bumper_test_one _ =
       ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
   
   grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
-  grid.(1).(2) <- {position = (1, 2); cell_type = Bumper {direction = Bumper.Down; orientation = Bumper.DownRight}};
+  grid.(1).(2) <- {position = (1, 2); cell_type = Bumper {direction = Down; orientation = DownRight}};
 
   let answer = (1, 4) in
 
@@ -22,7 +22,7 @@ let simple_bumper_test_two _ =
       ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
   
   grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
-  grid.(2).(2) <- {position = (2, 2); cell_type = Bumper {direction = Bumper.Down; orientation = Bumper.UpRight}};
+  grid.(2).(2) <- {position = (2, 2); cell_type = Bumper {direction = Down; orientation = UpRight}};
 
   let answer = (2, 0) in
 

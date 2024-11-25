@@ -11,14 +11,22 @@ type pos = int * int
 let level_bounce_settings = [
   (1, (3, 1, 1, [BumperLevelMarker]));
   (2, (4, 1, 2, [BumperLevelMarker]));
-  (3, (4, 2, 3, [BumperLevelMarker; TunnelLevelMarker]));
+  (3, (4, 2, 3, [BumperLevelMarker]));
+  (4, (4, 3, 4, [BumperLevelMarker]));
+  (5, (5, 4, 5, [BumperLevelMarker]));
+  (6, (5, 5, 6, [BumperLevelMarker]));
+  (7, (6, 6, 8, [BumperLevelMarker]));
+  (8, (7, 7, 9, [BumperLevelMarker]));
+  (9, (7, 8, 10, [BumperLevelMarker]));
+  (10, (8, 9, 12, [BumperLevelMarker]));
+  (* (3, (4, 2, 3, [BumperLevelMarker; TunnelLevelMarker]));
   (4, (4, 3, 4, [BumperLevelMarker; TunnelLevelMarker]));
   (5, (5, 4, 5, [BumperLevelMarker; Teleporter]));
   (6, (5, 5, 6, [BumperLevelMarker; Teleporter]));
   (7, (6, 6, 8, [BumperLevelMarker; ActivatedBumperLevelMarker]));
   (8, (7, 7, 9, [BumperLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]));
   (9, (7, 8, 10, [BumperLevelMarker; Teleporter; ActivatedBumperLevelMarker]));
-  (10, (8, 9, 12, [BumperLevelMarker; Teleporter; TunnelLevelMarker; ActivatedBumperLevelMarker]))
+  (10, (8, 9, 12, [BumperLevelMarker; Teleporter; TunnelLevelMarker; ActivatedBumperLevelMarker])) *)
 ]
 
 let get_level_settings (level: int) : int * int * int * (grid_cell_type list) =
@@ -38,7 +46,7 @@ let get_cell  (grid: grid) (row: int) (col: int) : grid_cell =
   grid.(row).(col)
 
 let move (row, col : pos) (direction: direction) : pos =
-  match direction with
+  match direction with 
   | Up -> (row - 1, col)
   | Down -> (row + 1, col)
   | Left -> (row, col - 1)
@@ -157,32 +165,40 @@ let rec collect_positions_along_path (grid: grid) (start_pos: pos) (direction: d
       | TunnelLevelMarker -> failwith "The grid needs to be regenerated as this grid object marker needs to be replaced with the actual grid object."
       | ActivatedBumperLevelMarker -> failwith "The grid needs to be regenerated as this grid object marker needs to be replaced with the actual grid object." *)
 
-let place_random_grid_element_along_path (grid: grid) (start_pos: pos) (direction: direction) (grid_size: int) (orientation: orientation) (new_grid_cell_type: grid_cell_type) : unit =
+let rec place_random_grid_element_along_path (grid: grid) (start_pos: pos) (direction: direction) (grid_size: int) (orientation: orientation) (new_grid_cell_type: grid_cell_type) : bool =
   let potential_positions = collect_positions_along_path grid start_pos direction grid_size in
-  match List.random_element potential_positions with
-  | Some (row, col) -> 
-    let updated_cell = 
-      match new_grid_cell_type with
-      | Bumper _ -> 
-                    Bumper {
-                      orientation = orientation; 
-                      direction = direction
-                    }
-      | Tunnel _ -> Tunnel {
-                      orientation = orientation; 
-                      direction = direction
-                    }
-      | ActivatedBumper _ -> ActivatedBumper {
-                      orientation = orientation; 
-                      direction = direction;
-                      is_active = true
-                    } 
-      | Teleporter -> Teleporter
-      | _ -> failwith "Grid cell type is not defined can't be placed in the grid."
-    in
-    (* Place the updated cell in the grid *)
-    grid.(row).(col) <- {position = (row, col); cell_type = updated_cell}; (* Successfully placed the grid object in the grid *)
-  | None -> ()  (* No valid position found, so can't place anything in this path *)
+  match potential_positions with 
+    |[] -> false 
+    | _ -> let new_grid_object_pos = List.random_element_exn potential_positions in 
+          if compare_grid_cell_type grid.(fst new_grid_object_pos).(snd new_grid_object_pos) InBallPath then 
+            place_random_grid_element_along_path grid start_pos direction grid_size orientation new_grid_cell_type 
+          else begin
+            match new_grid_object_pos with
+              | (row, col) -> 
+                let updated_cell = 
+                  match new_grid_cell_type with
+                  | Bumper _ -> 
+                                Bumper {
+                                  orientation = orientation; 
+                                  direction = direction
+                                }
+                  | Tunnel _ -> Tunnel {
+                                  orientation = orientation; 
+                                  direction = direction
+                                }
+                  | ActivatedBumper _ -> ActivatedBumper {
+                                  orientation = orientation; 
+                                  direction = direction;
+                                  is_active = true
+                                } 
+                  | Teleporter -> Teleporter
+                  | _ -> failwith "Grid cell type is not defined can't be placed in the grid."
+                in
+                (* Place the updated cell in the grid *)
+                grid.(row).(col) <- {position = (row, col); cell_type = updated_cell}; (* Successfully placed the grid object in the grid *)
+              (* | _ -> ()  No valid position found, so can't place anything in this path *)
+                true
+            end
 
 let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction) 
   (objects_left: int) (grid_size: int) (orientation: orientation) (bounce_limit: int)
@@ -219,16 +235,16 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction)
           (* Determine new direction based on orientation *)
           let new_direction = match current_grid_cell.cell_type with 
             | Tunnel { orientation; _ } -> let direction_map = Tunnel.generate_directions (orientation_to_tunnel_orientation orientation) in 
-                                           Map.find_exn direction_map (direction_to_tunnel_direction direction)
-                                           |> tunnel_direction_to_direction
+                                            Map.find_exn direction_map (direction_to_tunnel_direction direction)
+                                            |> tunnel_direction_to_direction
             | Bumper { orientation; _ } -> let direction_map = Bumper.generate_directions (orientation_to_bumper_orientation orientation) in
-                                           Map.find_exn direction_map (direction_to_bumper_direction direction)
-                                           |> bumper_direction_to_direction
+                                            Map.find_exn direction_map (direction_to_bumper_direction direction)
+                                            |> bumper_direction_to_direction
+            | InBallPath -> direction
             (* | ActivatedBumper { orientation; _ } -> let direction_map = Activated_bumper.generate_directions orientation in
                                                     Map.find_exn direction_map (direction_to_bumper_direction direction)
                                                     |> bumper_direction_to_direction *)
-            | Entry _ -> direction
-            (* | Exit _ -> direction                                         *)
+            | Entry _ -> direction                                     
             | _ -> failwith "Grid cell type doesn't have directions."
           in 
           printf "New direction after bounce: %s\n" (string_of_direction new_direction);
@@ -262,130 +278,54 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction)
                 | _ -> failwith "Invalid grid object marker"
               in 
               let next_grid_object = get_initial_grid_cell_type next_grid_object_marker new_direction in 
-              place_random_grid_element_along_path grid next_pos new_direction grid_size next_orientation next_grid_object;
-              (* printf "Next bumper orientation: %s\n" (string_of_orientation next_orientation); *)
-
-              (* Continue path simulation in the new direction with one less bumper *)
-              simulate_ball_path grid next_pos new_direction (objects_left - 1) grid_size next_orientation (bounce_limit - 1) visited grid_object_types
-            end
-        end
-      else
-        begin
-        (* Move in the current direction if no bumper is encountered *)
-          let next_pos = move pos direction in
-          if out_of_bounds_check next_pos grid_size then
-            begin
-              printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos);
-              (pos, direction)
-            end
-          else
-            begin
-              printf "No bumper encountered, continuing straight from position %d %d\n" row col;
-              simulate_ball_path grid next_pos direction objects_left grid_size orientation bounce_limit visited grid_object_types
-            end
-        end
-    end
-
-    (* let rec simulate_ball_path 
-    (grid: grid) (pos: pos) (direction: direction) 
-    (objects_left: int) (grid_size: int) (orientation: orientation) 
-    (bounce_limit: int) (visited: (pos * direction) Set.Poly.t) 
-    (grid_object_types : grid_cell_type list) : pos * direction =
-  
-  (* Print the current position of the ball *)
-  printf "Ball position: %d %d | Direction: %s | Objects left: %d | Bounce limit: %d\n"
-    (fst pos) (snd pos) (string_of_direction direction) objects_left bounce_limit;
-
-  (* Check if the ball is out of bounds *)
-  if out_of_bounds_check pos grid_size then
-    begin
-      printf "Out of bounds at position %d %d, returning.\n" (fst pos) (snd pos);
-      (pos, direction)  (* Ball has exited the grid *)
-    end
-  else if objects_left = -1 then  
-    (pos, direction)  (* Stopping if grid objects are exhausted *)
-  else if Set.mem visited (pos, direction) then
-    begin
-      printf "Loop detected at position %d %d, stopping.\n" (fst pos) (snd pos);
-      ((-1, -1), Down) (* Stop if a loop is detected *)
-    end
-  else
-    begin
-      let visited = Set.add visited (pos, direction) in
-
-      (* Check if the current cell contains a grid object *)
-      let (row, col) = pos in
-      let current_grid_cell = grid.(row).(col) in 
-      
-      (* If there's an object to interact with *)
-      if not (compare_grid_cell_type current_grid_cell Empty) && 
-         not (compare_grid_cell_type current_grid_cell InBallPath) then
-        begin
-          (* Bounce off the grid object *)
-          printf "Grid Object: %s encountered at %d %d, orientation: %s\n" 
-            (to_string current_grid_cell) row col (string_of_orientation orientation);
-
-          (* Determine new direction based on grid object type *)
-          let new_direction = match current_grid_cell.cell_type with 
-            | Tunnel { orientation; _ } -> 
-              let direction_map = Tunnel.generate_directions (orientation_to_tunnel_orientation orientation) in 
-              Map.find_exn direction_map (direction_to_tunnel_direction direction)
-              |> tunnel_direction_to_direction
-            | Bumper { orientation; _ } -> 
-              let direction_map = Bumper.generate_directions (orientation_to_bumper_orientation orientation) in
-              Map.find_exn direction_map (direction_to_bumper_direction direction)
-              |> bumper_direction_to_direction
-            | Entry _ -> direction  (* Entry has no effect on direction *)
-            | _ -> failwith "Grid cell type doesn't have directions."
-          in 
-          
-          printf "New direction after bounce: %s\n" (string_of_direction new_direction);
-          let next_pos = move pos new_direction in
-
-          (* If no grid objects are left, just continue moving in the current direction *)
-          if objects_left = 0 then
-            begin
-              if out_of_bounds_check next_pos grid_size then
-                begin
-                  printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos);
-                  (pos, direction)
-                end
+              if not (place_random_grid_element_along_path grid next_pos new_direction grid_size next_orientation next_grid_object) 
+              then ((-1, -1), Down)
               else
-                (* Continue simulation without placing new grid object *)
-                simulate_ball_path grid next_pos new_direction 0 grid_size orientation bounce_limit visited grid_object_types
-            end
-          else
-            begin
-              (* Place a grid object if bumpers or tunnels are left *)
-              let next_grid_object_marker = List.random_element_exn grid_object_types in 
-              let next_orientation = match next_grid_object_marker with 
-                | BumperLevelMarker -> orientation_for_direction () 
-                | TunnelLevelMarker -> orientation_for_tunnel_direction ()
-                | _ -> failwith "Invalid grid object marker"
-              in 
-              let next_grid_object = get_initial_grid_cell_type next_grid_object_marker new_direction in 
-              place_random_grid_element_along_path grid next_pos new_direction grid_size next_orientation next_grid_object;
-              
-              (* Continue simulation after placing a new object, decrement objects_left *)
-              simulate_ball_path grid next_pos new_direction (objects_left - 1) grid_size next_orientation (bounce_limit - 1) visited grid_object_types
+              (* printf "Next bumper orientation: %s\n" (string_of_orientation next_orientation); *)
+              (* Continue path simulation in the new direction with one less bumper *)
+                simulate_ball_path grid next_pos new_direction (objects_left - 1) grid_size next_orientation (bounce_limit - 1) visited grid_object_types
             end
         end
       else
         begin
-          (* No grid object encountered, just move in the current direction *)
-          let next_pos = move pos direction in
-          if out_of_bounds_check next_pos grid_size then
+          (* if not (is_within_actual_grid (fst pos) (snd pos) grid_size) then 
             begin
-              printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos);
-              (pos, direction)
+            printf "Next position %d %d is out of bounds, stopping.\n" (fst pos) (snd pos);
+            (pos, direction);
             end
-          else
-            begin
-              printf "No bumper encountered, continuing straight from position %d %d\n" row col;
-              simulate_ball_path grid next_pos direction objects_left grid_size orientation bounce_limit visited grid_object_types
-            end
+          else  *)
+          (* Move in the current direction if no bumper is encountered *)
+            grid.(fst pos).(snd pos) <- {position = pos; cell_type = InBallPath };
+            let next_pos = move pos direction in
+            if out_of_bounds_check next_pos grid_size then
+              begin
+                printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos);
+                (pos, direction)
+              end
+            else
+              begin
+                printf "No bumper encountered, continuing straight from position %d %d\n" row col;
+                simulate_ball_path grid next_pos direction objects_left grid_size orientation bounce_limit visited grid_object_types
+              end
         end
-    end *)
+    end
+
+let mark_in_ball_path (grid: grid) (entry_pos: pos) (direction: direction) (first_object_pos: pos) (grid_size: int) : unit =
+  let rec traverse current_pos current_direction =
+    if compare_pos current_pos first_object_pos || out_of_bounds_check current_pos grid_size then
+      () (* Stop when we reach the first object or go out of bounds *)
+    else
+      begin
+      (* Mark the current cell as InBallPath *)
+      grid.(fst current_pos).(snd current_pos) <- 
+      { (grid.(fst current_pos).(snd current_pos)) with cell_type = InBallPath };
+
+      (* Move to the next position *)
+      let next_pos = move current_pos current_direction in
+      traverse next_pos current_direction
+      end
+  in
+  traverse (move entry_pos direction) direction
 
 let rec generate_grid (level: int) : grid * pos * pos * direction =
   let (grid_size, min_objects, max_objects, grid_object_types) = get_level_settings level in
@@ -409,16 +349,20 @@ let rec generate_grid (level: int) : grid * pos * pos * direction =
   (* let initial_grid_cell_type = get_initial_grid_cell_type initial_grid_object_marker initial_direction in *)
   let (first_grid_object_pos, first_orientation) = place_initial_grid_object grid entry_pos initial_direction grid_size initial_grid_object_marker in
 
+  mark_in_ball_path grid entry_pos initial_direction first_grid_object_pos grid_size;
+
   let bounce_limit = 10 in
   let visited = Set.Poly.empty in
 
   (* Run the simulation to place grid objects along the ball's path and then get its exit position and direction based off the generated ball path *)
   let (exit_pos, exit_direction) = simulate_ball_path grid first_grid_object_pos initial_direction (object_count - 1) grid_size first_orientation bounce_limit visited grid_object_types in
-  grid.(fst exit_pos).(snd exit_pos) <- { position = exit_pos; cell_type = Exit {direction = exit_direction} };
-
+  
   (* If loop detected, regenerates grid for that level *)
-  if compare_pos exit_pos (-1, -1) then generate_grid level 
-  else 
+  if compare_pos exit_pos (-1, -1) || out_of_bounds_check exit_pos grid_size
+  then generate_grid level 
+  else begin 
+    grid.(fst exit_pos).(snd exit_pos) <- { position = exit_pos; cell_type = Exit {direction = exit_direction} };
+
     (* Count the grid objects placed on the grid *)
     let objects_placed =
       Array.fold grid ~init:0 ~f:(fun acc row ->
@@ -431,10 +375,11 @@ let rec generate_grid (level: int) : grid * pos * pos * direction =
 
     (* Check if the number of grid objects placed meets the minimum requirement *)
     if objects_placed = object_count then
-       (* Return the viable grid and the ball's properties (entry direction and position, and exit position) *)
+        (* Return the viable grid and the ball's properties (entry direction and position, and exit position) *)
       (grid, entry_pos, exit_pos, initial_direction) 
     else
       generate_grid level
+  end
 
 let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: direction) (grid_size : int) : pos * direction =
   (* Check if the ball is out of bounds *)
@@ -455,11 +400,11 @@ let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: 
             (* Determine new direction based on orientation *)
             let new_direction = match current_grid_cell.cell_type with 
               | Tunnel { orientation; _ } -> let direction_map = Tunnel.generate_directions (orientation_to_tunnel_orientation orientation) in 
-                                             Map.find_exn direction_map (direction_to_tunnel_direction direction)
-                                             |> tunnel_direction_to_direction
+                                              Map.find_exn direction_map (direction_to_tunnel_direction direction)
+                                              |> tunnel_direction_to_direction
               | Bumper { orientation; _ } -> let direction_map = Bumper.generate_directions (orientation_to_bumper_orientation orientation) in
-                                             Map.find_exn direction_map (direction_to_bumper_direction direction)
-                                             |> bumper_direction_to_direction
+                                              Map.find_exn direction_map (direction_to_bumper_direction direction)
+                                              |> bumper_direction_to_direction
               (* | ActivatedBumper { orientation; _ } -> let direction_map = Activated_bumper.generate_directions orientation in
                                                       Map.find_exn direction_map (direction_to_bumper_direction direction)
                                                       |> bumper_direction_to_direction *)
@@ -500,4 +445,4 @@ let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: 
                 simulate_ball_path_post_generation grid next_pos direction grid_size
               end
           end
-      end
+      end 
