@@ -1,70 +1,82 @@
-open Grid
+open Core
 open Grid_cell
-open Lwt.Syntax
 
 
-let render _ =
-  <html>
-  <head>
-    (* <script>
-    let level_num = 1;
-    function new_level {
-      reset_grid();
-    }
+(* Render the HTML grid based on a grid data structure *)
+let render_grid (grid : Grid.grid) : string =
+  (* Convert a row to an HTML string *)
+  let row_to_html (row : grid_cell array) =
+    Array.map row ~f:(fun cell ->
+      match cell.cell_type with
+      | Empty -> "<td class='empty'>*</td>"
+      | Bumper { direction = _; orientation } ->
+          let symbol = match orientation with
+            | Bumper.DownRight -> "╲"
+            | Bumper.UpRight -> "╱"
+          in
+          "<td class='bumper'>" ^ symbol ^ "</td>"
+      | Entry { direction = Down } -> "<td class='entry'>o</td>"
+      | _ -> "<td class='unknown'>?</td>"
+    )
+    |> Array.to_list
+    |> String.concat
+  in
+  (* Convert the entire grid to an HTML table *)
+  Array.map grid ~f:(fun row -> "<tr>" ^ row_to_html row ^ "</tr>")
+  |> Array.to_list
+  |> String.concat
 
-    (* Add javascript timer here *)
+(* Generate new level and return it as a string *)
+let generate_level _ =
+  let grid = Array.init 5 ~f:(fun x -> Array.init 5 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
+  grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
+  grid.(2).(2) <- {position = (2, 2); cell_type = Bumper {direction = Bumper.Down; orientation = Bumper.UpRight}};
+  (* let grid = Grid.create_test_grid () in *)
+  let grid_html = render_grid grid in
+  ("<div id='grid-container'>" ^ grid_html ^ "</div>"
+    ^ "<script>setTimeout(function() { document.getElementById('grid-container').innerHTML = ''; }, 3000);</script>")
 
-    (* Listen to user input, and check if answer is correct *)
+(* Main page render *)
+let render_main_page () : string =
+    {|
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Pinball Panic</title>
+        <style>
+          /* styles for the grid and containers */
+          .pinballgrid td { border: 1px solid black; width: 30px; height: 30px; text-align: center; }
+          .empty { background-color: white; }
+          .bumper { background-color: yellow; }
+        </style>
+      </head>
+      
+      <body>
+        <h1>Pinball Panic</h1>
+        <div id="game-area">
+          <!-- Placeholder for grid -->
+          <div id="grid-container"></div>
+        </div>
+        <button onclick="startNewLevel()">Start New Level</button>
+        <script>
+          function startNewLevel() {
+            fetch('/generate-level')
+              .then(response => response.text())
+              .then(html => {
+                document.getElementById('grid-container').innerHTML = html;
+              });
+          }
+        </script>
+      </body>
+      </html>
+    |}
 
-    </script> *)
-  </head>
-
-  <body>
-    (* Div box for game name *)
-    <div class="game name">
-      <%s! "Pinball Panic" %>
-    </div>
-
-    (* Div box for the grid *)
-    <div class="container">
-      <div class="grid">
-        <table class="pinballgrid">
-        (* TODO: display grid *)
-        </table>
-      </div>
-      <div class="right-container">
-        <div class="level-container">
-          <%s! "Level:" level %>
-    </div>
-
-    (* Button to start a new game *)
-    <div class="new-game-container">
-      <%s! new_game_area () %>
-    </div> 
-
-    (* Form to handle user inputted answer *)
-    </div>
-    <form>
-      <label for="x coordinate">x:</label><br>
-      <input type="text" id="x" name="x"><br>
-      <label for="y coordinate">y:</label><br>
-      <input type="text" id="x" name="x">
-    </form>
-    </div>
-
-  </body>
-
-  </html>
-
-let parse_generate_level _ =
-  (* TODO: function displays grid, disappears after 3 seconds and replaces with empty grid *)
-
+(* Dream Routes *)
 let () =
   Dream.run
   @@ Dream.logger
   @@ Dream.router
-     [
-       (* TODO: handle different phases of the game *)
-       Dream.get "/start" (fun _ -> Dream.html (render ()));
-       get_api "generate level" parse_generate_level;
-     ]
+       [
+         Dream.get "/" (fun _ -> Dream.html (render_main_page ()));
+         Dream.get "/generate-level" (fun _ -> Dream.html (generate_level ()));
+       ]
