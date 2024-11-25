@@ -176,4 +176,4 @@ val generate_grid : int -> grid * pos * pos * direction
 *)
 val simulate_ball_path_post_generation : grid -> pos -> direction -> int -> pos * direction
 
-val orientation_for_tunnel_direction :(*(direction: direction)*) unit -> Tunnel.orientationTunnel
+val orientation_for_tunnel_direction :(*(direction: direction)*) unit -> orientation

@@ -27,16 +27,16 @@ type grid_cell_type =
   of the ball which already has two grid objects in the same columm/row *)
   | InBallPath 
   (* ordinary bumper which bounces ball in perpendicular direction *)
-  | Bumper of {orientation: Bumper.orientation; direction : Bumper.direction;} 
+  | Bumper of {orientation: orientation; direction : direction;} 
   (* goes directly through the tunnel if the ball direction is the same 
   orientation as the tunnel otherwise the ball bounces in the opposite direction of the path it was going in *)
-  | Tunnel of {orientation: Tunnel.orientationTunnel ; direction : Tunnel.direction;} 
+  | Tunnel of {orientation: orientation ; direction : direction;} 
   (* it always exists as a pair (we always have 2 teleporter objects) and either teleporter can be used as an 
   entry/exit position where the direction the ball is moving in is preserved *)
   | Teleporter 
   (* allow for the ball to pass through ONCE, before it materializes into a regular bumper and has the same
    functionality as a bumper *)
-  | ActivatedBumper of {orientation: Activated_bumper.orientation; direction : Activated_bumper.direction; is_active : bool;} 
+  | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool;} 
   (* used for marking the bumpers in the level settings since we don't want to initialize it with a direction 
   or orientation *)
   | BumperLevelMarker 
@@ -78,3 +78,5 @@ val bumper_direction_to_direction : Bumper.direction -> direction
 val to_string : grid_cell -> string
 
 val get_bumper_orientation_string : grid_cell_type -> string
+
+val get_tunnel_orientation_string : grid_cell_type -> string

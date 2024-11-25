@@ -1,7 +1,8 @@
 open Core
 open Grid_cell
 
-let round_num = ref 1
+(* let round_num = ref 1 *)
+let round_num = 3
 
 let arrow_of_direction (initial_direction : direction) : string = match initial_direction with 
   | Up -> "↑🟢"
@@ -100,8 +101,8 @@ let rec main_loop () =
 
 let display_grid_check () =
   (* let (grid, entry_pos, correct_exit_pos, initial_direction) = Grid.generate_grid !round_num in *)
-  let (grid, entry_pos, _, _) = Grid.generate_grid 1 in
-  let grid_size = Grid.get_grid_size !round_num in 
+  let (grid, entry_pos, _, _) = Grid.generate_grid round_num in
+  let grid_size = Grid.get_grid_size round_num in 
   printf "grid size: %d " grid_size;
   Out_channel.newline stdout;
   printf "entry pos: %d %d" (fst entry_pos) (snd entry_pos);
@@ -112,10 +113,11 @@ let display_grid_check () =
     for j = 0 to Array.length grid.(i) - 1 do
       match to_string grid.(i).(j) with 
       | "Entry" -> printf "  E  " 
-      | "Exit" -> printf "  -  " 
+      | "Exit" -> printf "  X  " 
       | "Empty" -> printf "  -  " 
       | "InBallPath" -> printf "  -  " 
       | "Bumper" -> printf "  %s  " (get_bumper_orientation_string grid.(i).(j).cell_type)
+      | "Tunnel" -> printf "  %s  " (get_tunnel_orientation_string grid.(i).(j).cell_type)
       (* | "Tunnel" ->
       | "Teleporter"
       | "ActivatedBumper" *)

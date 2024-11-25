@@ -21,10 +21,10 @@ type grid_cell_type =
   | Exit of {direction : direction}
   | Empty 
   | InBallPath 
-  | Bumper of {orientation: Bumper.orientation; direction : Bumper.direction;} 
-  | Tunnel of {orientation: Tunnel.orientationTunnel; direction : Tunnel.direction;} 
+  | Bumper of {orientation: orientation; direction : direction;} 
+  | Tunnel of {orientation: orientation; direction : direction;} 
   | Teleporter 
-  | ActivatedBumper of {orientation: Activated_bumper.orientation; direction : Activated_bumper.direction; is_active : bool;} 
+  | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool;} 
   | BumperLevelMarker
   | TunnelLevelMarker
   | ActivatedBumperLevelMarker
@@ -132,4 +132,9 @@ let to_string (cell: grid_cell) : string = match cell.cell_type with
 let get_bumper_orientation_string (b: grid_cell_type) : string = match b with 
   | Bumper {orientation = DownRight; _} -> "⟍"
   | Bumper {orientation = UpRight; _} -> "⟋"
+  | _ -> failwith "Error: bumper can only have orientation DownRight or UpRight."
+
+let get_tunnel_orientation_string (b: grid_cell_type) : string = match b with 
+  | Tunnel {orientation = Vertical; _} -> "||"
+  | Tunnel {orientation = Horizontal; _} -> "="
   | _ -> failwith "Error: bumper can only have orientation DownRight or UpRight."
