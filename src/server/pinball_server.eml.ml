@@ -1,6 +1,8 @@
 open Core
 open Grid_cell
 
+(* Game state information *)
+let current_level = ref 1
 
 (* Render the HTML grid based on a grid data structure *)
 let render_grid (grid : Grid.grid) : string =
@@ -38,39 +40,51 @@ let generate_level _ =
     ^ "<script>setTimeout(function() { document.getElementById('grid-container').innerHTML = ''; }, 3000);</script>")
 
 (* Main page render *)
-let render_main_page () : string =
+let render_main_page () =
+  Printf.sprintf
     {|
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <title>Pinball Panic</title>
-        <style>
-          /* styles for the grid and containers */
-          .pinballgrid td { border: 1px solid black; width: 30px; height: 30px; text-align: center; }
-          .empty { background-color: white; }
-          .bumper { background-color: yellow; }
-        </style>
-      </head>
-      
-      <body>
-        <h1>Pinball Panic</h1>
-        <div id="game-area">
-          <!-- Placeholder for grid -->
-          <div id="grid-container"></div>
-        </div>
-        <button onclick="startNewLevel()">Start New Level</button>
-        <script>
-          function startNewLevel() {
-            fetch('/generate-level')
-              .then(response => response.text())
-              .then(html => {
-                document.getElementById('grid-container').innerHTML = html;
-              });
-          }
-        </script>
-      </body>
-      </html>
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Pinball Panic</title>
+      <script>
+        function startNewLevel() {
+          fetch('/generate-level')
+            .then(response => response.text())
+            .then(function(html) {
+              document.getElementById('grid-container').innerHTML = html;
+            });
+        }
+      </script>
+    </head>
+    <body>
+      <h1>Welcome to Pinball Panic</h1>
+      <h2>Level %d</h2>
+      <div id='grid-container'></div>
+      <button onclick='startNewLevel()'>Start New Level</button>
+      <form action='/submit-answer' method='POST'>
+        <label for='answer'>Your Answer:</label>
+        <input type='text' id='answer' name='answer' required />
+        <button type='submit'>Submit</button>
+      </form>
+    </body>
+    </html>
     |}
+    !current_level
+
+let submit_answer_handler request =
+  let body = Dream.body request in
+  let is_correct = (* TODO: Replace this with logic to validate the answer *) true in
+  if is_correct then (
+    (* Check if there is a next level *)
+    if !current_level < 10 then (
+      incr current_level;
+      Lwt.return (Dream.redirect request "/")
+    ) else
+      Lwt.return (Dream.html "<h1>Congratulations! You completed all levels!</h1>")
+  ) else
+    (* Incorrect answer, tell user the correct answer *)
+    Lwt.return (Dream.html "<h1>Incorrect! The correct answer was ___</h1>")
 
 (* Dream Routes *)
 let () =
@@ -80,4 +94,5 @@ let () =
        [
          Dream.get "/" (fun _ -> Dream.html (render_main_page ()));
          Dream.get "/generate-level" (fun _ -> Dream.html (generate_level ()));
+         Dream.post "/submit-answer" submit_answer_handler;
        ]
