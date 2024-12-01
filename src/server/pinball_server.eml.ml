@@ -23,12 +23,12 @@ let render_grid (grid : Grid.grid) : string =
       | _ -> "<td class='unknown'>?</td>"
     )
     |> Array.to_list
-    |> String.concat
+    |> String.concat ~sep:"\n"
   in
   (* Convert the entire grid to an HTML table *)
-  Array.map grid ~f:(fun row -> "<tr>" ^ row_to_html row ^ "</tr>")
+  Array.map grid ~f:(fun row -> "<tr>\n" ^ row_to_html row ^ "\n</tr>")
   |> Array.to_list
-  |> String.concat
+  |> String.concat ~sep:"\n"
 
 (* Generate a new level and return it as a Dream HTML response *)
 let generate_level _ =
@@ -37,13 +37,11 @@ let generate_level _ =
   grid.(2).(2) <- { position = (2, 2); cell_type = Bumper { direction = Down; orientation = UpRight }};
   (* Generate grid HTML *)
   let grid_html = render_grid grid in
-  Dream.html
-    ("<div id='grid-container'>" ^ grid_html ^ "</div>"
-     ^ "<script>setTimeout(function() { document.getElementById('grid-container').innerHTML = ''; }, 3000);</script>")
+  Lwt.return ("<div id='grid-container'>" ^ grid_html ^ "</div>")
 
-(* Render the main page *)
+(* Render the main page, displays and hides grid when new level starts *)
 let render_main_page () =
-  "<!DOCTYPE html><html><head><title>Pinball Panic</title></head><body><h1>Test Page</h1></body></html>"
+  "<!DOCTYPE html><html><head><title>Pinball Panic</title><script>function startNewLevel() { fetch('/generate-level').then(response => response.text()).then(html => {const container = document.getElementById('grid-container'); container.innerHTML = html; setTimeout(() => {container.innerHTML = '<h2>Prepare your answer!</h2>';}, 3000);}).catch(err => console.error('Error fetching grid:', err));}</script></head><body><h1>Welcome to Pinball Panic</h1><h2>Level " ^ string_of_int !current_level ^ "</h2><div id='grid-container'></div><button onclick=\"startNewLevel()\">Start New Level</button></body></html>"
 
 (* Handle answer submission *)
 let submit_answer_handler request =
@@ -65,6 +63,6 @@ let () =
   @@ Dream.router
        [
          Dream.get "/" (fun _ -> Dream.html (render_main_page ()));
-         Dream.get "/generate-level" (fun _ -> generate_level ());
+         Dream.get "/generate-level" (fun _ -> let%lwt grid_html = generate_level () in Dream.html grid_html);
          Dream.post "/submit-answer" submit_answer_handler;
        ]
