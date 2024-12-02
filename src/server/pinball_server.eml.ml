@@ -11,15 +11,15 @@ let render_grid (grid : Grid.grid) : string =
   let row_to_html (row : grid_cell array) =
     Array.map row ~f:(fun cell ->
       match cell.cell_type with
-      | Empty -> "<td class='empty'>*</td>"
+      | Empty -> "<td class='empty'>-</td>"
       | Bumper { direction = _; orientation } ->
           let symbol = match orientation with
             | DownRight -> "╲"
             | UpRight -> "╱"
-            | _ -> "?"
+            | _ -> "/"
           in
           "<td class='bumper'>" ^ symbol ^ "</td>"
-      | Entry { direction = Down } -> "<td class='entry'>o</td>"
+      | Entry { direction = Down } -> "<td class='entry'>E</td>"
       | _ -> "<td class='unknown'>?</td>"
     )
     |> Array.to_list
@@ -32,9 +32,7 @@ let render_grid (grid : Grid.grid) : string =
 
 (* Generate a new level and return it as a Dream HTML response *)
 let generate_level _ =
-  let grid = Array.init 5 ~f:(fun x -> Array.init 5 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
-  grid.(0).(2) <- { position = (0, 2); cell_type = Entry { direction = Down }};
-  grid.(2).(2) <- { position = (2, 2); cell_type = Bumper { direction = Down; orientation = UpRight }};
+  let (grid, _, _, _) = Grid.generate_grid !current_level in
   (* Generate grid HTML *)
   let grid_html = render_grid grid in
   Lwt.return ("<div id='grid-container'>" ^ grid_html ^ "</div>")
@@ -54,7 +52,7 @@ let submit_answer_handler request =
     ) else
       Dream.html "<h1>Congratulations! You completed all levels!</h1>"
   ) else
-    Dream.html "<h1>Incorrect! Try again.</h1>"
+    Dream.html "<h1>Incorrect! Game Over!</h1>"
 
 (* Dream Routes *)
 let () =
