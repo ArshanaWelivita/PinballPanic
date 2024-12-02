@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pinball Panic</title>
+    <script>
+    function startNewLevel() { 
+        fetch('/generate-level')
+        .then(response => response.text())
+        .then(html => { const container = document.getElementById('grid-container'); 
+        container.innerHTML = html; 
+        setTimeout(() => { container.innerHTML = '<h2>Prepare your answer!</h2>'; }, 3000); })
+        .catch(err => console.error('Error fetching grid:', err)); }
+    </script>
+</head>
+
+<body>
+    <h1>Welcome to Pinball Panic</h1>
+    <h2>Level " ^ one ^ "</h2>
+    <div id='grid-container'></div>
+    <button onclick="startNewLevel()">Start New Level</button>
+    <form action="/submit-answer">
+        <label for="x">X Coordinate:</label>
+        <input type="text" id="x" name="x"><br><br>
+        <label for="lname">Y Coordinate:</label>
+        <input type="text" id="y" name="y"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+
+</html>

@@ -112,12 +112,12 @@ let display_grid_check () =
   for i = 0 to Array.length grid - 1 do
     for j = 0 to Array.length grid.(i) - 1 do
       match to_string grid.(i).(j) with 
-      | "Entry" -> printf "  E  " 
-      | "Exit" -> printf "  X  " 
-      | "Empty" -> printf "  -  " 
-      | "InBallPath" -> printf "  -  " 
-      | "Bumper" -> printf "  %s  " (get_bumper_orientation_string grid.(i).(j).cell_type)
-      | "Tunnel" -> printf "  %s  " (get_tunnel_orientation_string grid.(i).(j).cell_type)
+      | "Entry" -> printf "   E   " 
+      | "Exit" -> printf "   X   " 
+      | "Empty" -> printf "   -   " 
+      | "InBallPath" -> printf "   -   " 
+      | "Bumper" -> printf "   %s   " (get_bumper_orientation_string grid.(i).(j).cell_type)
+      | "Tunnel" -> printf "   %s   " (get_tunnel_orientation_string grid.(i).(j).cell_type)
       (* 
       | "Teleporter"
       | "ActivatedBumper" *)
