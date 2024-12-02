@@ -11,8 +11,8 @@ type pos = int * int
 let level_bounce_settings = [
   (1, (3, 1, 1, [BumperLevelMarker]));
   (2, (4, 1, 2, [BumperLevelMarker]));
-  (3, (4, 2, 3, [BumperLevelMarker]));
-  (4, (4, 3, 4, [BumperLevelMarker]));
+  (3, (4, 2, 3, [BumperLevelMarker; TunnelLevelMarker]));
+  (4, (4, 3, 4, [BumperLevelMarker; TunnelLevelMarker]));
   (5, (5, 4, 5, [BumperLevelMarker]));
   (6, (5, 5, 6, [BumperLevelMarker]));
   (7, (6, 6, 8, [BumperLevelMarker]));
