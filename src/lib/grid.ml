@@ -9,18 +9,17 @@ type pos = int * int
   | Tunnel_orientation of Tunnel.orientationTunnel *)
 
 let level_bounce_settings = [
-  (1, (3, 1, 1, [BumperLevelMarker]));
-  (2, (4, 1, 2, [BumperLevelMarker]));
-  (3, (4, 2, 3, [BumperLevelMarker; TunnelLevelMarker]));
-  (4, (4, 3, 4, [BumperLevelMarker; TunnelLevelMarker]));
-  (5, (5, 4, 5, [BumperLevelMarker]));
-  (6, (5, 5, 6, [BumperLevelMarker]));
-  (7, (6, 6, 8, [BumperLevelMarker]));
-  (8, (7, 7, 9, [BumperLevelMarker]));
-  (9, (7, 8, 10, [BumperLevelMarker]));
-  (10, (8, 9, 12, [BumperLevelMarker]));
-  (* (3, (4, 2, 3, [BumperLevelMarker; TunnelLevelMarker]));
-  (4, (4, 3, 4, [BumperLevelMarker; TunnelLevelMarker]));
+  (1, (3, 1, 1, [BumperLevelMarker], 0));
+  (2, (4, 1, 2, [BumperLevelMarker], 0));
+  (3, (4, 2, 3, [BumperLevelMarker; TunnelLevelMarker], 0));
+  (4, (4, 3, 4, [BumperLevelMarker; TunnelLevelMarker], 0));
+  (5, (5, 4, 5, [BumperLevelMarker; TeleporterLevelMarker], 1));
+  (6, (5, 5, 6, [BumperLevelMarker; TeleporterLevelMarker], 1));
+  (7, (6, 6, 8, [BumperLevelMarker], 1));
+  (8, (7, 7, 9, [BumperLevelMarker], 1));
+  (9, (7, 8, 10, [BumperLevelMarker], 1));
+  (10, (8, 9, 12, [BumperLevelMarker], 1));
+  (* 
   (5, (5, 4, 5, [BumperLevelMarker; Teleporter]));
   (6, (5, 5, 6, [BumperLevelMarker; Teleporter]));
   (7, (6, 6, 8, [BumperLevelMarker; ActivatedBumperLevelMarker]));
@@ -29,11 +28,11 @@ let level_bounce_settings = [
   (10, (8, 9, 12, [BumperLevelMarker; Teleporter; TunnelLevelMarker; ActivatedBumperLevelMarker])) *)
 ]
 
-let get_level_settings (level: int) : int * int * int * (grid_cell_type list) =
+let get_level_settings (level: int) : int * int * int * (grid_cell_type list) * int=
   List.Assoc.find_exn level_bounce_settings ~equal:Int.equal level
 
 let get_grid_size (level: int) : int = 
-  let grid_size, _, _ , _ = get_level_settings level in 
+  let grid_size, _, _ , _ , _ = get_level_settings level in 
   grid_size
 
 let out_of_bounds_check (row, col : pos) (grid_size: int) : bool = 
@@ -60,7 +59,6 @@ let compare_pos (p1 : pos) (p2 : pos) : bool =
 let compare_orientation (o1: orientation) (o2: orientation) : bool = 
   String.compare (orientation_to_string o1) (orientation_to_string o2) = 0
 
-
 (* let is_activated_bumper_active (ball_pos: pos) (bumper_pos: pos) : bool = 
   false (* will implement this later when doing the activated bumper feature in week 3 of implementation *)
    *)
@@ -70,6 +68,7 @@ let string_of_orientation (orientation : orientation) : string =
   | DownRight -> "DownRight"
   | Vertical -> "Vertical"
   | Horizontal -> "Horizontal"
+  | None -> "None"
 
 let string_of_direction (dir: direction) : string = 
   match dir with 
@@ -81,28 +80,42 @@ let string_of_direction (dir: direction) : string =
 let get_initial_grid_cell_type (initial_grid_object_marker: grid_cell_type) (initial_direction: Grid_cell.direction) = 
   match initial_grid_object_marker with
   | TunnelLevelMarker -> 
-      let initial_orientation = List.random_element_exn [Vertical; Horizontal] 
-      in
+      let initial_orientation = List.random_element_exn [Vertical; Horizontal] in
       Tunnel { orientation = initial_orientation; direction = (initial_direction) }
   | BumperLevelMarker -> 
-      let initial_orientation = List.random_element_exn [DownRight; UpRight] 
-      in
+      let initial_orientation = List.random_element_exn [DownRight; UpRight] in
       Bumper { orientation = initial_orientation; direction = (initial_direction) }
   | ActivatedBumperLevelMarker -> 
-      let initial_orientation = List.random_element_exn [DownRight; UpRight] 
-      in
+      let initial_orientation = List.random_element_exn [DownRight; UpRight] in
       ActivatedBumper { orientation = initial_orientation; direction = (initial_direction); is_active = false }
-  | Teleporter -> Teleporter
+  | TeleporterLevelMarker -> Teleporter {orientation = None; direction = initial_direction}
   | _ -> failwith "Wrong grid object placed. Need to regenerate grid."
 
+let place_second_teleporter_in_grid (grid: grid) (first_grid_pos: pos) (grid_size: int) (teleporer_dir: direction) : bool = 
+  let get_potential_positions (grid_size: int) (excluded_val: int) : int list = 
+    List.init grid_size ~f:(fun index -> index)
+    |> List.filter ~f:(fun index -> index <> excluded_val && index <> 0 && index <> grid_size + 1)
+  in
+  let potential_rows = get_potential_positions grid_size (fst first_grid_pos) in 
+  let potential_cols = get_potential_positions grid_size (snd first_grid_pos) in 
+
+  if (List.is_empty potential_cols) || (List.is_empty potential_rows) 
+  then false 
+  else
+    let row = List.nth_exn potential_rows (Random.int (List.length potential_rows)) in
+    let col = List.nth_exn potential_cols (Random.int (List.length potential_cols)) in
+    let pos = (row, col) in 
+    grid.(row).(col) <- {position= pos; cell_type= (Teleporter {orientation = None; direction = teleporer_dir})};
+    true 
 
 let place_initial_grid_object (grid: grid) (entry_pos: pos) (direction: direction) (grid_size: int) (new_grid_cell_type : grid_cell_type) : pos * orientation =
   let (entry_row, entry_col) = entry_pos in
+  let initial_grid_cell = get_initial_grid_cell_type new_grid_cell_type direction in
   let grid_cell_object_pos, orientation =
-    let initial_grid_cell = get_initial_grid_cell_type new_grid_cell_type direction in
     let orientation = match initial_grid_cell with
       | Bumper { orientation = o; _ } -> o
       | Tunnel { orientation = o; _ } -> o
+      | Teleporter { orientation = o; _} -> o
       (* | ActivatedBumper { orientation = o; _ } -> o *)
       | _ -> failwith "Unexpected grid cell type"
     in
@@ -129,15 +142,18 @@ let place_initial_grid_object (grid: grid) (entry_pos: pos) (direction: directio
               (pos, orientation)  
   in
   printf "Initial grid object placed position: %d %d\n" (fst grid_cell_object_pos) (snd grid_cell_object_pos);
-  (grid_cell_object_pos, orientation) 
+
+  if (compare_grid_cell_type grid.(fst grid_cell_object_pos).(snd grid_cell_object_pos) (Teleporter {orientation = None; direction = direction})) then 
+    if place_second_teleporter_in_grid grid grid_cell_object_pos grid_size direction
+    then (grid_cell_object_pos, orientation)
+    else failwith "No space in grid to add the second teleporter object"
+  else
+    (grid_cell_object_pos, orientation) 
 
 (* let convert_activated_to_regular_bumper (bumper_pos: pos) (grid: grid) : bool =
   false  implement this later in week 3 when we do activated bumper stuff *)
 
 let orientation_for_direction (*(direction: direction)*) () : orientation =
-  (* match direction with
-  | Up | Right -> UpRight (*  ╱ is upright *)
-  | Down | Left -> DownRight  ╲ is downright *)
   List.random_element_exn [DownRight; UpRight]
 
 let orientation_for_tunnel_direction () : orientation =
@@ -191,7 +207,9 @@ let rec place_random_grid_element_along_path (grid: grid) (start_pos: pos) (dire
                                   direction = direction;
                                   is_active = true
                                 } 
-                  | Teleporter -> Teleporter
+                  | Teleporter _ -> if place_second_teleporter_in_grid grid new_grid_object_pos grid_size direction
+                                    then Teleporter {orientation = None; direction = direction;}
+                                    else failwith "There is no space in the grid to add the second teleporter object in the pair."
                   | _ -> failwith "Grid cell type is not defined can't be placed in the grid."
                 in
                 (* Place the updated cell in the grid *)
@@ -200,9 +218,22 @@ let rec place_random_grid_element_along_path (grid: grid) (start_pos: pos) (dire
                 true
             end
 
+let move_to_second_teleporter_position (grid: grid) (first_teleporter_pos: pos) (dir: direction): pos = 
+  let rec find_teleporter grid row col =
+    if row >= (Array.length grid - 1) then
+      failwith "Second teleporter wasn't placed in the grid." (* End of grid, no second teleporter found *)
+    else if col >= (Array.length grid.(row) - 1) then
+      find_teleporter grid (row + 1) 0 (* Move to the next row *)
+    else if not (compare_pos (row, col) first_teleporter_pos) && (compare_grid_cell_type grid.(row).(col) (Teleporter {orientation = None; direction = dir})) then
+      (row, col) (* Found a teleporter that's not the first *)
+    else
+      find_teleporter grid row (col + 1) (* Continue in the same row *)
+  in
+  find_teleporter grid 1 1
+
 let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction) 
   (objects_left: int) (grid_size: int) (orientation: orientation) (bounce_limit: int)
-  (visited: (pos * direction) Set.Poly.t) (grid_object_types : grid_cell_type list) : pos * direction =
+  (visited: (pos * direction) Set.Poly.t) (grid_object_types : grid_cell_type list) (teleporter_objects: int): pos * direction =
   (* Print the current position of the ball *)
   printf "Ball position: %d %d | Direction: %s | Objects left: %d | Bounce limit: %d\n"
   (fst pos) (snd pos) (string_of_direction direction) objects_left bounce_limit;
@@ -240,6 +271,7 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction)
             | Bumper { orientation; _ } -> let direction_map = Bumper.generate_directions (orientation_to_bumper_orientation orientation) in
                                             Map.find_exn direction_map (direction_to_bumper_direction direction)
                                             |> bumper_direction_to_direction
+            | Teleporter _ -> direction 
             | InBallPath -> direction
             (* | ActivatedBumper { orientation; _ } -> let direction_map = Activated_bumper.generate_directions orientation in
                                                     Map.find_exn direction_map (direction_to_bumper_direction direction)
@@ -249,8 +281,12 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction)
           in 
           printf "New direction after bounce: %s\n" (string_of_direction new_direction);
 
-          let next_pos = move pos new_direction in
-
+          let next_pos =
+            if compare_grid_cell_type current_grid_cell (Teleporter {orientation = None; direction = direction}) then
+              move (move_to_second_teleporter_position grid pos new_direction) new_direction
+            else
+              move pos new_direction  (* Otherwise, move based on the new direction *)
+          in
           (* Check if bumpers_left is 0: Follow the path without placing new bumpers *)
           if objects_left = 0 then
             begin
@@ -263,7 +299,7 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction)
                 end
               else
               (* Continue path simulation in the new direction without placing a new bumper *)
-              simulate_ball_path grid next_pos new_direction 0 grid_size orientation bounce_limit visited grid_object_types
+              simulate_ball_path grid next_pos new_direction 0 grid_size orientation bounce_limit visited grid_object_types teleporter_objects
             end
           else
           (* Place a bumper if bumpers_left > 0 *)
@@ -271,10 +307,17 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction)
               (* Place a bumper randomly along the new direction *)
               (* printf "Placing bumper along path from position %d %d\n" (fst next_pos) (snd next_pos); *)
               (* Set the new orientation for the next bumper placement *)
-              let next_grid_object_marker = List.random_element_exn grid_object_types in 
+              let next_grid_object_marker =
+                if teleporter_objects <> 0 then 
+                  List.random_element_exn grid_object_types 
+                else 
+                  let filtered_objects = List.filter grid_object_types ~f:(fun obj -> not (is_teleporter_marker obj)) in
+                  List.random_element_exn filtered_objects
+              in 
               let next_orientation = match next_grid_object_marker with 
                 | BumperLevelMarker -> orientation_for_direction () 
                 | TunnelLevelMarker -> orientation_for_tunnel_direction ()
+                | TeleporterLevelMarker -> None
                 | _ -> failwith "Invalid grid object marker"
               in 
               let next_grid_object = get_initial_grid_cell_type next_grid_object_marker new_direction in 
@@ -283,7 +326,10 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction)
               else
               (* printf "Next bumper orientation: %s\n" (string_of_orientation next_orientation); *)
               (* Continue path simulation in the new direction with one less bumper *)
-                simulate_ball_path grid next_pos new_direction (objects_left - 1) grid_size next_orientation (bounce_limit - 1) visited grid_object_types
+                if is_teleporter_marker next_grid_object_marker then 
+                  simulate_ball_path grid next_pos new_direction (objects_left - 1) grid_size next_orientation (bounce_limit - 1) visited grid_object_types (teleporter_objects - 1)
+                else 
+                  simulate_ball_path grid next_pos new_direction (objects_left - 1) grid_size next_orientation (bounce_limit - 1) visited grid_object_types teleporter_objects
             end
         end
       else
@@ -299,13 +345,15 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction)
             let next_pos = move pos direction in
             if out_of_bounds_check next_pos grid_size then
               begin
-                printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos);
-                (pos, direction)
+                printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos); 
+                if compare_grid_cell_type grid.(fst pos).(snd pos) (Teleporter {orientation = None; direction = direction})
+                then (next_pos, direction) 
+                else (pos, direction)
               end
             else
               begin
                 printf "No bumper encountered, continuing straight from position %d %d\n" row col;
-                simulate_ball_path grid next_pos direction objects_left grid_size orientation bounce_limit visited grid_object_types
+                simulate_ball_path grid next_pos direction objects_left grid_size orientation bounce_limit visited grid_object_types teleporter_objects
               end
         end
     end
@@ -328,7 +376,7 @@ let mark_in_ball_path (grid: grid) (entry_pos: pos) (direction: direction) (firs
   traverse (move entry_pos direction) direction
 
 let rec generate_grid (level: int) : grid * pos * pos * direction =
-  let (grid_size, min_objects, max_objects, grid_object_types) = get_level_settings level in
+  let (grid_size, min_objects, max_objects, grid_object_types, teleporter_objects) = get_level_settings level in
   let grid = Array.init (grid_size + 2) ~f:(fun x -> Array.init (grid_size + 2) 
                 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
 
@@ -336,10 +384,10 @@ let rec generate_grid (level: int) : grid * pos * pos * direction =
 
   (* Choose a random entry point and initial direction *)
   let possible_entries = [
-    ((0, Random.int_incl 1 grid_size), Grid_cell.Down);               (* Entry from the top *)
-    ((grid_size + 1, Random.int_incl 1 grid_size), Grid_cell.Up);     (* Entry from the bottom *)
-    ((Random.int_incl 1 grid_size, 0), Grid_cell.Right);              (* Entry from the left *)
-    ((Random.int_incl 1 grid_size, grid_size + 1), Grid_cell.Left);   (* Entry from the right *)
+    ((0, Random.int_incl 1 grid_size), Down);               (* Entry from the top *)
+    ((grid_size + 1, Random.int_incl 1 grid_size), Up);     (* Entry from the bottom *)
+    ((Random.int_incl 1 grid_size, 0), Right);              (* Entry from the left *)
+    ((Random.int_incl 1 grid_size, grid_size + 1), Left);   (* Entry from the right *)
   ] in
   let (entry_pos, initial_direction) = List.random_element_exn possible_entries in
   grid.(fst entry_pos).(snd entry_pos) <- { position = entry_pos; cell_type = Entry {direction = initial_direction} };
@@ -355,10 +403,15 @@ let rec generate_grid (level: int) : grid * pos * pos * direction =
   let visited = Set.Poly.empty in
 
   (* Run the simulation to place grid objects along the ball's path and then get its exit position and direction based off the generated ball path *)
-  let (exit_pos, exit_direction) = simulate_ball_path grid first_grid_object_pos initial_direction (object_count - 1) grid_size first_orientation bounce_limit visited grid_object_types in
+  let (exit_pos, exit_direction) =
+    if compare_grid_cell_type grid.(fst first_grid_object_pos).(snd first_grid_object_pos) (Teleporter {orientation = None; direction = initial_direction})
+    then simulate_ball_path grid first_grid_object_pos initial_direction (object_count - 1) grid_size first_orientation bounce_limit visited grid_object_types 0
+    else simulate_ball_path grid first_grid_object_pos initial_direction (object_count - 1) grid_size first_orientation bounce_limit visited grid_object_types teleporter_objects
+  in
   
   (* If loop detected, regenerates grid for that level *)
-  if compare_pos exit_pos (-1, -1) || out_of_bounds_check exit_pos grid_size
+  (*|| out_of_bounds_check exit_pos grid_size*)
+  if compare_pos exit_pos (-1, -1) 
   then generate_grid level 
   else begin 
     grid.(fst exit_pos).(snd exit_pos) <- { position = exit_pos; cell_type = Exit {direction = exit_direction} };
@@ -368,13 +421,13 @@ let rec generate_grid (level: int) : grid * pos * pos * direction =
       Array.fold grid ~init:0 ~f:(fun acc row ->
         acc + Array.fold row ~init:0 ~f:(fun acc cell ->
           match cell.cell_type with
-          | Bumper _ | Tunnel _ | Teleporter | ActivatedBumper _ -> acc + 1
+          | Bumper _ | Tunnel _ | Teleporter _| ActivatedBumper _ -> acc + 1
           | _ -> acc
         )
     ) in 
 
     (* Check if the number of grid objects placed meets the minimum requirement *)
-    if objects_placed = object_count then
+    if objects_placed >= object_count then
         (* Return the viable grid and the ball's properties (entry direction and position, and exit position) *)
       (grid, entry_pos, exit_pos, initial_direction) 
     else

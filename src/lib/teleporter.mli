@@ -6,7 +6,7 @@ mechanics will occur in the grid.ml and grid.mli files. *)
 type pos = int * int
 
 (* Type representing direction *)
-type teleporterDirection =
+type direction =
   | Up
   | Down
   | Left
@@ -14,4 +14,4 @@ type teleporterDirection =
     
 (* Function to generate the output direction of the ball based on a ball's initial direction
 when it enters the teleporter. Specifically the direction is conserved. *)
-val generate_directions : teleporterDirection -> teleporterDirection 
+val generate_directions : direction -> direction 
