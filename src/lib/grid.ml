@@ -91,21 +91,26 @@ let get_initial_grid_cell_type (initial_grid_object_marker: grid_cell_type) (ini
   | TeleporterLevelMarker -> Teleporter {orientation = None; direction = initial_direction}
   | _ -> failwith "Wrong grid object placed. Need to regenerate grid."
 
-let place_second_teleporter_in_grid (grid: grid) (first_grid_pos: pos) (grid_size: int) (teleporer_dir: direction) : bool = 
-  let get_potential_positions (grid_size: int) (excluded_val: int) : int list = 
-    List.init grid_size ~f:(fun index -> index)
-    |> List.filter ~f:(fun index -> index <> excluded_val && index <> 0 && index <> grid_size + 1)
-  in
-  let potential_rows = get_potential_positions grid_size (fst first_grid_pos) in 
-  let potential_cols = get_potential_positions grid_size (snd first_grid_pos) in 
+let get_potential_positions (grid: grid) (grid_size: int) (excluded_row: int) (excluded_col: int) : (int * int) list =
+  List.init grid_size ~f:(fun row ->
+    List.init grid_size ~f:(fun col -> (row, col)))
+  |> List.concat  (* Flatten the list of row-col pairs *)
+  |> List.filter ~f:(fun (row, col) -> 
+      (row <> excluded_row  (* Avoid the excluded row *)
+        && col <> excluded_col  (* Avoid the excluded column *)
+        && row <> 0           (* Avoid out-of-bound row 0 *)
+        && col <> 0           (* Avoid out-of-bound column 0 *)
+        && row <> grid_size + 1  (* Avoid out-of-bound row grid_size + 1 *)
+        && col <> grid_size + 1  (* Avoid out-of-bound column grid_size + 1 *)
+        && compare_grid_cell_type grid.(row).(col) Empty))
 
-  if (List.is_empty potential_cols) || (List.is_empty potential_rows) 
+let place_second_teleporter_in_grid (grid: grid) (first_grid_pos: pos) (grid_size: int) (teleporer_dir: direction) : bool = 
+  let potential_positions = get_potential_positions grid grid_size (fst first_grid_pos) (snd first_grid_pos) in
+  if List.is_empty potential_positions
   then false 
   else
-    let row = List.nth_exn potential_rows (Random.int (List.length potential_rows)) in
-    let col = List.nth_exn potential_cols (Random.int (List.length potential_cols)) in
-    let pos = (row, col) in 
-    grid.(row).(col) <- {position= pos; cell_type= (Teleporter {orientation = None; direction = teleporer_dir})};
+    let pos = List.nth_exn potential_positions (Random.int (List.length potential_positions)) in 
+    grid.(fst pos).(snd pos) <- {position= pos; cell_type= (Teleporter {orientation = None; direction = teleporer_dir})};
     true 
 
 let place_initial_grid_object (grid: grid) (entry_pos: pos) (direction: direction) (grid_size: int) (new_grid_cell_type : grid_cell_type) : pos * orientation =
