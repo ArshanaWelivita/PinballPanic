@@ -3,36 +3,58 @@
 
 <head>
     <title>Pinball Panic</title>
+    <style>
+        .grid {
+            border-collapse: collapse;
+            margin: 20px auto;
+            text-align: center;
+        }
+        .grid th, .grid td {
+            border: 1px solid black;
+            padding: 5px;
+            width: 30px;
+            height: 30px;
+        }
+        .grid th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .empty {
+            background-color: #ffffff;
+        }
+        .bumper {
+            background-color: #ffcccb;
+        }
+        .teleporter {
+            background-color: #fa9af5;
+        }
+        .tunnel {
+            background-color: #97b5fd;
+        }
+        .entry {
+            background-color: #d4edda;
+        }
+        .unknown {
+            background-color: #cccccc;
+        }
+    </style>
     <script>
     function startNewLevel() { 
         fetch('/generate-level')
         .then(response => response.text())
         .then(html => { const container = document.getElementById('grid-container'); 
         container.innerHTML = html; 
-        setTimeout(() => { container.innerHTML = '<h2>Prepare your answer!</h2>'; }, 3000); })
+        setTimeout(() => { container.innerHTML = '<h2>Prepare your answer!</h2>'; }, 5000); })
         .catch(err => console.error('Error fetching grid:', err)); }
     </script>
 </head>
 
 <body>
-    <h1>Welcome to Pinball Panic</h1>
-    <h2>Level " ^ one ^ "</h2>
-    <div id='grid-container'>
-        <style>
-            table.pinballgrid {
-              border-collapse: collapse;
-              width: 100%;
-            }
-            table.pinballgrid td {
-              border: 1px solid #000;
-              width: 50px;
-              height: 50px;
-              text-align: center;
-              vertical-align: middle;
-            }
-          </style>
-    </div>
-    <button onclick="startNewLevel()">Start New Level</button>
+    <h1>Pinball Panic - Level {{current_level}}</h1>
+    <div id='grid-container'></div>
+    <button id="generate-grid-btn" onclick="startNewLevel(); this.disabled=true;">
+        Start New Level
+    </button>
     <form method="GET" action="/submit-answer">
         <label for="x">X Coordinate:</label>
         <input type="text" id="x" name="x" required /><br><br>

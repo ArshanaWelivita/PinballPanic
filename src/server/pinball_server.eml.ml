@@ -9,28 +9,42 @@ let current_answer = { x = ref 0; y = ref 0}
 
 (* Render the HTML grid based on a grid data structure *)
 let render_grid (grid : Grid.grid) : string =
-  (* Convert a row to an HTML string *)
-  let row_to_html (row : grid_cell array) =
-    Array.map row ~f:(fun cell ->
-      match to_string cell with 
-        | "Entry" -> "  E  " 
-        | "Exit" -> "  X  " 
-        | "Empty" -> "  -  " 
-        | "InBallPath" -> "  -  " 
-        | "Bumper" -> get_bumper_orientation_string cell.cell_type
-        | "Tunnel" -> get_tunnel_orientation_string cell.cell_type
-        (* 
-        | "Teleporter"
-        | "ActivatedBumper" *)
-        | _ -> failwith "Error: there shouldn't be any other grid cell type string within the grid other than the ones matched above."
+  let num_cols = Array.length grid.(0) in
+
+  (* Generate column headers *)
+  let col_headers =
+    let header_cells = Array.init num_cols ~f:(fun i -> Printf.sprintf "<th>%d</th>" i) in
+    "<tr><th></th>" ^ String.concat ~sep:"" (Array.to_list header_cells) ^ "</tr>\n"
+  in
+
+  (* Generate rows with row numbers *)
+  let rows =
+    Array.mapi grid ~f:(fun i row ->
+      let row_cells =
+        Array.map row ~f:(fun cell ->
+          match to_string cell with 
+          | "Entry" -> "<td class='entry'>E</td>"
+          | "Exit" -> "<td class='exit'> </td>"
+          | "Empty" -> "<td class='empty'> </td>"
+          | "InBallPath" -> "<td class='empty'> </td>"
+          | "Bumper" -> "<td class='bumper'>" ^ (get_bumper_orientation_string cell.cell_type) ^ "</td>"
+          | "Tunnel" -> "<td class='tunnel'>" ^ (get_tunnel_orientation_string cell.cell_type) ^ "</td>"
+          | "Teleporter" -> "<td class='teleporter'>*</td>"
+          (* 
+          | "ActivatedBumper" *)
+          | _ -> failwith "Error: there shouldn't be any other grid cell type string within the grid other than the ones matched above."
+        )
+        |> Array.to_list
+        |> String.concat
+      in
+      Printf.sprintf "<tr><th>%d</th>%s</tr>" i row_cells
     )
     |> Array.to_list
     |> String.concat ~sep:"\n"
   in
-  (* Convert the entire grid to an HTML table *)
-  Array.map grid ~f:(fun row -> "<br>\n" ^ row_to_html row ^ "\n</br>")
-  |> Array.to_list
-  |> String.concat ~sep:"\n"
+
+  (* Combine column headers and rows *)
+  "<table class='grid'>\n" ^ col_headers ^ rows ^ "\n</table>"
 
 (* Generate a new level and return it as a Dream HTML response *)
 let generate_level _ =
@@ -44,8 +58,10 @@ let generate_level _ =
 
 (* Render the main page, displays and hides grid when new level starts *)
 let render_main_page () =
-  try In_channel.read_all "./server_templates/main_page.html"
-  with Sys_error _ -> "<h1>Error: Main page template not found.</h1>"
+  let html_template = In_channel.read_all "./server_templates/main_page.html" in
+  let current_level_str = string_of_int !current_level in
+  String.substr_replace_all html_template ~pattern:"{{current_level}}" ~with_:current_level_str
+
 
 (* Handle answer submission*)
 let submit_answer_handler request =
