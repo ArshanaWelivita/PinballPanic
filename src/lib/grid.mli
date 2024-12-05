@@ -13,7 +13,7 @@ type pos = int * int
    - maximum grid objects (int)
    - list of grid object types allowed for that level (grid_cell_type list)
  *)
-val get_level_settings : int -> int * int * int * (grid_cell_type list)
+val get_level_settings : int -> int * int * int * (grid_cell_type list) * int
 
 (* Function to get the grid size (n x n) given the current level.
    Returns grid size n for a square grid 
@@ -147,7 +147,7 @@ change the affect the accuracy of the grid generated.
    Returns the exit position of the ball from the grid. This position could either be a valid exit position or be invalid to represent
    that this simulation was unsuccessful.
 *)
-val simulate_ball_path : grid -> pos -> direction -> int -> int -> orientation -> int -> (pos * direction) Set.Poly.t -> grid_cell_type list -> pos * direction 
+val simulate_ball_path : grid -> pos -> direction -> int -> int -> orientation -> int -> (pos * direction) Set.Poly.t -> grid_cell_type list -> int -> pos * direction 
 
 (* Function that takes the level from the pinball_panic.ml file and then creates the specific grid for that level using the 
    specified settings in the get_level_settings function. This function is also recursive and will continue generating grids until it 

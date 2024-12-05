@@ -14,6 +14,7 @@ type orientation =
   | UpRight
   | Vertical
   | Horizontal
+  | None
 
 (* Type to represent the grid object type of the cell and its functionality in the grid *)
 type grid_cell_type = 
@@ -33,7 +34,7 @@ type grid_cell_type =
   | Tunnel of {orientation: orientation ; direction : direction;} 
   (* it always exists as a pair (we always have 2 teleporter objects) and either teleporter can be used as an 
   entry/exit position where the direction the ball is moving in is preserved *)
-  | Teleporter 
+  | Teleporter of {orientation: orientation; direction: direction}
   (* allow for the ball to pass through ONCE, before it materializes into a regular bumper and has the same
    functionality as a bumper *)
   | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool;} 
@@ -46,6 +47,7 @@ type grid_cell_type =
   (* used for marking the activated bumpers in the level settings since we don't want to initialize it with a direction, 
   orientation or activation status *)
   | ActivatedBumperLevelMarker
+  | TeleporterLevelMarker
 
 (* Type to represent each cell in the generated n x n grid for the game and it contains the cell info (is there a grid object, is it 
 accessible, is it empty, etc.) *)
@@ -80,3 +82,5 @@ val to_string : grid_cell -> string
 val get_bumper_orientation_string : grid_cell_type -> string
 
 val get_tunnel_orientation_string : grid_cell_type -> string
+
+val is_teleporter_marker : grid_cell_type -> bool

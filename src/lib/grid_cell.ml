@@ -14,6 +14,7 @@ type orientation =
   | UpRight
   | Vertical
   | Horizontal
+  | None
 
 (* Type to represent the grid object type of the cell and its functionality in the grid *)
 type grid_cell_type = 
@@ -23,11 +24,12 @@ type grid_cell_type =
   | InBallPath 
   | Bumper of {orientation: orientation; direction : direction;} 
   | Tunnel of {orientation: orientation; direction : direction;} 
-  | Teleporter 
+  | Teleporter of {orientation: orientation; direction: direction}
   | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool;} 
   | BumperLevelMarker
   | TunnelLevelMarker
   | ActivatedBumperLevelMarker
+  | TeleporterLevelMarker
 
 (* Type to represent each cell in the generated n x n grid for the game and it contains the cell info (is there a grid object, is it 
 accessible, is it empty, etc.) *)
@@ -42,12 +44,14 @@ let orientation_to_string (orientation : orientation) : string =
   | UpRight -> "UpRight"
   | Vertical -> "Vertical"
   | Horizontal -> "Horizontal"
+  | None -> "None"
 
 let compare_grid_cell_type (a: grid_cell) (b: grid_cell_type) : bool =
   match (a.cell_type, b) with
   | Empty, Empty -> true
   | InBallPath, InBallPath -> true
-  | Teleporter, Teleporter -> true
+  | Teleporter t1, Teleporter t2 -> 
+      t1.orientation = t2.orientation (*t1.direction = t2.direction && *)
   | Bumper b1, Bumper b2 -> 
       b1.orientation = b2.orientation && b1.direction = b2.direction
   | ActivatedBumper ab1, ActivatedBumper ab2 -> 
@@ -123,11 +127,12 @@ let to_string (cell: grid_cell) : string = match cell.cell_type with
   | InBallPath -> "InBallPath"
   | Bumper _ -> "Bumper"
   | Tunnel _ -> "Tunnel"
-  | Teleporter -> "Teleporter"
+  | Teleporter _ -> "Teleporter"
   | ActivatedBumper _ -> "ActivatedBumper"
   | BumperLevelMarker -> "BumperLevelMarker"
   | TunnelLevelMarker -> "TunnelLevelMarker"
   | ActivatedBumperLevelMarker -> "ActivatedBumperLevelMarker"
+  | TeleporterLevelMarker -> "TeleporterLevelMarker"
 
 let get_bumper_orientation_string (b: grid_cell_type) : string = match b with 
   | Bumper {orientation = DownRight; _} -> "⟍"
@@ -138,3 +143,7 @@ let get_tunnel_orientation_string (b: grid_cell_type) : string = match b with
   | Tunnel {orientation = Vertical; _} -> "||"
   | Tunnel {orientation = Horizontal; _} -> "="
   | _ -> failwith "Error: bumper can only have orientation DownRight or UpRight."
+
+let is_teleporter_marker (cell_type: grid_cell_type) : bool = match cell_type with 
+  | TeleporterLevelMarker -> true
+  | _ -> false
