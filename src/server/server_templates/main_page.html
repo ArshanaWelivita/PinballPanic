@@ -17,14 +17,28 @@
 <body>
     <h1>Welcome to Pinball Panic</h1>
     <h2>Level " ^ one ^ "</h2>
-    <div id='grid-container'></div>
+    <div id='grid-container'>
+        <style>
+            table.pinballgrid {
+              border-collapse: collapse;
+              width: 100%;
+            }
+            table.pinballgrid td {
+              border: 1px solid #000;
+              width: 50px;
+              height: 50px;
+              text-align: center;
+              vertical-align: middle;
+            }
+          </style>
+    </div>
     <button onclick="startNewLevel()">Start New Level</button>
-    <form action="/submit-answer">
+    <form method="GET" action="/submit-answer">
         <label for="x">X Coordinate:</label>
-        <input type="text" id="x" name="x"><br><br>
-        <label for="lname">Y Coordinate:</label>
-        <input type="text" id="y" name="y"><br><br>
-        <input type="submit" value="Submit">
+        <input type="text" id="x" name="x" required /><br><br>
+        <label for="y">Y Coordinate:</label>
+        <input type="text" id="y" name="y" required /><br><br>
+        <input type="submit" value="Submit" />
     </form>
 </body>
 
