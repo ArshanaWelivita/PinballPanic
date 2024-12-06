@@ -36,7 +36,7 @@ To execute the server implementation of the game, use: dune exec ./pinball_serve
 
 This is our current basic command line implementation of the game without the grid disappearing and only using bumpers in the generated grids. We will build on this code and update this section as we add more advanced features and functionality.
 
-Note: The command line interface that we implemented in the grid.ml and pinball_panic.ml files doesn't work anymore as we changed the related mli files to include abstract types for the grid objects and grid type. This is from our previous implementation which used numbers to represent the different grid objects instead of types.
+Note: The command line interface that we implemented in the grid.ml and pinball_panic.ml files work up to level 8 of the game as we haven't implemented the activated bumper functionality yet. That is our main goal for the weekend and week leading up to the presentation. The web game server also uses the grid.ml for generating the grid, so that also only works until level 8 of the game. We haven't implemented the part where the grid disappears yet for either the command line or the front-end, but we plan to do that at the end once everything is working.
 
 **Example Run:**
 
@@ -114,14 +114,14 @@ Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, a
 
 # Implementation Plan:
 
-### Week 1 - November 13th:
+### Week 1 - November 13th: - Done
 1. Add complex features to .mli files
   - Activated Bumper
   - Tunnel
   - Teleporter
 2. Change grid int values to types (make it a more abstract implementation)
 
-### Week 2:
+### Week 2: - Done
 1. Implement advanced features in grid generation
   - Tunnel
   - Teleporter
@@ -129,7 +129,7 @@ Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, a
 
 ### Week 3
 1. Activated bumper feature implementation 
-2. Add grid.ml tests
+2. Add grid.ml tests - 
 3. Finish web app
 
 ### Week 4:
