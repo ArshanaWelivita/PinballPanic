@@ -6,5 +6,6 @@
     core
     core_unix
     grid
-    bumper
-    ))
+    bumper)
+  (preprocess 
+    (pps ppx_jane bisect_ppx)))

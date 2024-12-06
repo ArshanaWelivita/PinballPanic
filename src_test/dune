@@ -16,6 +16,15 @@
     ounit2
     core))
 
+(library
+  (name teleporter_tests)
+  (modules teleporter_tests)
+  (libraries
+    grid
+    teleporter
+    ounit2
+    core))
+
 (test
   (name pinball_tests)
   (modules pinball_tests)
@@ -30,5 +39,6 @@
     tunnel
     bumper_tests
     tunnel_tests
+    teleporter_tests
   )
   )

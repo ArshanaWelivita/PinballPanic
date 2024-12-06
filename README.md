@@ -22,7 +22,9 @@ An example grid can be seen as follows:
 
 After a few seconds, the bumpers in the grid will disappear, and the user will be prompted to enter the ball's ending location. In this case, the answer is [2, 4] where the answer is given in the form [row, col]. So the user would enter "[2, 4]" to move on to the next round. If the user enters the correct answer, they will need to press 'c' to move onto the next level, otherwise they are presented with a "GAME OVER".
 
-To execute the game, use: dune exec _build/default/src/bin/pinball_panic.exe 
+To execute the game, use: dune exec _build/default/src/bin/pinball_panic.exe
+
+To execute the server implementation of the game, use: dune exec ./pinball_server.exe 
 
 ### List of CLI Commands:
 

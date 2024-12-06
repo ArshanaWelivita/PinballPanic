@@ -2,31 +2,41 @@
   (name bumper)
   (modules
     bumper)
-  (libraries core))
+  (libraries core)
+  (preprocess
+    (pps ppx_jane bisect_ppx)))
 
 (library
   (name tunnel)
   (modules
     tunnel)
-  (libraries core))
+  (libraries core)
+  (preprocess
+    (pps ppx_jane bisect_ppx)))
 
 (library
   (name teleporter)
   (modules
     teleporter)
-  (libraries core))
+  (libraries core)
+  (preprocess
+    (pps ppx_jane bisect_ppx)))
 
 (library
   (name activated_bumper)
   (modules
     activated_bumper)
-  (libraries core))
+  (libraries core)
+  (preprocess
+    (pps ppx_jane bisect_ppx)))
 
 (library
   (name grid_cell)
   (modules
     grid_cell)
-  (libraries core bumper tunnel teleporter activated_bumper))
+  (libraries core bumper tunnel teleporter activated_bumper)
+  (preprocess
+    (pps ppx_jane bisect_ppx)))
 
 (library
   (name grid)
@@ -35,5 +45,5 @@
     core
     grid_cell)
   (preprocess
-  (pps ppx_jane)))
+    (pps ppx_jane bisect_ppx)))
 

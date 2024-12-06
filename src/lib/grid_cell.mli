@@ -56,31 +56,44 @@ type grid_cell = {
     cell_type: grid_cell_type; (* the type of grid cell *)
 }
 
-(* Function to converts the orientation to a string value *)
+(* Function to convert the orientation to a string value *)
 val orientation_to_string : orientation -> string 
 
+(* Function to compare the cell type of a grid_cell and a grid_cell_type object *)
 val compare_grid_cell_type : grid_cell -> grid_cell_type -> bool
 
+(* Function to convert a tunnel object's direction to a normal direction *)
 val tunnel_direction_to_direction : Tunnel.direction -> direction 
 
+(* Function to convert a normal direction to a tunnel object's direction *)
 val direction_to_tunnel_direction : direction -> Tunnel.direction 
 
+(* Function to convert a normal direction to a bumper object's direction *)
 val direction_to_bumper_direction : direction -> Bumper.direction 
 
+(* Function to convert a normal direction to an activated bumper object's direction *)
 val direction_to_activated_bumper_direction : direction -> Activated_bumper.direction 
 
+(* Function to convert a normal orientation to a tunnel object's orientation *)
 val orientation_to_tunnel_orientation : orientation -> Tunnel.orientationTunnel 
 
+(* Function to convert a normal orientation to a bumper object's orientation *)
 val orientation_to_bumper_orientation : orientation -> Bumper.orientation
 
+(* Function to convert a normal orientation to an activated bumper object's orientation *)
 val orientation_to_activated_bumper_orientation : orientation -> Activated_bumper.orientation
 
+(* Function to convert a bumper object's direction to a normal direction *)
 val bumper_direction_to_direction : Bumper.direction -> direction 
 
+(* Function to convert a grid cell object to its string representation *)
 val to_string : grid_cell -> string
 
+(* Function to convert a bumper's orientation to its string representation *)
 val get_bumper_orientation_string : grid_cell_type -> string
 
+(* Function to convert a tunnel's orientation to its string representation *)
 val get_tunnel_orientation_string : grid_cell_type -> string
 
+(* Function to check if a given grid_cell_type is a teleporter_marker *)
 val is_teleporter_marker : grid_cell_type -> bool
