@@ -87,7 +87,6 @@ let direction_to_bumper_direction (dir: direction) : Bumper.direction =
   | Left -> Bumper.Left
   | Right -> Bumper.Right
 
-
 let direction_to_activated_bumper_direction (dir: direction) : Activated_bumper.direction =
   match dir with
   | Up -> Activated_bumper.Up
