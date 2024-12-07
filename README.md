@@ -22,7 +22,7 @@ An example grid can be seen as follows:
 
 After a few seconds, the bumpers in the grid will disappear, and the user will be prompted to enter the ball's ending location. In this case, the answer is [2, 4] where the answer is given in the form [row, col]. So the user would enter "[2, 4]" to move on to the next round. If the user enters the correct answer, they will need to press 'c' to move onto the next level, otherwise they are presented with a "GAME OVER".
 
-To execute the game, use: dune exec _build/default/src/bin/pinball_panic.exe
+To execute the game on the command line, use: dune exec _build/default/src/bin/pinball_panic.exe
 
 To execute the server implementation of the game, use: dune exec ./pinball_server.exe 
 
@@ -34,9 +34,9 @@ To execute the server implementation of the game, use: dune exec ./pinball_serve
 
 # Mock Use
 
-This is our current basic command line implementation of the game without the grid disappearing and only using bumpers in the generated grids. We will build on this code and update this section as we add more advanced features and functionality.
+This is our current command line implementation of the game without the grid disappearing and using bumpers, teleporters and tunnels in the generated grids. We will build on this code and update this section as we add more advanced features and include the activated bumpers.
 
-Note: The command line interface that we implemented in the grid.ml and pinball_panic.ml files work up to level 8 of the game as we haven't implemented the activated bumper functionality yet. That is our main goal for the weekend and week leading up to the presentation. The web game server also uses the grid.ml for generating the grid, so that also only works until level 8 of the game. We haven't implemented the part where the grid disappears yet for either the command line or the front-end, but we plan to do that at the end once everything is working.
+Note: The command line interface that we implemented in the grid.ml and pinball_panic.ml files work up to level 8 of the game as we haven't implemented the activated bumper functionality yet. That is our main goal for the weekend and week leading up to the presentation. The web game server also uses the grid.ml for generating the grid, so that also only works until level 8 of the game. We haven't implemented the part where the grid disappears yet for the command line (it works on the front-end), but we plan to do that at the end once everything is working. Also, we realized that the row,col indices are swapped in the server so we need to go back and change that.
 
 **Example Run:**
 
@@ -111,6 +111,9 @@ Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, a
   - We will use this library to develop the web-version of this game. This will still utilize the grid library and all the features of the grid, but instead of a command line interactive game, it will be a web application.
 - **Bisect**
   - We will use this to check our testing coverage of our game when we build our test library to test the functionality and edge cases of the game to ensure that it runs correctly.
+ 
+ ### Generalization to form a functor:
+ We couldn't think of any possible ways to generalize the game as it depends on the dynamic generation of the grid where each grid object interaction is pre-defined, so it would be hard to create an abstract implementation where the user defines the interaction of each grid object as then the user would have to provide the functions that define these grid object interactions which defy the purpose of a functor. Instead of generalizing, we could increase the number of levels steadily, increasing the difficulty such that the higher levels have enormous grids with large numbers of objects with combinations of interactions between various grid objects. We can also improve it such that it places random grid objects within the grid that don't interact with the ball to throw the user off, making it more difficult for them to discern the ball's path. We would appreciate any advice on generalizing the pinball game and improving our code regarding the level progression difficulty. 
 
 # Implementation Plan:
 
@@ -129,7 +132,7 @@ Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, a
 
 ### Week 3
 1. Activated bumper feature implementation 
-2. Add grid.ml tests - 
+2. Add grid.ml tests - Mostly done (need to add a lot more tests to check the error and edge cases)
 3. Finish web app
 
 ### Week 4:
