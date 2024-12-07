@@ -18,6 +18,8 @@ let series =
   [ Pinball_tests.series
   ; Bumper_tests.series
   ; Tunnel_tests.series
-  ; Teleporter_tests.series ]
+  ; Teleporter_tests.series
+  ; Grid_cell_tests.series
+  ]
 
 let () = run_test_tt_main series

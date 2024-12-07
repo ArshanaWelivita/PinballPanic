@@ -25,6 +25,15 @@
     ounit2
     core))
 
+(library
+  (name grid_cell_tests)
+  (modules grid_cell_tests)
+  (libraries
+    grid
+    grid_cell
+    ounit2
+    core))
+
 (test
   (name pinball_tests)
   (modules pinball_tests)
@@ -40,5 +49,6 @@
     bumper_tests
     tunnel_tests
     teleporter_tests
+    grid_cell_tests
   )
   )
