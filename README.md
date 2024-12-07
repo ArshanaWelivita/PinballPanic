@@ -112,7 +112,7 @@ Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, a
 - **Bisect**
   - We will use this to check our testing coverage of our game when we build our test library to test the functionality and edge cases of the game to ensure that it runs correctly.
  
- ### Generalization to form a functor:
+ ### Generalization:
  We couldn't think of any possible ways to generalize the game as it depends on the dynamic generation of the grid where each grid object interaction is pre-defined, so it would be hard to create an abstract implementation where the user defines the interaction of each grid object as then the user would have to provide the functions that define these grid object interactions which defy the purpose of a functor. Instead of generalizing, we could increase the number of levels steadily, increasing the difficulty such that the higher levels have enormous grids with large numbers of objects with combinations of interactions between various grid objects. We can also improve it such that it places random grid objects within the grid that don't interact with the ball to throw the user off, making it more difficult for them to discern the ball's path. We would appreciate any advice on generalizing the pinball game and improving our code regarding the level progression difficulty. 
 
 # Implementation Plan:
