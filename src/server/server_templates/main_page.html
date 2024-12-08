@@ -37,15 +37,54 @@
         .unknown {
             background-color: #cccccc;
         }
+        td.hidden {
+            background-color: lightgray;
+        }
+        .grid th,
+        .grid td {
+            border: 1px solid black;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+        }
+        .hidden {
+            visibility: hidden;
+        }
+        .outer-square {
+            background-color: lightblue;
+            border: 2px solid rgb(229, 255, 79);
+        }
     </style>
+    
     <script>
-    function startNewLevel() { 
+        function hideDynamicElements() {
+          const dynamicElements = document.querySelectorAll(".dynamic");
+          dynamicElements.forEach((element) => {
+            element.classList.add("hidden");
+          });
+        }
+      
+        // Automatically hide dynamic elements after 3 seconds
+        setTimeout(hideDynamicElements, 5000);
+      </script>
+      
+    <script>
+      function startNewLevel() {
         fetch('/generate-level')
-        .then(response => response.text())
-        .then(html => { const container = document.getElementById('grid-container'); 
-        container.innerHTML = html; 
-        setTimeout(() => { container.innerHTML = '<h2>Prepare your answer!</h2>'; }, 5000); })
-        .catch(err => console.error('Error fetching grid:', err)); }
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('grid-container').innerHTML = html;
+            document.getElementById('generate-grid-btn').disabled = true;
+          });
+      }
+    
+      function revealGrid() {
+        fetch('/generate-level?revealed=true')
+          .then(response => response.text())
+          .then(html => {
+            document.getElementById('grid-container').innerHTML = html;
+          });
+      }
     </script>
 </head>
 
@@ -55,11 +94,13 @@
     <button id="generate-grid-btn" onclick="startNewLevel(); this.disabled=true;">
         Start New Level
     </button>
+    <br>
+    <br>
     <form method="GET" action="/submit-answer">
-        <label for="x">X Coordinate:</label>
-        <input type="text" id="x" name="x" required /><br><br>
-        <label for="y">Y Coordinate:</label>
-        <input type="text" id="y" name="y" required /><br><br>
+        <label for="row">Row:</label>
+        <input type="text" id="row" name="row" required /><br><br>
+        <label for="col">Column:</label>
+        <input type="text" id="col" name="col" required /><br><br>
         <input type="submit" value="Submit" />
     </form>
 </body>
