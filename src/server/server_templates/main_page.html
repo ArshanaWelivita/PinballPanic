@@ -4,20 +4,23 @@
 <head>
     <title>Pinball Panic</title>
     <style>
-        .grid {
+        table.grid {
             border-collapse: collapse;
-            margin: 20px auto;
-            text-align: center;
-        }
-        .grid th, .grid td {
-            border: 1px solid black;
-            padding: 5px;
-            width: 30px;
-            height: 30px;
-        }
-        .grid th {
-            background-color: #f0f0f0;
+            margin: auto;
+            font-size: 18px;
             font-weight: bold;
+            table-layout: fixed;
+        }
+        table.grid td, table.grid th {
+            border: 1px solid black;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            vertical-align: middle;
+            background-color: white;
+        }
+        .dynamic {
+            border: 1px solid black;
         }
         .empty {
             background-color: #ffffff;
@@ -34,25 +37,16 @@
         .entry {
             background-color: #d4edda;
         }
-        .unknown {
-            background-color: #cccccc;
-        }
-        td.hidden {
-            background-color: lightgray;
-        }
-        .grid th,
-        .grid td {
-            border: 1px solid black;
-            width: 30px;
-            height: 30px;
-            text-align: center;
-        }
         .hidden {
             visibility: hidden;
+            background-color: #ffffff;
+            border: 1px solid black;
+        }
+        .persistent.hidden {
+            visibility: visible;
         }
         .outer-square {
             background-color: lightblue;
-            border: 2px solid rgb(229, 255, 79);
         }
     </style>
     
@@ -61,7 +55,7 @@
           const dynamicElements = document.querySelectorAll(".dynamic");
           dynamicElements.forEach((element) => {
             element.classList.add("hidden");
-          });
+            });
         }
       
         // Automatically hide dynamic elements after 3 seconds
