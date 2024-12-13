@@ -24,7 +24,7 @@ After a few seconds, the bumpers in the grid will disappear, and the user will b
 
 To execute the game on the command line, use: dune exec _build/default/src/bin/pinball_panic.exe
 
-To execute the server implementation of the game, use: dune exec ./pinball_server.exe 
+To execute the server implementation of the game, use: dune exec src/server/pinball_server.exe
 
 ### List of CLI Commands:
 

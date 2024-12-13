@@ -71,7 +71,7 @@ let generate_level _ =
 
 (* Render the main page, displays and hides grid when new level starts *)
 let render_main_page () =
-  let html_template = In_channel.read_all "./server_templates/main_page.html" in
+  let html_template = In_channel.read_all "src/server/server_templates/main_page.html" in
   let current_level_str = string_of_int !current_level in
   String.substr_replace_all html_template ~pattern:"{{current_level}}" ~with_:current_level_str
 
