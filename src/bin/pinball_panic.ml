@@ -1,7 +1,7 @@
 open Core
 open Grid_cell
 
-let round_num = ref 1
+let round_num = ref 8
 (* let round_num = 7 <- used for debugging purposes *)
 
 let arrow_of_direction (initial_direction : direction) : string = match initial_direction with 
@@ -106,6 +106,7 @@ let display_grid_for_game (grid_size: int) (grid: grid_cell array array ) : unit
       | "Bumper" -> printf "  %s  " (get_bumper_orientation_string grid.(i).(j).cell_type)
       | "Tunnel" -> printf "  %s  " (get_tunnel_orientation_string grid.(i).(j).cell_type)
       | "Teleporter" -> printf "  ★  "
+      | "ActivatedBumper" -> printf "  %s  " (get_activated_bumper_orientation_string grid.(i).(j).cell_type)
       | _ -> failwith "Invalid grid cell type."
     done;
     Out_channel.newline stdout

@@ -192,7 +192,7 @@ val move_to_second_teleporter_position : grid -> pos -> direction -> pos
    - initial direction of ball (direction)
    Returns the new direction of the ball after this interaction.
 *)
-val determine_new_ball_direction : grid_cell -> direction -> direction
+val determine_new_ball_direction : grid_cell -> direction -> grid -> direction
 
 (* Function that randomly selects the marker for the next grid object to be placed in the grid based on the list of grid object types
    specific for each level.

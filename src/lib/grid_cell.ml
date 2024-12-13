@@ -119,6 +119,14 @@ let bumper_direction_to_direction (dir: Bumper.direction) : direction =
   | Bumper.Left -> Left
   | Bumper.Right -> Right
 
+let activated_bumper_direction_to_direction (dir: Activated_bumper.direction) : direction =
+  match dir with
+  | Activated_bumper.Up -> Up
+  | Activated_bumper.Down -> Down
+  | Activated_bumper.Left -> Left
+  | Activated_bumper.Right -> Right
+  
+
 let to_string (cell: grid_cell) : string = match cell.cell_type with 
   | Entry _ -> "Entry"
   | Exit _ -> "Exit"
@@ -138,6 +146,11 @@ let get_bumper_orientation_string (b: grid_cell_type) : string = match b with
   | Bumper {orientation = UpRight; _} -> "⟋"
   | _ -> failwith "Error: bumper can only have orientation DownRight or UpRight."
 
+let get_activated_bumper_orientation_string (b: grid_cell_type) : string = match b with 
+| ActivatedBumper {orientation = DownRight; _} -> "⧅"
+| ActivatedBumper {orientation = UpRight; _} -> "⧄"
+| _ -> failwith "Error: activated bumper can only have orientation DownRight or UpRight."
+
 let get_tunnel_orientation_string (b: grid_cell_type) : string = match b with 
   | Tunnel {orientation = Vertical; _} -> "||"
   | Tunnel {orientation = Horizontal; _} -> "="
@@ -145,4 +158,8 @@ let get_tunnel_orientation_string (b: grid_cell_type) : string = match b with
 
 let is_teleporter_marker (cell_type: grid_cell_type) : bool = match cell_type with 
   | TeleporterLevelMarker -> true
+  | _ -> false
+
+let is_activated_bumper (cell: grid_cell) : bool = match cell.cell_type with 
+  |ActivatedBumper {is_active = true; _ } -> true
   | _ -> false

@@ -97,3 +97,9 @@ val get_tunnel_orientation_string : grid_cell_type -> string
 
 (* Function to check if a given grid_cell_type is a teleporter_marker *)
 val is_teleporter_marker : grid_cell_type -> bool
+
+val activated_bumper_direction_to_direction : Activated_bumper.direction -> direction 
+
+val get_activated_bumper_orientation_string : grid_cell_type -> string
+
+val is_activated_bumper : grid_cell -> bool
