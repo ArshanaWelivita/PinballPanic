@@ -23,6 +23,8 @@ let render_grid (grid : Grid.grid) : string =
     "<tr><th></th>" ^ String.concat ~sep:"" (Array.to_list header_cells) ^ "</tr>\n"
   in
 
+  (* Check if entrance and exit are in the same position *)
+
   (* Generate rows with row numbers *)
   let rows =
     Array.mapi grid ~f:(fun i row ->
