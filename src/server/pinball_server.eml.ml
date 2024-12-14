@@ -37,6 +37,7 @@ let render_grid (grid : Grid.grid) : string =
           | "Empty" -> "<td class='" ^ cell_class ^ "'></td>"
           | "InBallPath" -> "<td class='path'></td>"
           | "Bumper" -> "<td class='bumper dynamic'>" ^ (get_bumper_orientation_string cell.cell_type) ^ "</td>"
+          | "ActivatedBumper" -> "<td class='activatedBumper dynamic'>" ^ (get_activated_bumper_orientation_string cell.cell_type) ^ "</td>"
           | "Tunnel" -> "<td class='tunnel dynamic'>" ^ (get_tunnel_orientation_string cell.cell_type) ^ "</td>"
           | "Teleporter" -> "<td class='teleporter dynamic'>*</td>"
           | _ -> failwith "Unexpected grid cell type."
