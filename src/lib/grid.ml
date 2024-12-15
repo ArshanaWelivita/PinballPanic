@@ -24,7 +24,7 @@ let get_level_settings (level: int) : int * int * int * (grid_cell_type list) * 
   List.Assoc.find_exn level_bounce_settings ~equal:Int.equal level
 
 let get_grid_size (level: int) : int = 
-  let grid_size, _, _ , _ , _ = get_level_settings level in 
+  let grid_size, _ , _ , _ , _ = get_level_settings level in 
   grid_size
 
 let out_of_bounds_check (row, col : pos) (grid_size: int) : bool = 
