@@ -1,11 +1,31 @@
 open Core
 open Grid_cell
-(* open Lwt.Syntax *)
+
 
 (* Game state information *)
 let current_level = ref 1
 type answer = {col : int ref; row : int ref}
 let current_answer = { col = ref 0; row = ref 0}
+
+
+(* Return associated message given the level number *)
+let get_level_message (level : int) : string = 
+  match level with
+  | 0 -> " "
+  | 1 -> " "
+  | 2 -> " "
+  | 3 -> "Introducting tunnels this level! These objects will transport the ball straight through, or bounce off and reverse directions, all depending on the tunnel's orientation."
+  | 4 -> " "
+  | 5 -> "Uhoh! The next level has teleporters. which will teleport the ball to another location on the grid, preserving direction."
+  | 6 -> " "
+  | 7 -> " "
+  | 8 -> "Watch out! This next level has activated bumpers! The ball will pass through them the first time, but will act like a regular bumper from then on."
+  | 9 -> " "
+  | 10 -> "Pay attention! Things are starting to heat up, and the levels will only get harder!"
+  | 11 -> " "
+  | 12 -> " "
+  | 13 -> "Last level! It's time to put all of your skills to the test! Good luck!"
+  | _ -> failwith "Invalid level number."
 
 (* Render the HTML grid based on a grid data structure *)
 let render_grid (grid : Grid.grid) : string =
@@ -77,7 +97,8 @@ let generate_level _ =
 let render_main_page () =
   let html_template = In_channel.read_all "src/server/server_templates/main_page.html" in
   let current_level_str = string_of_int !current_level in
-  String.substr_replace_all html_template ~pattern:"{{current_level}}" ~with_:current_level_str
+  let level_message_str = get_level_message !current_level in
+  String.substr_replace_all (String.substr_replace_all html_template ~pattern:"{{current_level}}" ~with_:current_level_str) ~pattern:"{{level_message}}" ~with_:level_message_str
 
 (* Renders the welcome page *)
 let render_welcome_page () =
