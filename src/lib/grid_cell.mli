@@ -103,3 +103,5 @@ val activated_bumper_direction_to_direction : Activated_bumper.direction -> dire
 val get_activated_bumper_orientation_string : grid_cell_type -> string
 
 val is_activated_bumper : grid_cell -> bool
+
+val is_activated_bumper_marker : grid_cell_type -> bool

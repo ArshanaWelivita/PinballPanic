@@ -85,22 +85,20 @@ off the bumper in a perpendicular direction and then exits the grid at position 
 identify the exit position of the ball from the grid where it is given in the form [row, col]. In the actual game, the grid will only be 
 displayed for a couple seconds, so be speedy when determining the end position. Good luck!\n")
 
-
-let display_grid_for_game (grid_size: int) (grid: grid_cell array array ) : unit =
-  (* let arrow = arrow_of_direction initial_direction in <- will implement the arrow for entry later *)
-  let full_size = grid_size + 1 in
+(* Displays the grid *)
+let display_grid (grid_size: int) (grid: grid_cell array array) (entry_exit_same: bool) : unit =
   printf "   ";
-  for j = 0 to full_size do
+  for j = 0 to grid_size + 1 do
     printf "  %d  " j
   done;
   Out_channel.newline stdout;
 
-  for i = 0 to full_size do
+  for i = 0 to grid_size + 1 do
     printf "%d  " i;
     for j = 0 to Array.length grid.(i) - 1 do
       match to_string grid.(i).(j) with
       | "Entry" -> printf "  E  "
-      | "Exit" -> printf "  -  "
+      | "Exit" -> if entry_exit_same then printf "  E  " else printf "  -  "
       | "Empty" -> printf "  -  "
       | "InBallPath" -> printf "  -  "
       | "Bumper" -> printf "  %s  " (get_bumper_orientation_string grid.(i).(j).cell_type)
@@ -112,6 +110,13 @@ let display_grid_for_game (grid_size: int) (grid: grid_cell array array ) : unit
     Out_channel.newline stdout
   done
 
+(* Display the grid with grid objects *)
+let display_grid_with_grid_objects (entry_pos: pos) (correct_exit_pos: pos) (grid: grid_cell array array) (grid_size: int): unit = 
+  if Grid.compare_pos entry_pos correct_exit_pos then 
+    display_grid grid_size grid true
+  else 
+    display_grid grid_size grid false
+
 (* Function to handle each type of input command *)
 let handle_command command =
   (* Function to handle a round of PinballPanic *)
@@ -119,11 +124,33 @@ let handle_command command =
     (* Print grid in terminal along with level name *)
     print_endline ("Level " ^ Int.to_string !round_num);
 
-    let (grid, _, correct_exit_pos, _) = Grid.generate_grid !round_num in
+    let (grid, entry_pos, correct_exit_pos, _) = Grid.generate_grid !round_num in
     let grid_size = Grid.get_grid_size !round_num in 
-    
-    (* Display the grid with grid objects *)
-    display_grid_for_game grid_size grid;
+
+    Out_channel.flush stdout;
+
+    display_grid_with_grid_objects entry_pos correct_exit_pos grid grid_size;
+
+    Out_channel.flush stdout;
+
+    (* Wait for 5 seconds before clearing the terminal *)
+    let () = Core_unix.sleep 5 in
+
+    (* Clear the terminal screen after the 5-second wait *)
+    ignore (Core_unix.system "clear");
+    Out_channel.flush stdout;
+
+    (* Replace all grid cell objects with Empty, skipping Entry *)
+    for i = 0 to grid_size do
+      for j = 0 to Array.length grid.(i) - 1 do
+        (* Skip updating Entry cells *)
+        match grid.(i).(j).cell_type with
+        | Entry _ -> () (* Do nothing, preserve Entry *)
+        | _ -> grid.(i).(j) <- { grid.(i).(j) with cell_type = Empty }
+      done
+    done;
+
+    display_grid_with_grid_objects entry_pos correct_exit_pos grid grid_size; 
 
     (* Print ending grid with label end positions *)
     print_endline "Enter your answer as [row, col]: ";
@@ -133,7 +160,7 @@ let handle_command command =
 
     match String.equal answer correct_answer with
       | true ->
-      (* case 1: correct *)
+        (* case 1: correct *)
         print_endline "Correct! Enter 'c' to continue to the next round.";
         (* increment round number *)
         round_num := !round_num + 1;

@@ -7,6 +7,16 @@ type grid = grid_cell array array
 (* Type representing a position as a tuple of integers where it is used to find the position in the grid *)
 type pos = int * int
 
+(* Type representing the settings for a level of the grid as a record type *)
+type level_settings = {
+  grid_size: int;
+  min_objects: int;
+  max_objects: int;
+  grid_object_types: grid_cell_type list;
+  teleporter_objects: int;
+  activated_bumper_objects: int;
+}
+
 (* Function to retrieve the game settings for a specified level.
    - grid size (int)
    - minimum grid objects (int)
@@ -15,7 +25,7 @@ type pos = int * int
    - number of teleporter objects in each level (there can only be 1 teleporter pair per level otherwise the player won't be able to tell which teleporter the ball 
    will exit from when if there are multiple possible exits)
  *)
-val get_level_settings : int -> int * int * int * (grid_cell_type list) * int
+val get_level_settings : int -> level_settings
 
 (* Function to get the grid size (n x n) given the current level.
    Returns grid size n for a square grid 
@@ -199,9 +209,10 @@ val determine_new_ball_direction : grid_cell -> direction -> grid -> direction
    - number of teleporters (int) used to determine if the teleporter pair was already placed in the grid or not as we can only have
       one teleporter pair in the grid regardless of level.
    - list of grid object types (grid cell type list)
+   - number of activated bumper objects (int) - we have at most 2 per level in higher levels and 1 per level in lower levels
    Returns the grid cell type that was randomly selected that will decide the type of the next grid object.
 *)
-val randomly_choose_next_grid_object_marker : int -> grid_cell_type list -> grid_cell_type
+val randomly_choose_next_grid_object_marker : int -> grid_cell_type list -> int -> grid_cell_type
 
 (* Function which randomly generates the orientation for the grid object depending on its type. 
    - type of grid object (grid_cell_type)
@@ -213,9 +224,10 @@ val get_grid_object_marker_orientation : grid_cell_type -> orientation
    - number of teleporter objects (int)
    - list of grid object types (grid_cell_type list)
    - direction of new grid object (direction)
+   - number of activated bumper objects (int)
    Returns the new defined grid cell type with its properties, the orientation of this next grid object and the marker type for the grid object
 *)
-val generate_next_grid_object : int -> grid_cell_type list -> direction -> grid_cell_type * orientation * grid_cell_type
+val generate_next_grid_object : int -> grid_cell_type list -> direction -> int -> grid_cell_type * orientation * grid_cell_type
 
 (* Function that simulates the ball's path through the grid and places the grid objects dynamically based on the ball's position. 
 This function is recursive so it will continue simulating the ball's path and placing the grid objects until it either goes out of bounds 
@@ -234,10 +246,11 @@ change the affect the accuracy of the grid generated.
    - set of visited positions ((pos * direction) Set.Poly.t) which is used to keep track of whether the ball is going in a loop
    - list of grid object types for that level so that we can randomly select from a list of grid cell object types specified for a level
    - number of teleporter objects placed (int) makes sure that we only place 1 teleporter pair in the grid when needed
-   Returns the exit position and direction of the ball from the grid. This position could either be a valid exit position or be invalid to represent
-   that this simulation was unsuccessful.
+   - number of activated bumper objects placed (int) to make sure we don't have too many activated bumper objects in the grid
+   Returns the exit position and direction of the ball from the grid. This position could either be a valid exit position which is returned as Ok ...
+   or be invalid which is returned as Error ... to represent that this simulation was unsuccessful. It uses a result type to accomplish this Ok/Error handling.
 *)
-val simulate_ball_path : grid -> pos -> direction -> int -> int -> orientation -> int -> (pos * direction) Set.Poly.t -> grid_cell_type list -> int -> pos * direction 
+val simulate_ball_path : grid -> pos -> direction -> int -> int -> orientation -> int -> (pos * direction) Set.Poly.t -> grid_cell_type list -> int -> int -> (pos * direction, string) result
 
 (* Function to mark all the cells that the ball visited on its path from the entry position to the first placed grid object in the 
    grid to have a grid cell type of InBallPath.
@@ -269,9 +282,10 @@ val randomly_choose_entry_position : int -> pos * direction
    - set of visited positions ((pos * direction) Set.Poly.t) which is used to keep track of whether the ball is going in a loop
    - list of grid object types for that level so that we can randomly select from a list of grid cell object types specified for a level
    - number of teleporter objects placed (int) makes sure that we only place 1 teleporter pair in the grid when needed
-   Returns the ball exit position and direction as determined by simulate_ball_path.
+   Returns the ball exit position and direction as determined by simulate_ball_path. Uses a result type so returns Error if there was an error generating path 
+   or Ok ... with the ball exit position and direction.
 *)
-val get_exit_position_and_direction : grid -> pos -> direction -> int -> int -> orientation -> int -> (pos * direction) Core.Set.Poly.t -> grid_cell_type list -> int -> pos * direction
+val get_exit_position_and_direction : grid -> pos -> direction -> int -> int -> orientation -> int -> (pos * direction) Core.Set.Poly.t -> grid_cell_type list -> int -> int -> (pos * direction, string) result
 
 (* Goes through all the cells in the grid and counts the number of grid cell objects placed. 
    - final pinball grid (grid)

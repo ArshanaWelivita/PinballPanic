@@ -5,6 +5,7 @@
   (libraries
     core
     core_unix
+    unix
     grid
     bumper)
   (preprocess 

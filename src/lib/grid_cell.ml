@@ -152,7 +152,7 @@ let get_activated_bumper_orientation_string (b: grid_cell_type) : string = match
 | _ -> failwith "Error: activated bumper can only have orientation DownRight or UpRight."
 
 let get_tunnel_orientation_string (b: grid_cell_type) : string = match b with 
-  | Tunnel {orientation = Vertical; _} -> "||"
+  | Tunnel {orientation = Vertical; _} -> "𝄁"
   | Tunnel {orientation = Horizontal; _} -> "="
   | _ -> failwith "Error: bumper can only have orientation DownRight or UpRight."
 
@@ -162,4 +162,8 @@ let is_teleporter_marker (cell_type: grid_cell_type) : bool = match cell_type wi
 
 let is_activated_bumper (cell: grid_cell) : bool = match cell.cell_type with 
   |ActivatedBumper {is_active = true; _ } -> true
+  | _ -> false
+
+let is_activated_bumper_marker (cell_type: grid_cell_type) : bool = match cell_type with 
+  | ActivatedBumperLevelMarker -> true
   | _ -> false
