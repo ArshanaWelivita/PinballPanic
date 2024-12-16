@@ -12,22 +12,23 @@ type level_settings = {
   grid_object_types: grid_cell_type list;
   teleporter_objects: int;
   activated_bumper_objects: int;
+  num_extra_objects: int;
 }
 
 let level_bounce_settings = [
-  (1, { grid_size = 3; min_objects = 1; max_objects = 1; grid_object_types = [BumperLevelMarker]; teleporter_objects = 0; activated_bumper_objects = 0 });
-  (2, { grid_size = 4; min_objects = 1; max_objects = 2; grid_object_types = [BumperLevelMarker]; teleporter_objects = 0; activated_bumper_objects = 0 });
-  (3, { grid_size = 4; min_objects = 2; max_objects = 3; grid_object_types = [BumperLevelMarker; TunnelLevelMarker]; teleporter_objects = 0; activated_bumper_objects = 0 });
-  (4, { grid_size = 4; min_objects = 3; max_objects = 4; grid_object_types = [BumperLevelMarker; TunnelLevelMarker]; teleporter_objects = 0; activated_bumper_objects = 0 });
-  (5, { grid_size = 5; min_objects = 4; max_objects = 5; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 0 });
-  (6, { grid_size = 5; min_objects = 5; max_objects = 6; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 0 });
-  (7, { grid_size = 6; min_objects = 6; max_objects = 8; grid_object_types = [BumperLevelMarker; TunnelLevelMarker; TeleporterLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 0 });
-  (8, { grid_size = 6; min_objects = 6; max_objects = 8; grid_object_types = [BumperLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1 });
-  (9, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [BumperLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1 });
-  (10, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1 });
-  (11, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [TeleporterLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2 });
-  (12, { grid_size = 7; min_objects = 8; max_objects = 10; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2 });
-  (13, { grid_size = 8; min_objects = 9; max_objects = 12; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2 });
+  (1, { grid_size = 3; min_objects = 1; max_objects = 1; grid_object_types = [BumperLevelMarker]; teleporter_objects = 0; activated_bumper_objects = 0; num_extra_objects = 0 });
+  (2, { grid_size = 4; min_objects = 1; max_objects = 2; grid_object_types = [BumperLevelMarker]; teleporter_objects = 0; activated_bumper_objects = 0; num_extra_objects = 0 });
+  (3, { grid_size = 4; min_objects = 2; max_objects = 3; grid_object_types = [BumperLevelMarker; TunnelLevelMarker]; teleporter_objects = 0; activated_bumper_objects = 0; num_extra_objects = 0 });
+  (4, { grid_size = 4; min_objects = 3; max_objects = 4; grid_object_types = [BumperLevelMarker; TunnelLevelMarker]; teleporter_objects = 0; activated_bumper_objects = 0; num_extra_objects = 0 });
+  (5, { grid_size = 5; min_objects = 4; max_objects = 5; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 0; num_extra_objects = 0 });
+  (6, { grid_size = 5; min_objects = 5; max_objects = 6; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 0; num_extra_objects = 0 });
+  (7, { grid_size = 6; min_objects = 6; max_objects = 8; grid_object_types = [BumperLevelMarker; TunnelLevelMarker; TeleporterLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 0; num_extra_objects = 0 });
+  (8, { grid_size = 6; min_objects = 6; max_objects = 8; grid_object_types = [BumperLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1; num_extra_objects = 0 });
+  (9, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [BumperLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1; num_extra_objects = 1 });
+  (10, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1; num_extra_objects = 2 });
+  (11, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [TeleporterLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2; num_extra_objects = 3 });
+  (12, { grid_size = 7; min_objects = 8; max_objects = 10; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2; num_extra_objects = 3 });
+  (13, { grid_size = 8; min_objects = 9; max_objects = 12; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2; num_extra_objects = 3 });
 ]
 
 let get_level_settings (level: int) : level_settings =
@@ -342,7 +343,7 @@ let steer_toward_activated_bumper (current_pos: pos) (target_bumper: pos) (curre
 
 
 let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction) (objects_left: int) (grid_size: int) (orientation: orientation) (bounce_limit: int)
-  (visited: (pos * direction) Set.Poly.t) (grid_object_types : grid_cell_type list) (teleporter_objects: int) (activated_bumper_objects: int): (pos * direction, string) result  =
+  (visited: (pos * direction) Set.Poly.t) (grid_object_types : grid_cell_type list) (teleporter_objects: int) (activated_bumper_objects: int) : (pos * direction, string) result  =
   (* printf "Ball position: %d %d | Direction: %s | Objects left: %d | Bounce limit: %d\n"
   (fst pos) (snd pos) (string_of_direction direction) objects_left bounce_limit; <- used for debugging by printing current position of the ball*)
 
@@ -486,6 +487,50 @@ let count_objects_in_grid (grid: grid) : int =
     )
   ) 
 
+let get_empty_grid_cell_positions_outside_ball_path (grid : grid) : pos list =
+  (* Iterate through the grid and collect empty positions *)
+  let size = Array.length grid in
+  Array.foldi grid ~init:[] ~f:(fun i acc row ->
+    Array.foldi row ~init:acc ~f:(fun j acc cell ->
+      match cell.cell_type with
+      | Bumper _ | Tunnel _ | Teleporter _ | ActivatedBumper _ | InBallPath -> acc
+      | _ -> 
+        if is_within_actual_grid size i j then (i, j) :: acc
+        else acc
+    )
+  )
+
+let place_extra_grid_objects_at_random_positions (grid : grid) (num_extra_objects : int) : grid =
+  (* Get all valid empty positions outside the ball path *)
+  let empty_positions = get_empty_grid_cell_positions_outside_ball_path grid in
+
+  (* Teleporters should not be in the list of viable additional grid cell types *)
+  let object_types = [
+    Bumper {direction = Up; orientation = UpRight};
+    Bumper {direction = Up; orientation = DownRight};
+    Tunnel {direction = Up; orientation = Vertical};
+    Tunnel {direction = Up; orientation = Horizontal};
+    ActivatedBumper {direction = Up; orientation = UpRight; is_active = false};
+    ActivatedBumper {direction = Up; orientation = DownRight; is_active = false}
+    ] in
+
+  (* Randomize and take the first num_objects positions *)
+  let selected_positions = 
+    List.take (List.permute empty_positions) num_extra_objects
+  in
+
+  if num_extra_objects > 0 then
+    (* Create a new grid with the specified object type at the selected positions *)
+    Array.mapi grid ~f:(fun i row ->
+      Array.mapi row ~f:(fun j cell ->
+        if List.exists selected_positions ~f:(fun (x, y) -> x = i && y = j) then
+          { cell with cell_type = List.random_element_exn object_types }
+        else
+          cell
+      )
+    )
+  else grid
+
 let rec generate_grid (level: int) : grid * pos * pos * direction =
   (* Get the level settings and generate the initial grid where all cells are initialized to Empty *)
   let level_settings = get_level_settings level in
@@ -519,7 +564,9 @@ let rec generate_grid (level: int) : grid * pos * pos * direction =
 
     (* Check if the number of grid objects placed meets the minimum requirement. If not, it regenerates the grid for that level *)
     if objects_placed >= object_count then
-      (grid, entry_pos, exit_pos, initial_direction) (* Return the viable grid and the ball's properties (entry position, exit position and entry direction) *)
+      let num_extra_objects = level_settings.num_extra_objects in
+      let updated_grid = place_extra_grid_objects_at_random_positions grid num_extra_objects in (* Add extra grid objects if needed *)
+      (updated_grid, entry_pos, exit_pos, initial_direction) (* Return the viable grid and the ball's properties (entry position, exit position and entry direction) *)
     else
       generate_grid level
     end

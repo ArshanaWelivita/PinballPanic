@@ -15,6 +15,7 @@ type level_settings = {
   grid_object_types: grid_cell_type list;
   teleporter_objects: int;
   activated_bumper_objects: int;
+  num_extra_objects: int;
 }
 
 (* Function to retrieve the game settings for a specified level.
@@ -24,6 +25,7 @@ type level_settings = {
    - list of grid object types allowed for that level (grid_cell_type list)
    - number of teleporter objects in each level (there can only be 1 teleporter pair per level otherwise the player won't be able to tell which teleporter the ball 
    will exit from when if there are multiple possible exits)
+   - number of extra objects, not in the ball's path (int)
  *)
 val get_level_settings : int -> level_settings
 
@@ -320,3 +322,19 @@ val generate_grid : int -> grid * pos * pos * direction
 *)
 val simulate_ball_path_post_generation : grid -> pos -> direction -> int -> pos * direction
 
+(* Function that gets all empty grid positions that are not in the ball's path. Used after generating the grid.
+   Inputs:
+   - Valid pinball panic game grid that doesn't cause loops, has no infinite bounces, and has a valid exit position
+   Returns:
+   - List of all empty grid positions that are not in the path of the ball
+*)
+val get_empty_grid_cell_positions_outside_ball_path : grid -> pos list
+
+(* Function that places extra grid objects in grid (excluding teleporters), after the grid is generated.
+   Inputs:
+   - Valid pinball panic game grid that doesn't cause loops, has no infinite bounces, and has a valid exit position
+   - Number of extra grid objects to be placed (int)
+   Returns:
+   - Updated grid
+*)
+val place_extra_grid_objects_at_random_positions : grid -> int -> grid
