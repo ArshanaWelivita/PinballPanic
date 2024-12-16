@@ -277,7 +277,7 @@ let generate_next_grid_object (teleporter_objects: int) (grid_object_types: grid
 
     (next_grid_cell_type, next_orientation, next_grid_object_marker)
 
-let manhattan_distance (p1: pos) (p2: pos): int =
+(* let manhattan_distance (p1: pos) (p2: pos): int =
   abs (fst p1 - fst p2) + abs (snd p1 - snd p2)
 
 let rec get_placed_grid_object_positions (grid: grid) : pos list =
@@ -322,7 +322,7 @@ let find_nearest_grid_object (grid: grid) (activated_bumper_pos: pos) : pos =
 
 let create_path_to_activated_bumper (activated_bumper_pos: pos) (current_ball_pos: pos) (nearest_grid_object_pos: pos)
   (current_direction: direction) : bool = 
-  true  
+  true   *)
 
 
 (* 
@@ -334,11 +334,11 @@ let steer_toward_activated_bumper (current_pos: pos) (target_bumper: pos) (curre
   else if curr_y < target_y then Right
   else Left *)
 
-let steer_toward_activated_bumper (objects_left: int) (current_pos: pos) (target_bumper: pos) (current_direction: direction): (direction, string) result =
+(* let steer_toward_activated_bumper (objects_left: int) (current_pos: pos) (target_bumper: pos) (current_direction: direction): (direction, string) result =
   if objects_left = 0 then
     Error "We can't generate a path back to the activated bumper as there are no more grid objects to place. We need to regenerate level."
   else 
-    hehe
+    Ok current_direction *)
 
 
 let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction) (objects_left: int) (grid_size: int) (orientation: orientation) (bounce_limit: int)
