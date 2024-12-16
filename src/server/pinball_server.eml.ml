@@ -6,6 +6,7 @@ open Grid_cell
 let current_level = ref 1
 type answer = {col : int ref; row : int ref}
 let current_answer = { col = ref 0; row = ref 0}
+let current_entry = { col = ref 0; row = ref 0}
 
 
 (* Return associated message given the level number *)
@@ -44,6 +45,9 @@ let render_grid (grid : Grid.grid) : string =
   in
 
   (* Check if entrance and exit are in the same position *)
+  let entry_exit_same =
+    !(current_answer.col) = !(current_entry.col) && !(current_answer.row) = !(current_entry.row)
+  in
 
   (* Generate rows with row numbers *)
   let rows =
@@ -55,7 +59,9 @@ let render_grid (grid : Grid.grid) : string =
           in
           match to_string cell with
           | "Entry" -> "<td class='entry'>E</td>"
-          | "Exit" -> "<td class='" ^ cell_class ^ "'></td>"
+          | "Exit" -> 
+            if entry_exit_same then "<td class='entry'>E</td>" 
+            else "<td class='" ^ cell_class ^ "'></td>"
           | "Empty" -> "<td class='" ^ cell_class ^ "'></td>"
           | "InBallPath" -> "<td class='path'></td>"
           | "Bumper" -> "<td class='bumper dynamic'>" ^ (get_bumper_orientation_string cell.cell_type) ^ "</td>"
@@ -84,10 +90,12 @@ let generate_level _ =
     | Some "true" -> true
     | _ -> false
   in *)
-  let (grid, _, end_pos, _) = Grid.generate_grid !current_level in
-  (* Store answer for later *)
+  let (grid, entry_pos, end_pos, _) = Grid.generate_grid !current_level in
+  (* Store entrance and exit positions for later *)
   (current_answer.col) := snd end_pos;
   (current_answer.row) := fst end_pos;
+  (current_entry.col) := snd entry_pos;
+  (current_entry.row) := fst entry_pos;
   (* Generate grid HTML *)
   let grid_html = render_grid grid in
   Dream.html ("<div id='grid-container'>" ^ grid_html ^ "</div>")
