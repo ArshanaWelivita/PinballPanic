@@ -47,6 +47,7 @@ type grid_cell_type =
   (* used for marking the activated bumpers in the level settings since we don't want to initialize it with a direction, 
   orientation or activation status *)
   | ActivatedBumperLevelMarker
+  (* used for marking the teleporters in the level settings since we don't want to initialize it with a direction *)
   | TeleporterLevelMarker
 
 (* Type to represent each cell in the generated n x n grid for the game and it contains the cell info (is there a grid object, is it 

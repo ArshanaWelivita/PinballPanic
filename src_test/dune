@@ -26,6 +26,16 @@
     core))
 
 (library
+  (name activated_bumper_tests)
+  (modules activated_bumper_tests)
+  (libraries
+    grid
+    activated_bumper
+    tunnel
+    ounit2
+    core))
+
+(library
   (name grid_cell_tests)
   (modules grid_cell_tests)
   (libraries
@@ -49,6 +59,7 @@
     bumper_tests
     tunnel_tests
     teleporter_tests
+    activated_bumper_tests
     grid_cell_tests
   )
   )

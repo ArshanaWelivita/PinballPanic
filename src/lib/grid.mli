@@ -317,10 +317,11 @@ val generate_grid : int -> grid * pos * pos * direction
    - Starting position of the ball
    - Starting direction of the ball
    - Grid size
+   - Set to track visited activated bumper positions
    Returns:
    - Tuple of ending position and direction of the ball
 *)
-val simulate_ball_path_post_generation : grid -> pos -> direction -> int -> pos * direction
+val simulate_ball_path_post_generation : grid -> pos -> direction -> int -> pos Core.Set.Poly.t -> pos * direction
 
 (* Function that gets all empty grid positions that are not in the ball's path. Used after generating the grid.
    Inputs:

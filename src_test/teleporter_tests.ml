@@ -13,7 +13,7 @@ let simple_teleporter_test_one _ =
 
   let answer = (4, 2) in
 
-  let (exit_pos, _) = (Grid.simulate_ball_path_post_generation grid (0, 2) Down 3) in
+  let (exit_pos, _) = (Grid.simulate_ball_path_post_generation grid (0, 2) Down 3 Core.Set.Poly.empty) in
 
   (* printf "Ball position: %d %d" (fst exit_pos) (snd exit_pos); *)
   assert_equal (Grid.compare_pos exit_pos answer) true

@@ -571,7 +571,7 @@ let rec generate_grid (level: int) : grid * pos * pos * direction =
       generate_grid level
     end
 
-let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: direction) (grid_size : int) : pos * direction =
+let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: direction) (grid_size : int) (visited_activated_bumpers: (pos Set.Poly.t)) : pos * direction =
   (* Check if the ball is out of bounds *)
   if out_of_bounds_check pos grid_size then
     begin
@@ -584,26 +584,35 @@ let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: 
         let (row, col) = pos in
         let current_grid_cell = grid.(row).(col) in 
         if not (compare_grid_cell_type current_grid_cell Empty) && not (compare_grid_cell_type current_grid_cell InBallPath) then
-          begin
-            (* Determine new direction based on interaction with grid object *)
-            let new_direction = determine_new_ball_direction current_grid_cell direction grid in 
-            (* printf "New direction after grid object interaction: %s\n" (string_of_direction new_direction); <- used for debugging purposes *)
-  
-            let next_pos = move pos new_direction in
-  
-            (* Check if grid objects left is 0: Follow the path without placing new grid objects  *)
+          (* Check if object is an inactive version of an activated bumper,  *)
+          if (is_activated_bumper current_grid_cell) && not (Set.mem visited_activated_bumpers pos) then
+            (* Move in the current direction if no object is encountered *)
+            let next_pos = move pos direction in
             begin
-              (* printf "No bumpers left; following path until exit.\n"; *)
-                if out_of_bounds_check next_pos grid_size then
-                  begin
-                    (* printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos); <- used for debugging purposes
-                    printf "end pos: %d %d" (fst pos) (snd pos); *)
-                    (pos, direction)
-                  end
-                else
-                  simulate_ball_path_post_generation grid next_pos new_direction grid_size (* Continue in the path *)
+              (* printf "No object encountered, continuing straight from position %d %d\n" row col; <- used for debugging purposes *)
+              simulate_ball_path_post_generation grid next_pos direction grid_size (Set.add visited_activated_bumpers pos)
             end
-          end
+          else
+            begin
+              (* Determine new direction based on interaction with grid object *)
+              let new_direction = determine_new_ball_direction current_grid_cell direction grid in 
+              (* printf "New direction after grid object interaction: %s\n" (string_of_direction new_direction); <- used for debugging purposes *)
+    
+              let next_pos = move pos new_direction in
+    
+              (* Check if grid objects left is 0: Follow the path without placing new grid objects  *)
+              begin
+                (* printf "No bumpers left; following path until exit.\n"; *)
+                  if out_of_bounds_check next_pos grid_size then
+                    begin
+                      (* printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos); <- used for debugging purposes
+                      printf "end pos: %d %d" (fst pos) (snd pos); *)
+                      (pos, direction)
+                    end
+                  else
+                    simulate_ball_path_post_generation grid next_pos new_direction grid_size visited_activated_bumpers (* Continue in the path *)
+              end
+            end
         else
           begin
           (* Move in the current direction if no object is encountered *)
@@ -616,7 +625,7 @@ let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: 
             else
               begin
                 (* printf "No object encountered, continuing straight from position %d %d\n" row col; <- used for debugging purposes *)
-                simulate_ball_path_post_generation grid next_pos direction grid_size
+                simulate_ball_path_post_generation grid next_pos direction grid_size visited_activated_bumpers
               end
           end
       end 
