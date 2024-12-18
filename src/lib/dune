@@ -7,6 +7,14 @@
     (pps ppx_jane bisect_ppx)))
 
 (library
+  (name directional_bumper)
+  (modules
+    directional_bumper)
+  (libraries core)
+  (preprocess
+    (pps ppx_jane bisect_ppx)))
+
+(library
   (name tunnel)
   (modules
     tunnel)
@@ -34,7 +42,7 @@
   (name grid_cell)
   (modules
     grid_cell)
-  (libraries core bumper tunnel teleporter activated_bumper)
+  (libraries core bumper tunnel teleporter activated_bumper directional_bumper)
   (preprocess
     (pps ppx_jane bisect_ppx)))
 

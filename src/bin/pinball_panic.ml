@@ -1,7 +1,7 @@
 open Core
 open Grid_cell
 
-let round_num = ref 8
+let round_num = ref 10
 (* let round_num = 7 <- used for debugging purposes *)
 
 let arrow_of_direction (initial_direction : direction) : string = match initial_direction with 
@@ -105,6 +105,7 @@ let display_grid (grid_size: int) (grid: grid_cell array array) (entry_exit_same
       | "Tunnel" -> printf "  %s  " (get_tunnel_orientation_string grid.(i).(j).cell_type)
       | "Teleporter" -> printf "  ★  "
       | "ActivatedBumper" -> printf "  %s  " (get_activated_bumper_orientation_string grid.(i).(j).cell_type)
+      | "DirectionalBumper" -> printf "  %s  " (get_directional_bumper_orientation_string grid.(i).(j).cell_type)
       | _ -> failwith "Invalid grid cell type."
     done;
     Out_channel.newline stdout
@@ -127,18 +128,18 @@ let handle_command command =
     let (grid, entry_pos, correct_exit_pos, _) = Grid.generate_grid !round_num in
     let grid_size = Grid.get_grid_size !round_num in 
 
-    Out_channel.flush stdout;
+    (* Out_channel.flush stdout; *)
 
     display_grid_with_grid_objects entry_pos correct_exit_pos grid grid_size;
 
-    Out_channel.flush stdout;
+    (* Out_channel.flush stdout;
 
     (* Wait for 5 seconds before clearing the terminal *)
     let () = Core_unix.sleep 5 in
 
     (* Clear the terminal screen after the 5-second wait *)
     ignore (Core_unix.system "clear");
-    Out_channel.flush stdout;
+    Out_channel.flush stdout; *)
 
     (* Replace all grid cell objects with Empty, skipping Entry *)
     for i = 0 to grid_size do

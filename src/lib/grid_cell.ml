@@ -26,10 +26,12 @@ type grid_cell_type =
   | Tunnel of {orientation: orientation; direction : direction;} 
   | Teleporter of {orientation: orientation; direction: direction}
   | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool;} 
+  | DirectionalBumper of {orientation: orientation; direction: direction}
   | BumperLevelMarker
   | TunnelLevelMarker
   | ActivatedBumperLevelMarker
   | TeleporterLevelMarker
+  | DirectionalBumperLevelMarker
 
 (* Type to represent each cell in the generated n x n grid for the game and it contains the cell info (is there a grid object, is it 
 accessible, is it empty, etc.) *)
@@ -94,6 +96,13 @@ let direction_to_activated_bumper_direction (dir: direction) : Activated_bumper.
   | Left -> Activated_bumper.Left
   | Right -> Activated_bumper.Right
 
+let direction_to_directional_bumper_direction (dir: direction) : Directional_bumper.direction =
+  match dir with
+  | Up -> Directional_bumper.Up
+  | Down -> Directional_bumper.Down
+  | Left -> Directional_bumper.Left
+  | Right -> Directional_bumper.Right
+
 let orientation_to_tunnel_orientation (orientation: orientation) : Tunnel.orientationTunnel =
   match orientation with
   | Vertical -> Tunnel.Vertical
@@ -104,6 +113,12 @@ let orientation_to_bumper_orientation (orientation: orientation) : Bumper.orient
   match orientation with
   | UpRight -> Bumper.UpRight
   | DownRight -> Bumper.DownRight
+  | _ -> failwith "Wrong orientation for the bumper grid object type."
+
+let orientation_to_directional_bumper_orientation (orientation: orientation) : Directional_bumper.orientation =
+  match orientation with
+  | UpRight -> Directional_bumper.UpRight
+  | DownRight -> Directional_bumper.DownRight
   | _ -> failwith "Wrong orientation for the bumper grid object type."
 
 let orientation_to_activated_bumper_orientation (orientation: orientation) : Activated_bumper.orientation = 
@@ -125,8 +140,14 @@ let activated_bumper_direction_to_direction (dir: Activated_bumper.direction) : 
   | Activated_bumper.Down -> Down
   | Activated_bumper.Left -> Left
   | Activated_bumper.Right -> Right
-  
 
+let directional_bumper_direction_to_direction (dir: Directional_bumper.direction) : direction =
+  match dir with
+  | Directional_bumper.Up -> Up
+  | Directional_bumper.Down -> Down
+  | Directional_bumper.Left -> Left
+  | Directional_bumper.Right -> Right
+  
 let to_string (cell: grid_cell) : string = match cell.cell_type with 
   | Entry _ -> "Entry"
   | Exit _ -> "Exit"
@@ -136,10 +157,12 @@ let to_string (cell: grid_cell) : string = match cell.cell_type with
   | Tunnel _ -> "Tunnel"
   | Teleporter _ -> "Teleporter"
   | ActivatedBumper _ -> "ActivatedBumper"
+  | DirectionalBumper _ -> "DirectionalBumper"
   | BumperLevelMarker -> "BumperLevelMarker"
   | TunnelLevelMarker -> "TunnelLevelMarker"
   | ActivatedBumperLevelMarker -> "ActivatedBumperLevelMarker"
   | TeleporterLevelMarker -> "TeleporterLevelMarker"
+  | DirectionalBumperLevelMarker -> "DirectionalBumperLevelMarker"
 
 let get_bumper_orientation_string (b: grid_cell_type) : string = match b with 
   | Bumper {orientation = DownRight; _} -> "⟍"
@@ -150,6 +173,11 @@ let get_activated_bumper_orientation_string (b: grid_cell_type) : string = match
   | ActivatedBumper {orientation = DownRight; _} -> "⧅"
   | ActivatedBumper {orientation = UpRight; _} -> "⧄"
   | _ -> failwith "Error: activated bumper can only have orientation DownRight or UpRight."
+
+let get_directional_bumper_orientation_string (b: grid_cell_type) : string = match b with 
+| DirectionalBumper {orientation = DownRight; _} -> "◹"
+| DirectionalBumper {orientation = UpRight; _} -> "◸"
+| _ -> failwith "Error: activated bumper can only have orientation DownRight or UpRight."
 
 let get_tunnel_orientation_string (b: grid_cell_type) : string = match b with 
   | Tunnel {orientation = Vertical; _} -> "𝄁"

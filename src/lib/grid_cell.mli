@@ -38,6 +38,8 @@ type grid_cell_type =
   (* allow for the ball to pass through ONCE, before it materializes into a regular bumper and has the same
    functionality as a bumper *)
   | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool;} 
+  (* directional bumper which bounces ball in specific direction depending on the ball's original direction *)
+  | DirectionalBumper of {orientation: orientation; direction : direction;} 
   (* used for marking the bumpers in the level settings since we don't want to initialize it with a direction 
   or orientation *)
   | BumperLevelMarker 
@@ -49,6 +51,9 @@ type grid_cell_type =
   | ActivatedBumperLevelMarker
   (* used for marking the teleporters in the level settings since we don't want to initialize it with a direction *)
   | TeleporterLevelMarker
+  (* used for marking the directional bumpers in the level settings since we don't want to initialize it with a direction
+  or orientation *)
+  | DirectionalBumperLevelMarker
 
 (* Type to represent each cell in the generated n x n grid for the game and it contains the cell info (is there a grid object, is it 
 accessible, is it empty, etc.) *)
@@ -72,6 +77,9 @@ val direction_to_tunnel_direction : direction -> Tunnel.direction
 (* Function to convert a normal direction to a bumper object's direction *)
 val direction_to_bumper_direction : direction -> Bumper.direction 
 
+(* Function to convert a normal direction to an directional bumper object's direction *)
+val direction_to_directional_bumper_direction : direction -> Directional_bumper.direction 
+
 (* Function to convert a normal direction to an activated bumper object's direction *)
 val direction_to_activated_bumper_direction : direction -> Activated_bumper.direction 
 
@@ -80,6 +88,9 @@ val orientation_to_tunnel_orientation : orientation -> Tunnel.orientationTunnel
 
 (* Function to convert a normal orientation to a bumper object's orientation *)
 val orientation_to_bumper_orientation : orientation -> Bumper.orientation
+
+(* Function to convert a normal orientation to a directional bumper object's orientation *)
+val orientation_to_directional_bumper_orientation : orientation -> Directional_bumper.orientation
 
 (* Function to convert a normal orientation to an activated bumper object's orientation *)
 val orientation_to_activated_bumper_orientation : orientation -> Activated_bumper.orientation
@@ -101,7 +112,11 @@ val is_teleporter_marker : grid_cell_type -> bool
 
 val activated_bumper_direction_to_direction : Activated_bumper.direction -> direction 
 
+val directional_bumper_direction_to_direction : Directional_bumper.direction -> direction
+
 val get_activated_bumper_orientation_string : grid_cell_type -> string
+
+val get_directional_bumper_orientation_string : grid_cell_type -> string
 
 val is_activated_bumper : grid_cell -> bool
 

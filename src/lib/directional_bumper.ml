@@ -21,17 +21,17 @@ type direction_map = (direction, direction) Map.Poly.t
 
 let generate_directions orientation : direction_map =
   match orientation with
-    | DownRight -> 
+    | DownRight -> (* ◹ *)
       Map.Poly.of_alist_exn [
         (Right, Down);
         (Up, Left);
-        (Left, Up);
-        (Down, Right);
+        (Left, Left);
+        (Down, Down);
       ]
-    | UpRight ->
+    | UpRight -> (* ◸ *)
       Map.Poly.of_alist_exn [
-        (Right, Up);
-        (Down, Left);
+        (Right, Right);
+        (Down, Down);
         (Left, Down);
         (Up, Right);
       ]
