@@ -3,7 +3,7 @@ open Grid_cell
 
 
 (* Game state information *)
-let current_level = ref 1
+let current_level = ref 10
 type answer = {col : int ref; row : int ref}
 let current_answer = { col = ref 0; row = ref 0}
 let current_entry = { col = ref 0; row = ref 0}
