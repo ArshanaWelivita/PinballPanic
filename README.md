@@ -28,19 +28,19 @@ To execute the server implementation of the game, use: dune exec src/server/pinb
 
 ### Example Run of Command Line Game:
 
+<img width="1078" alt="Screenshot 2024-12-18 at 1 31 53 PM" src="https://github.com/user-attachments/assets/8c997322-967b-4d18-bc47-5d80d0266e81" />
+
+<img width="901" alt="Screenshot 2024-12-18 at 1 34 53 PM" src="https://github.com/user-attachments/assets/c6521286-776d-4244-8003-bce8a7aac2bf" />
+
+<img width="904" alt="Screenshot 2024-12-18 at 1 35 21 PM" src="https://github.com/user-attachments/assets/64ebc448-7652-492c-923f-c9104684150c" />
+
+<img width="904" alt="Screenshot 2024-12-18 at 1 35 34 PM" src="https://github.com/user-attachments/assets/f474cc3a-6ecc-4b09-b409-d5f9525499b7" />
+
 **List of CLI Commands:**
 
 - s : to start a new game
 - q or Ctrl-C : to quit
 - c : to move onto a harder level
-
-<img width="1030" alt="Screenshot 2024-11-11 at 2 42 24 PM" src="https://github.com/user-attachments/assets/8b736015-b043-4df8-b74e-5a04f72fc24e">
-
-<img width="1030" alt="Screenshot 2024-11-11 at 2 42 44 PM" src="https://github.com/user-attachments/assets/817cd05b-9add-46df-9cd1-3a93f7f27ea4">
-
-<img width="1030" alt="Screenshot 2024-11-11 at 2 42 57 PM" src="https://github.com/user-attachments/assets/d0121615-f25e-4b19-bf3b-9c4d8726f3ea">
-
-<img width="1030" alt="Screenshot 2024-11-11 at 2 43 17 PM" src="https://github.com/user-attachments/assets/d4d26608-fb22-441d-8377-f383d34c7827">
 
 ### Example Run of Server Game:
 
