@@ -5,7 +5,7 @@ Authors: Arshana Welivita and Kenneth Elsman
 # Overview:
 
 Pinball Panic is a memory game inspired by Lumionisity's Pinball Recall.
-Given a starting position and an assortment of bumpers that will disappear after a short amount of time, your goal is to find the
+Given a starting position and an assortment of grid objects that will disappear after a short amount of time, your goal is to find the
 correct ending location of the ball.
 
 ## How to play:
@@ -48,7 +48,7 @@ To execute the server implementation of the game, use: dune exec src/server/pinb
 
 ### Grid Generation
 
-The grid will be generated dynamically where we randomly place the first grid object within the grid and build the ball's path based off that object and place the following grid objects accordingly. This ensures that the grid we generate is viable and that the ball interacts with each of the grid objects before it exits the grid. This also ensures that the path the ball takes is feasible and we ensure that an interaction between grid objects doesn't cause infinite bounces so the ball never leaves the grid. The number of grid objects and their types will be pre-determined and we explain this in the level progression section.
+The grid will be generated dynamically where we randomly place the first grid object within the grid and build the ball's path based off that object and place the following grid objects accordingly. This ensures that the grid we generate is viable and that the ball interacts with each of the grid objects before it exits the grid. This also ensures that the path the ball takes is feasible and we ensure that an interaction between grid objects doesn't cause infinite bounces so the ball never leaves the grid. The number of grid objects and their types will be pre-determined and we explain this in the level progression section. 
 
 ### Advanced Features
 
@@ -76,23 +76,23 @@ Directional bumpers allow for the ball to pass through in 2 directions (retains 
 
 ### Level Progression
 
-A grid object represents the type of object that the ball can interact with in the grid where it can be a bumper, tunnel, activated bumper or teleporter. This ensures that each level has a specified number of grid objects with specific types for each level ensuring that the ball interacts with each of them before exiting the grid. As the levels increase in difficulty we will introduce harder grid objects and build up to a combination of grid objects in the hardest levels. 
+A grid object represents the type of object that the ball can interact with in the grid where it can be a bumper, tunnel, activated bumper, directional bumper or teleporter. This ensures that each level has a specified number of grid objects with specific types for each level ensuring that the ball interacts with each of them before exiting the grid. As the levels increase in difficulty we will introduce harder grid objects and build up to a combination of grid objects in the hardest levels. We also made the harder levels more difficult by incorporating additional grid objects that don't interact with the ball to make it more difficult for the user to determine which grid objects the ball actually interacts with to make it harder to discern its ball path and ultimately find the correct exit position. 
 
-Level 1  - 3 x 3 grid with 1 grid object (type: bumper)
+Level 1  - 3 x 3 grid with 1 grid object (type: bumper) with 0 extra grid objects 
 
-Level 2  - 4 x 4 grid with 1-2 grid object (type: bumper)
+Level 2  - 4 x 4 grid with 1-2 grid object (type: bumper) with 0 extra grid objects 
 
-Level 3  - 4 x 4 grid with 2-3 grid object (type: bumper, tunnel)
+Level 3  - 4 x 4 grid with 2-3 grid object (type: bumper, tunnel) with 0 extra grid objects 
 
-Level 4  - 4 x 4 grid with 3-4 grid object (type: bumper, tunnel)
+Level 4  - 4 x 4 grid with 3-4 grid object (type: bumper, tunnel) with 0 extra grid objects 
 
-Level 5  - 5 x 5 grid with 4-5 grid object (type: bumper, teleporter)
+Level 5  - 5 x 5 grid with 4-5 grid object (type: bumper, teleporter) with 0 extra grid objects 
 
-Level 6  - 5 x 5 grid with 5-6 grid object (type: bumper, teleporter)
+Level 6  - 5 x 5 grid with 5-6 grid object (type: bumper, teleporter) with 0 extra grid objects 
 
-Level 7  - 6 x 6 grid with 6-8 grid object (type: bumper, teleporter, tunnel)
+Level 7  - 6 x 6 grid with 6-8 grid object (type: bumper, teleporter, tunnel) with 0 extra grid objects 
 
-Level 8  - 6 x 6 grid with 6-8 grid object (type: bumper, activated bumper)
+Level 8  - 6 x 6 grid with 6-8 grid object (type: bumper, activated bumper) with 0 extra grid objects 
 
 Level 9  - 7 x 7 grid with 7-9 grid object (type: bumper, tunnel, activated bumper)
 
@@ -103,6 +103,12 @@ Level 11  - 7 x 7 grid with 7-9 grid object (type: tunnel, teleporter, activated
 Level 12  - 7 x 7 grid with 8-10 grid object (type: bumper, teleporter, activated bumper)
 
 Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper)
+
+Level 14 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper)
+
+Level 15 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper)
+
+Level 16 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper)
 
 ### OCaml Library Use
 
