@@ -62,12 +62,17 @@ Below are the unactivated versions of the bumpers what will be shown in the grid
 2. **Tunnels:**
 The orientation is either horizontal or vertical. The ball will be able to pass through in one direction, but will bounce off and reverse direction if it is hit from the side.
 These are the characters for the tunnels:
-  - || - vertical orientation 
+  - 𝄁 - vertical orientation 
   - = - horizontal orientation 
 
 3. **Teleporter:**
 Teleporters preserve the direction of the ball, but changes its location. There will always be a maximum of one teleporter pair per grid. Each teleporter can act as an entry or exit location so it can always enter/exit from either teleporter in the pair. 
-  - ★ ★ - entry/exit location character of teleporter
+  - ★ - entry/exit location character of teleporter
+
+4. **Directional Bumper:**
+Directional bumpers allow for the ball to pass through in 2 directions (retains the original direction of the ball) and acts like a normal bumper in the other two directions.
+  - ◸ - directional version of ╱ bumper where it passes through if the ball is going to the right or going down and bounces otherwise
+  - ◹ - directional version of ╲ bumper where it passes through if the ball is going to the left or going down and bounces otherwise
 
 ### Level Progression
 
@@ -109,4 +114,4 @@ Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, a
   - We will use this to check our testing coverage of our game when we build our test library to test the functionality and edge cases of the game to ensure that it runs correctly.
  
  ### Generalization:
- We couldn't think of any possible ways to generalize the game as it depends on the dynamic generation of the grid where each grid object interaction is pre-defined, so it would be hard to create an abstract implementation where the user defines the interaction of each grid object as then the user would have to provide the functions that define these grid object interactions which defy the purpose of a functor. Instead of generalizing, we could increase the number of levels steadily, increasing the difficulty such that the higher levels have enormous grids with large numbers of objects with combinations of interactions between various grid objects. We can also improve it such that it places random grid objects within the grid that don't interact with the ball to throw the user off, making it more difficult for them to discern the ball's path. We would appreciate any advice on generalizing the pinball game and improving our code regarding the level progression difficulty. 
+ We couldn't think of any possible ways to generalize the game as it depends on the dynamic generation of the grid where each grid object interaction is pre-defined, so it would be hard to create an abstract implementation where the user defines the interaction of each grid object as then the user would have to provide the functions that define these grid object interactions which defy the purpose of a functor. Instead of generalizing, we increased the number of levels steadily, increasing the difficulty such that the higher levels have enormous grids with large numbers of objects with combinations of interactions between various grid objects. We also improved it such that it places random grid objects within the grid that don't interact with the ball to throw the user off, making it more difficult for the player to discern the ball's path. 
