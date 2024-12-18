@@ -14,13 +14,13 @@ The following is an example sample grid of size 3 x 3 which shows the indices re
 
  <img width="160" alt="Screenshot 2024-11-11 at 2 25 41 PM" src="https://github.com/user-attachments/assets/8e2b5c0e-fa72-4029-a4ea-46d0607a6be6">
 
-The arrow ( ->🟢 ) indicates starting position and trajectory of the ball.
+The 'E' indicates starting position and trajectory of the ball.
 The bumpers ( ╲ and ╱ ) deflect the ball at a 90 degree angle (changes the trajectory in a perpendicular direction).
 An example grid can be seen as follows: 
 
 <img width="202" alt="Screenshot 2024-11-11 at 2 23 59 PM" src="https://github.com/user-attachments/assets/7eb41bad-2995-46e7-a0b1-18bc9fc723fb">
 
-After a few seconds, the bumpers in the grid will disappear, and the user will be prompted to enter the ball's ending location. In this case, the answer is [2, 4] where the answer is given in the form [row, col]. So the user would enter "[2, 4]" to move on to the next round. If the user enters the correct answer, they will need to press 'c' to move onto the next level, otherwise they are presented with a "GAME OVER".
+After a few seconds, the bumpers in the grid will disappear, and the user will be prompted to enter the ball's ending location. In this case, the answer is '2 4' where the answer is given in the form 'row col' separated by a space. So the user would enter "2 4" to move on to the next round. If the user enters the correct answer, they will need to press 'c' to move onto the next level, otherwise they are presented with a "GAME OVER".
 
 To execute the game on the command line, use: dune exec _build/default/src/bin/pinball_panic.exe
 
@@ -36,7 +36,7 @@ To execute the server implementation of the game, use: dune exec src/server/pinb
 
 This is our current command line implementation of the game without the grid disappearing and using bumpers, teleporters and tunnels in the generated grids. We will build on this code and update this section as we add more advanced features and include the activated bumpers.
 
-Note: The command line interface that we implemented in the grid.ml and pinball_panic.ml files work up to level 8 of the game as we haven't implemented the activated bumper functionality yet. That is our main goal for the weekend and week leading up to the presentation. The web game server also uses the grid.ml for generating the grid, so that also only works until level 8 of the game. We haven't implemented the part where the grid disappears yet for the command line (it works on the front-end), but we plan to do that at the end once everything is working. Also, we realized that the row,col indices are swapped in the server so we need to go back and change that.
+Note: The command line interface that we implemented in the grid.ml and pinball_panic.ml files work up to level 8 of the game as we haven't implemented the activated bumper functionality yet. That is our main goal for the weekend and week leading up to the presentation. The web game server also uses the grid.ml for generating the grid, so that also only works until level 8 of the game. We haven't implemented the part where the grid disappears yet for the command line (it works on the front-end), but we plan to do that at the end once everything is working. Also, we realized that the row,col indices are swapped in the server so we need to go back and change that. 
 
 **Example Run:**
 
