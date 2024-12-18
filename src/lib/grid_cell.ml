@@ -25,7 +25,7 @@ type grid_cell_type =
   | Bumper of {orientation: orientation; direction : direction;} 
   | Tunnel of {orientation: orientation; direction : direction;} 
   | Teleporter of {orientation: orientation; direction: direction}
-  | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool;} 
+  | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool; revisit : int} 
   | DirectionalBumper of {orientation: orientation; direction: direction}
   | BumperLevelMarker
   | TunnelLevelMarker

@@ -1,7 +1,7 @@
 open Core
 open Grid_cell
 
-let round_num = ref 10
+let round_num = ref 8
 (* let round_num = 7 <- used for debugging purposes *)
 
 let arrow_of_direction (initial_direction : direction) : string = match initial_direction with 

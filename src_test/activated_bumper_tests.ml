@@ -8,7 +8,7 @@ let simple_activated_bumper_test_one _ =
       ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
   
   grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
-  grid.(1).(2) <- {position = (1, 2); cell_type = ActivatedBumper {direction = Down; orientation = DownRight; is_active = true}};
+  grid.(1).(2) <- {position = (1, 2); cell_type = ActivatedBumper {direction = Down; orientation = DownRight; is_active = true; revisit = 1}};
   grid.(2).(2) <- {position = (2, 2); cell_type = Tunnel {direction = Right; orientation = Horizontal}};
 
   let answer = (1, 0) in 

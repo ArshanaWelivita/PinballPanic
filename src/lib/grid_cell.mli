@@ -37,7 +37,7 @@ type grid_cell_type =
   | Teleporter of {orientation: orientation; direction: direction}
   (* allow for the ball to pass through ONCE, before it materializes into a regular bumper and has the same
    functionality as a bumper *)
-  | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool;} 
+  | ActivatedBumper of {orientation: orientation; direction : direction; is_active : bool; revisit : int} 
   (* directional bumper which bounces ball in specific direction depending on the ball's original direction *)
   | DirectionalBumper of {orientation: orientation; direction : direction;} 
   (* used for marking the bumpers in the level settings since we don't want to initialize it with a direction 
