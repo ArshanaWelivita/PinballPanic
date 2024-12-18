@@ -5,7 +5,7 @@ Authors: Arshana Welivita and Kenneth Elsman
 # Overview:
 
 Pinball Panic is a memory game inspired by Lumionisity's Pinball Recall.
-Given a starting position and an assortment of bumpers that will disappear after a short amount of time, your goal is to find the
+Given a starting position and an assortment of grid objects that will disappear after a short amount of time, your goal is to find the
 correct ending location of the ball.
 
 ## How to play:
@@ -48,7 +48,7 @@ To execute the server implementation of the game, use: dune exec src/server/pinb
 
 ### Grid Generation
 
-The grid will be generated dynamically where we randomly place the first grid object within the grid and build the ball's path based off that object and place the following grid objects accordingly. This ensures that the grid we generate is viable and that the ball interacts with each of the grid objects before it exits the grid. This also ensures that the path the ball takes is feasible and we ensure that an interaction between grid objects doesn't cause infinite bounces so the ball never leaves the grid. The number of grid objects and their types will be pre-determined and we explain this in the level progression section.
+The grid will be generated dynamically where we randomly place the first grid object within the grid and build the ball's path based off that object and place the following grid objects accordingly. This ensures that the grid we generate is viable and that the ball interacts with each of the grid objects before it exits the grid. This also ensures that the path the ball takes is feasible and we ensure that an interaction between grid objects doesn't cause infinite bounces so the ball never leaves the grid. The number of grid objects and their types will be pre-determined and we explain this in the level progression section. 
 
 ### Advanced Features
 
@@ -62,42 +62,53 @@ Below are the unactivated versions of the bumpers what will be shown in the grid
 2. **Tunnels:**
 The orientation is either horizontal or vertical. The ball will be able to pass through in one direction, but will bounce off and reverse direction if it is hit from the side.
 These are the characters for the tunnels:
-  - || - vertical orientation 
+  - 𝄁 - vertical orientation 
   - = - horizontal orientation 
 
 3. **Teleporter:**
 Teleporters preserve the direction of the ball, but changes its location. There will always be a maximum of one teleporter pair per grid. Each teleporter can act as an entry or exit location so it can always enter/exit from either teleporter in the pair. 
-  - ★ ★ - entry/exit location character of teleporter
+  - ★ - entry/exit location character of teleporter
+
+4. **Directional Bumper:**
+Directional bumpers allow for the ball to pass through in 2 directions (retains the original direction of the ball) and acts like a normal bumper in the other two directions.
+  - ◸ - directional version of ╱ bumper where it passes through if the ball is going to the right or going down and bounces otherwise
+  - ◹ - directional version of ╲ bumper where it passes through if the ball is going to the left or going down and bounces otherwise
 
 ### Level Progression
 
-A grid object represents the type of object that the ball can interact with in the grid where it can be a bumper, tunnel, activated bumper or teleporter. This ensures that each level has a specified number of grid objects with specific types for each level ensuring that the ball interacts with each of them before exiting the grid. As the levels increase in difficulty we will introduce harder grid objects and build up to a combination of grid objects in the hardest levels. 
+A grid object represents the type of object that the ball can interact with in the grid where it can be a bumper, tunnel, activated bumper, directional bumper or teleporter. This ensures that each level has a specified number of grid objects with specific types for each level ensuring that the ball interacts with each of them before exiting the grid. As the levels increase in difficulty we will introduce harder grid objects and build up to a combination of grid objects in the hardest levels. We also made the harder levels more difficult by incorporating additional grid objects that don't interact with the ball to make it more difficult for the user to determine which grid objects the ball actually interacts with to make it harder to discern its ball path and ultimately find the correct exit position. 
 
-Level 1  - 3 x 3 grid with 1 grid object (type: bumper)
+Level 1  - 3 x 3 grid with 1 grid object (type: bumper) with 0 extra grid objects 
 
-Level 2  - 4 x 4 grid with 1-2 grid object (type: bumper)
+Level 2  - 4 x 4 grid with 1-2 grid object (type: bumper) with 0 extra grid objects 
 
-Level 3  - 4 x 4 grid with 2-3 grid object (type: bumper, tunnel)
+Level 3  - 4 x 4 grid with 2-3 grid object (type: bumper, tunnel) with 0 extra grid objects 
 
-Level 4  - 4 x 4 grid with 3-4 grid object (type: bumper, tunnel)
+Level 4  - 4 x 4 grid with 3-4 grid object (type: bumper, tunnel) with 0 extra grid objects 
 
-Level 5  - 5 x 5 grid with 4-5 grid object (type: bumper, teleporter)
+Level 5  - 5 x 5 grid with 4-5 grid object (type: bumper, teleporter) with 0 extra grid objects 
 
-Level 6  - 5 x 5 grid with 5-6 grid object (type: bumper, teleporter)
+Level 6  - 5 x 5 grid with 5-6 grid object (type: bumper, teleporter) with 0 extra grid objects 
 
-Level 7  - 6 x 6 grid with 6-8 grid object (type: bumper, teleporter, tunnel)
+Level 7  - 6 x 6 grid with 6-8 grid object (type: bumper, teleporter, tunnel) with 0 extra grid objects 
 
-Level 8  - 6 x 6 grid with 6-8 grid object (type: bumper, activated bumper)
+Level 8  - 6 x 6 grid with 6-8 grid object (type: bumper, activated bumper) with 0 extra grid objects 
 
-Level 9  - 7 x 7 grid with 7-9 grid object (type: bumper, tunnel, activated bumper)
+Level 9  - 7 x 7 grid with 7-9 grid object (type: bumper, tunnel, activated bumper) with 1 extra grid objects 
 
-Level 10  - 7 x 7 grid with 7-9 grid object (type: bumper, teleporter, activated bumper)
+Level 10  - 7 x 7 grid with 7-9 grid object (type: bumper, directional bumper, activated bumper) with 2 extra grid objects 
 
-Level 11  - 7 x 7 grid with 7-9 grid object (type: tunnel, teleporter, activated bumper)
+Level 11  - 7 x 7 grid with 7-9 grid object (type: bumper, teleporter, activated bumper) with 2 extra grid objects 
 
-Level 12  - 7 x 7 grid with 8-10 grid object (type: bumper, teleporter, activated bumper)
+Level 12  - 7 x 7 grid with 8-10 grid object (type: tunnel, teleporter, activated bumper) with 3 extra grid objects 
 
-Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper)
+Level 13 - 8 x 8 grid with 9-12 grid object (type: teleporter, tunnel, directional bumper) with 3 extra grid objects 
+
+Level 14 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, activated bumper, directional bumper) with 3 extra grid objects 
+
+Level 15 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper) with 4 extra grid objects 
+
+Level 16 - 10 x 10 grid with 10-12 grid object (type: bumper, teleporter, tunnel, activated bumper, directional bumper) with 5 extra grid objects 
 
 ### OCaml Library Use
 
@@ -109,4 +120,4 @@ Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, a
   - We will use this to check our testing coverage of our game when we build our test library to test the functionality and edge cases of the game to ensure that it runs correctly.
  
  ### Generalization:
- We couldn't think of any possible ways to generalize the game as it depends on the dynamic generation of the grid where each grid object interaction is pre-defined, so it would be hard to create an abstract implementation where the user defines the interaction of each grid object as then the user would have to provide the functions that define these grid object interactions which defy the purpose of a functor. Instead of generalizing, we could increase the number of levels steadily, increasing the difficulty such that the higher levels have enormous grids with large numbers of objects with combinations of interactions between various grid objects. We can also improve it such that it places random grid objects within the grid that don't interact with the ball to throw the user off, making it more difficult for them to discern the ball's path. We would appreciate any advice on generalizing the pinball game and improving our code regarding the level progression difficulty. 
+ We couldn't think of any possible ways to generalize the game as it depends on the dynamic generation of the grid where each grid object interaction is pre-defined, so it would be hard to create an abstract implementation where the user defines the interaction of each grid object as then the user would have to provide the functions that define these grid object interactions which defy the purpose of a functor. Instead of generalizing, we increased the number of levels steadily, increasing the difficulty such that the higher levels have enormous grids with large numbers of objects with combinations of interactions between various grid objects. We also improved it such that it places random grid objects within the grid that don't interact with the ball to throw the user off, making it more difficult for the player to discern the ball's path. 
