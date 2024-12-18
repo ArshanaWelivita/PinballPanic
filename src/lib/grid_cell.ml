@@ -59,7 +59,8 @@ let compare_grid_cell_type (a: grid_cell) (b: grid_cell_type) : bool =
   | ActivatedBumper ab1, ActivatedBumper ab2 -> 
       ab1.orientation = ab2.orientation &&
       ab1.direction = ab2.direction &&
-      ab1.is_active = ab2.is_active
+      ab1.is_active = ab2.is_active &&
+      ab1.revisit = ab2.revisit
   | Tunnel t1, Tunnel t2 -> 
       t1.orientation = t2.orientation && t1.direction = t2.direction
   | Entry { direction = d1 }, Entry { direction = d2 } -> 

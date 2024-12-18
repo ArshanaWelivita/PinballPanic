@@ -1,7 +1,7 @@
 open Core
 open Grid_cell
 
-let round_num = ref 16
+let round_num = ref 8
 
 (* Return associated message given the level number *)
 let get_level_message (level : int) : string = 

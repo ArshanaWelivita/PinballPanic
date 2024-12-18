@@ -166,18 +166,21 @@ let generate_and_place_initial_grid_object (grid: grid) (entry_pos: pos) (direct
 
   (* Checks if the specified grid object is a teleporter and returns the position and orientation of the placed initial grid object *)
   if (compare_grid_cell_type grid.(fst grid_cell_object_pos).(snd grid_cell_object_pos) (Teleporter {orientation = None; direction = direction})) then 
-    (* Places the second teleporter object in the grid and returns the position and orientation of the first teleporter object *)
-    if place_second_teleporter_in_grid grid grid_cell_object_pos grid_size direction
-    then (grid_cell_object_pos, orientation)
-    else failwith "No space in grid to add the second teleporter object"
-  (* else if (compare_grid_cell_type grid.(fst grid_cell_object_pos).(snd grid_cell_object_pos) (ActivatedBumper {orientation = orientation; direction = direction; is_active = false})) then
-    grid.(fst grid_cell_object_pos).(snd grid_cell_object_pos) <- ActivatedBumper {orientation = orientation; direction = direction; is_active = true};
-    (grid_cell_object_pos, orientation)  *)
+    begin
+      (* Places the second teleporter object in the grid and returns the position and orientation of the first teleporter object *)
+      if place_second_teleporter_in_grid grid grid_cell_object_pos grid_size direction
+      then (grid_cell_object_pos, orientation)
+      else failwith "No space in grid to add the second teleporter object"
+    end
+  (* else if (compare_grid_cell_type grid.(fst grid_cell_object_pos).(snd grid_cell_object_pos) grid.(fst grid_cell_object_pos).(snd grid_cell_object_pos) (ActivatedBumper {orientation; direction; is_active = false})) then
+    begin
+      grid.(fst grid_cell_object_pos).(snd grid_cell_object_pos) <- {position = grid_cell_object_pos; cell_type = ActivatedBumper {orientation = orientation; direction = direction; is_active = true; revisit = 0}};
+      (grid_cell_object_pos, orientation)
+    end *)
   else
     (grid_cell_object_pos, orientation) 
 
-(* let convert_activated_to_regular_bumper (bumper_pos: pos) (grid: grid) : bool =
-  false <- will implement this after code checkpoint when we work on activated bumper functionality *)
+  
 
 let rec collect_positions_along_path (grid: grid) (start_pos: pos) (direction: direction) (grid_size: int) : pos list =
   let (row, col) = start_pos in
@@ -390,8 +393,8 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction) (objec
       (* Check if the current cell contains a grid object *)
       if not (compare_grid_cell_type current_grid_cell Empty) && not (compare_grid_cell_type current_grid_cell InBallPath) then
         begin
-          (* printf "Grid Object: %s encountered at %d %d, orientation: %s\n" (to_string current_grid_cell) row col (string_of_orientation orientation); <- used for debugging *)
-          
+          (* printf "Grid Object: %s encountered at %d %d, orientation: %s\n" (to_string current_grid_cell) row col (string_of_orientation orientation); (*<- used for debugging*)
+           *)
           (* Determine new direction based on orientation of the grid object placed in that grid cell *)
           let new_direction = determine_new_ball_direction current_grid_cell direction grid in 
           (* printf "New direction after bounce: %s\n" (string_of_direction new_direction); <- used for debugging purposes *)
@@ -422,7 +425,7 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction) (objec
           else
           (* Place a new grid object if there are still available grid objects left to be placed *)
             begin
-              (* printf "Placing grid object along path from position %d %d\n" (fst next_pos) (snd next_pos); <- used for debugging purposes *) 
+              printf "Placing grid object along path from position %d %d\n" (fst next_pos) (snd next_pos); (*<- used for debugging purposes *) 
               (* Gets the properties of the next grid object *)
               let next_grid_object, next_orientation, next_grid_object_marker = generate_next_grid_object teleporter_objects grid_object_types new_direction activated_bumper_objects in
 
@@ -556,8 +559,7 @@ let get_revisit_count_for_active_bumpers (grid : grid) : int list =
     else if j >= size then find_revisit_counts (i + 1) 0 acc (* Move to the next row *)
     else
       match grid.(i).(j).cell_type with
-      | ActivatedBumper { is_active = true; revisit; _ } -> (*printf "pos: %d %d revisit: %d\n" i j revisit;*)
-          find_revisit_counts i (j + 1) (revisit :: acc) (* Add revisit count to accumulator *)
+      | ActivatedBumper { is_active = true; revisit; _ } -> find_revisit_counts i (j + 1) (revisit :: acc) (* Add revisit count to accumulator *)
       | _ -> find_revisit_counts i (j + 1) acc (* Continue searching in the current row *)
   in
   find_revisit_counts 0 0 [] (* Start the search with an empty accumulator *)
@@ -606,7 +608,7 @@ let rec generate_grid (level: int) : grid * pos * pos * direction =
       let updated_grid = place_extra_grid_objects_at_random_positions grid num_extra_objects in (* Add extra grid objects if needed *)
 
       if compare_activated_bumper_level_grid_object_types level_settings.grid_object_types then  
-        let revisit_counts = get_revisit_count_for_active_bumpers grid in 
+        let revisit_counts = get_revisit_count_for_active_bumpers updated_grid in 
 
         if List.for_all revisit_counts ~f:(fun revisit_count -> revisit_count >= 1)
         then (updated_grid, entry_pos, exit_pos, initial_direction) (* If all active bumpers have been revisited, return the updated grid *)
