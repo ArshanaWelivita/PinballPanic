@@ -588,9 +588,17 @@ let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: 
           if (is_activated_bumper current_grid_cell) && not (Set.mem visited_activated_bumpers pos) then
             (* Move in the current direction if no object is encountered *)
             let next_pos = move pos direction in
+            let visited_activated_bumpers = Set.add visited_activated_bumpers pos in
             begin
-              (* printf "No object encountered, continuing straight from position %d %d\n" row col; <- used for debugging purposes *)
-              simulate_ball_path_post_generation grid next_pos direction grid_size (Set.add visited_activated_bumpers pos)
+              if out_of_bounds_check next_pos grid_size then
+                begin
+                  (* printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos); <- used for debugging purposes
+                  printf "end pos: %d %d" (fst pos) (snd pos); *)
+                  (pos, direction)
+                end
+              else
+                (* printf "No object encountered, continuing straight from position %d %d\n" row col; <- used for debugging purposes *)
+                simulate_ball_path_post_generation grid next_pos direction grid_size visited_activated_bumpers
             end
           else
             begin

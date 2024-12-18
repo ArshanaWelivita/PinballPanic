@@ -41,7 +41,7 @@ let test_get_tunnel_orientation_string _ =
   let tunnel_horizontal = Tunnel { orientation = Horizontal; direction = Left } in
   let invalid_tunnel = Empty in
 
-  assert_equal (get_tunnel_orientation_string tunnel_vertical) "||";
+  assert_equal (get_tunnel_orientation_string tunnel_vertical) "𝄁";
   assert_equal (get_tunnel_orientation_string tunnel_horizontal) "=";
   assert_raises (Failure "Error: bumper can only have orientation DownRight or UpRight.") 
     (fun () -> get_tunnel_orientation_string invalid_tunnel)
