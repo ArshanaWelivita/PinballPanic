@@ -114,28 +114,3 @@ Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, a
  
  ### Generalization:
  We couldn't think of any possible ways to generalize the game as it depends on the dynamic generation of the grid where each grid object interaction is pre-defined, so it would be hard to create an abstract implementation where the user defines the interaction of each grid object as then the user would have to provide the functions that define these grid object interactions which defy the purpose of a functor. Instead of generalizing, we could increase the number of levels steadily, increasing the difficulty such that the higher levels have enormous grids with large numbers of objects with combinations of interactions between various grid objects. We can also improve it such that it places random grid objects within the grid that don't interact with the ball to throw the user off, making it more difficult for them to discern the ball's path. We would appreciate any advice on generalizing the pinball game and improving our code regarding the level progression difficulty. 
-
-# Implementation Plan:
-
-### Week 1 - November 13th: - Done
-1. Add complex features to .mli files
-  - Activated Bumper
-  - Tunnel
-  - Teleporter
-2. Change grid int values to types (make it a more abstract implementation)
-
-### Week 2: - Done
-1. Implement advanced features in grid generation
-  - Tunnel
-  - Teleporter
-2. Start on web app
-
-### Week 3
-1. Activated bumper feature implementation 
-2. Add grid.ml tests - Mostly done (need to add a lot more tests to check the error and edge cases)
-3. Finish web app
-
-### Week 4:
-1. Code cleanup
-2. Add more testing
-3. Search for edge cases
