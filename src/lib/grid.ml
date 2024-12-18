@@ -65,10 +65,6 @@ let compare_pos (p1 : pos) (p2 : pos) : bool =
 let compare_orientation (o1: orientation) (o2: orientation) : bool = 
   String.compare (orientation_to_string o1) (orientation_to_string o2) = 0
 
-(* let is_activated_bumper_active (ball_pos: pos) (bumper_pos: pos) : bool = 
-  false <- will implement this later when doing the activated bumper feature in week 3 of implementation 
-*)
-
 let string_of_orientation (orientation : orientation) : string =
   match orientation with
   | UpRight -> "UpRight"
@@ -265,16 +261,20 @@ let determine_new_ball_direction (current_grid_cell: grid_cell) (direction: dire
   | _ -> failwith "Grid cell type doesn't have directions."
 
 let randomly_choose_next_grid_object_marker (teleporter_objects: int) (grid_object_types: grid_cell_type list) (activated_bumper_objects: int) : grid_cell_type =
+  (* Randomly chooses between all types *)
   if teleporter_objects <> 0 && activated_bumper_objects <> 0 then 
     List.random_element_exn grid_object_types 
   else 
+    (* Randomly chooses between all types except teleporters *)
     if activated_bumper_objects <> 0 && teleporter_objects = 0 then
       let filtered_objects = List.filter grid_object_types ~f:(fun obj -> not (is_teleporter_marker obj)) in
       List.random_element_exn filtered_objects
+      (* Randomly chooses between all types except activated bumpers *)
     else if activated_bumper_objects = 0 && teleporter_objects <> 0 then
       let filtered_objects = List.filter grid_object_types ~f:(fun obj -> not (is_activated_bumper_marker obj)) in
       List.random_element_exn filtered_objects
     else
+      (* Randomly chooses between all types except teleporters and activated bumpers *)
       let filtered_objects = List.filter grid_object_types 
           ~f:(fun obj -> not (is_activated_bumper_marker obj) && not (is_teleporter_marker obj)) in
       List.random_element_exn filtered_objects
@@ -296,70 +296,6 @@ let generate_next_grid_object (teleporter_objects: int) (grid_object_types: grid
     let next_grid_cell_type = get_grid_cell_type next_grid_object_marker new_direction in 
 
     (next_grid_cell_type, next_orientation, next_grid_object_marker)
-
-(* let manhattan_distance (p1: pos) (p2: pos): int =
-  abs (fst p1 - fst p2) + abs (snd p1 - snd p2)
-
-let rec get_placed_grid_object_positions (grid: grid) : pos list =
-  let rec collect_positions x y acc =
-    if x >= Array.length grid then
-      acc  (* End of rows: return accumulated list *)
-    else if y >= Array.length grid.(0) then
-      collect_positions (x + 1) 0 acc  (* Move to the next row *)
-    else
-      let cell = grid.(x).(y) in
-      let new_acc =
-        match cell.cell_type with
-        | Bumper _ | Tunnel _ | Teleporter _ | ActivatedBumper _ ->
-            (x, y) :: acc  (* Add position to the accumulator *)
-        | _ ->
-            acc  (* No change to accumulator *)
-      in
-      collect_positions x (y + 1) new_acc  (* Move to the next column *)
-  in
-  collect_positions 0 0 []
-
-
-let find_nearest_grid_object (grid: grid) (activated_bumper_pos: pos) : pos =
-  let grid_object_positions = get_placed_grid_object_positions grid in
-  match grid_object_positions with
-  | [] -> failwith "No grid objects placed" (* Handle empty grid gracefully *)
-  | first_pos :: rest_positions ->
-      (* Initialize the nearest position and minimum distance *)
-      let nearest_pos = ref first_pos in
-      let min_distance = ref (manhattan_distance activated_bumper_pos first_pos) in
-
-      (* Iterate through remaining positions *)
-      List.iter rest_positions ~f:(fun pos ->
-        let dist = manhattan_distance activated_bumper_pos pos in
-        if dist < !min_distance then (
-          min_distance := dist;
-          nearest_pos := pos
-        )
-      );
-
-      !nearest_pos
-
-let create_path_to_activated_bumper (activated_bumper_pos: pos) (current_ball_pos: pos) (nearest_grid_object_pos: pos)
-  (current_direction: direction) : bool = 
-  true   *)
-
-
-(* 
-let steer_toward_activated_bumper (current_pos: pos) (target_bumper: pos) (current_direction: direction): direction =
-  let (curr_x, curr_y) = current_pos in
-  let (target_x, target_y) = target_bumper in
-  if curr_x < target_x then Down
-  else if curr_x > target_x then Up
-  else if curr_y < target_y then Right
-  else Left *)
-
-(* let steer_toward_activated_bumper (objects_left: int) (current_pos: pos) (target_bumper: pos) (current_direction: direction): (direction, string) result =
-  if objects_left = 0 then
-    Error "We can't generate a path back to the activated bumper as there are no more grid objects to place. We need to regenerate level."
-  else 
-    Ok current_direction *)
-
 
 let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction) (objects_left: int) (grid_size: int) (orientation: orientation) (bounce_limit: int)
   (visited: (pos * direction) Set.Poly.t) (grid_object_types : grid_cell_type list) (teleporter_objects: int) (activated_bumper_objects: int) : (pos * direction, string) result  =
@@ -555,14 +491,14 @@ let get_revisit_count_for_active_bumpers (grid : grid) : int list =
 
   (* Helper function to find the revisit counts of all active bumpers *)
   let rec find_revisit_counts (i: int) (j: int) (acc: int list) : int list =
-    if i >= size then acc (* End of grid, return accumulated revisit counts *)
-    else if j >= size then find_revisit_counts (i + 1) 0 acc (* Move to the next row *)
+    if i >= size then acc 
+    else if j >= size then find_revisit_counts (i + 1) 0 acc 
     else
       match grid.(i).(j).cell_type with
-      | ActivatedBumper { is_active = true; revisit; _ } -> find_revisit_counts i (j + 1) (revisit :: acc) (* Add revisit count to accumulator *)
-      | _ -> find_revisit_counts i (j + 1) acc (* Continue searching in the current row *)
+      | ActivatedBumper { is_active = true; revisit; _ } -> find_revisit_counts i (j + 1) (revisit :: acc) 
+      | _ -> find_revisit_counts i (j + 1) acc 
   in
-  find_revisit_counts 0 0 [] (* Start the search with an empty accumulator *)
+  find_revisit_counts 0 0 [] 
 
 let rec compare_activated_bumper_level_grid_object_types (object_types: grid_cell_type list) : bool = match object_types with
   |[] -> false

@@ -110,14 +110,20 @@ val get_tunnel_orientation_string : grid_cell_type -> string
 (* Function to check if a given grid_cell_type is a teleporter_marker *)
 val is_teleporter_marker : grid_cell_type -> bool
 
+(* Function to convert an activated bumper object's direction to a normal direction *)
 val activated_bumper_direction_to_direction : Activated_bumper.direction -> direction 
 
+(* Function to convert an directional bumper object's direction to a normal direction *)
 val directional_bumper_direction_to_direction : Directional_bumper.direction -> direction
 
+(* Function to convert a activated bumper's orientation to its string representation *)
 val get_activated_bumper_orientation_string : grid_cell_type -> string
 
+(* Function to convert a directional bumper's orientation to its string representation *)
 val get_directional_bumper_orientation_string : grid_cell_type -> string
 
+(* Function to check if a given grid_cell_type is an activated_bumper_marker *)
 val is_activated_bumper : grid_cell -> bool
 
+(* Function to check if a given grid_cell_type is an activated_bumper_marker *)
 val is_activated_bumper_marker : grid_cell_type -> bool

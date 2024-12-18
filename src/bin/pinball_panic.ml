@@ -179,12 +179,15 @@ let handle_command command =
 
     display_grid_with_grid_objects entry_pos correct_exit_pos grid grid_size; 
 
-    (* Function to parse and validate user input *)
+    (* Gets the user's input for the row col *)
     let parse_answer input =
       let trimmed = String.strip input in
+      (* Quits the program *)
       if String.equal trimmed "q" then (
         exit 0;
       ) else (
+        (* Gets the row and col input from the user in the form 'row col' where they are integers separated by a space and checks if 
+          *)
         let parts = String.split ~on:' ' trimmed in
         match parts with
         | [row_str; col_str] -> (
@@ -197,7 +200,7 @@ let handle_command command =
       )
     in
 
-    (* Function to repeatedly prompt the user until valid input is given *)
+    (* Repeatedly asks the user to enter 'row col input' until valid input is given *)
     let rec get_valid_answer () =
       print_endline "Enter your answer as 'row col', where they are two integers separated by a space:";
       match parse_answer (In_channel.input_line_exn In_channel.stdin) with
@@ -207,7 +210,7 @@ let handle_command command =
           get_valid_answer () (* Retry *)
     in
 
-    (* Main logic *)
+    (* Gets row col answer *)
     let (row, col) = get_valid_answer () in
 
     (* Check correctness *)
@@ -227,6 +230,7 @@ let handle_command command =
     )
     end
   in
+  (* Checks and handles the commands *)
   match command with
     | "s" ->
       print_endline "Starting the game, pay attention...";
