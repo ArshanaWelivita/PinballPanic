@@ -18,7 +18,7 @@ The 'E' indicates starting position and trajectory of the ball.
 The bumpers ( ╲ and ╱ ) deflect the ball at a 90 degree angle (changes the trajectory in a perpendicular direction).
 An example grid can be seen as follows: 
 
-<img width="202" alt="Screenshot 2024-11-11 at 2 23 59 PM" src="https://github.com/user-attachments/assets/7eb41bad-2995-46e7-a0b1-18bc9fc723fb">
+<img width="200" alt="Screenshot 2024-12-18 at 1 48 43 PM" src="https://github.com/user-attachments/assets/57cb0abd-ae07-468e-84a2-67d96f58ab31" />
 
 After a few seconds, the bumpers in the grid will disappear, and the user will be prompted to enter the ball's ending location. In this case, the answer is '2 4' where the answer is given in the form 'row col' separated by a space. So the user would enter "2 4" to move on to the next round. If the user enters the correct answer, they will need to press 'c' to move onto the next level, otherwise they are presented with a "GAME OVER".
 
@@ -43,6 +43,18 @@ To execute the server implementation of the game, use: dune exec src/server/pinb
 - c : to move onto a harder level
 
 ### Example Run of Server Game:
+
+<img width="1132" alt="Screenshot 2024-12-18 at 1 43 40 PM" src="https://github.com/user-attachments/assets/44cffe56-aa5e-402e-aba4-5e520ecab1ed" />
+
+<img width="1258" alt="Screenshot 2024-12-18 at 1 44 24 PM" src="https://github.com/user-attachments/assets/41768d99-660b-4e94-90f3-76980eb83bd6" />
+
+<img width="1258" alt="Screenshot 2024-12-18 at 1 44 47 PM" src="https://github.com/user-attachments/assets/8e37a9d3-f9ed-4d88-bc02-edd570a1fc8a" />
+
+<img width="1258" alt="Screenshot 2024-12-18 at 1 45 12 PM" src="https://github.com/user-attachments/assets/54ced4e0-7d08-4232-b79c-63c3b1108b13" />
+
+<img width="1258" alt="Screenshot 2024-12-18 at 1 45 28 PM" src="https://github.com/user-attachments/assets/be66065b-891a-402f-bf16-089d9b253687" />
+
+<img width="1258" alt="Screenshot 2024-12-18 at 1 46 17 PM" src="https://github.com/user-attachments/assets/ddd0e1e4-a01c-4f61-99d9-6aebc36bb240" />
 
 # Technical
 
