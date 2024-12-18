@@ -88,12 +88,6 @@ let render_grid (grid : Grid.grid) : string =
 
 (* Generate a new level and return it as a Dream HTML response *)
 let generate_level _ =
-  (* Check if grid is revealed *)
-  (* let revealed = 
-    match Dream.query request "revealed" with
-    | Some "true" -> true
-    | _ -> false
-  in *)
   let (grid, entry_pos, end_pos, _) = Grid.generate_grid !current_level in
   (* Store entrance and exit positions for later *)
   (current_answer.col) := snd end_pos;
