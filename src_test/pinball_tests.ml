@@ -20,6 +20,7 @@ let series =
   ; Tunnel_tests.series
   ; Teleporter_tests.series
   ; Activated_bumper_tests.series
+  ; Directional_bumper_tests.series
   ; Grid_cell_tests.series
   ]
 
