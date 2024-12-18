@@ -22,10 +22,13 @@ let get_level_message (level : int) : string =
   | 7 -> " "
   | 8 -> "Watch out! This next level has activated bumpers! The ball will pass through them the first time, but will act like a regular bumper from then on."
   | 9 -> " "
-  | 10 -> "Pay attention! Things are starting to heat up, and the levels will only get harder!"
+  | 10 -> "New grid object alert! Directional bumpers can be passed through in 2 directions, but act like regular bumpers in the other two directions."
   | 11 -> " "
   | 12 -> " "
-  | 13 -> "Last level! It's time to put all of your skills to the test! Good luck!"
+  | 13 -> "Pay attention! Things are starting to heat up, and the levels will only get harder!"
+  | 14 -> " "
+  | 15 -> " "
+  | 16 -> "Last level! It's time to put all of your skills to the test! Good luck!"
   | _ -> failwith "Invalid level number."
 
 (* Render the HTML grid based on a grid data structure *)
@@ -131,7 +134,7 @@ let submit_answer_handler request =
         (* Validate the answer *)
         let is_correct = col = !(current_answer.col) && row = !(current_answer.row) in
         if is_correct then (
-          if !current_level < 13 then (
+          if !current_level < 16 then (
             incr current_level;
             Dream.redirect request "/start-game"
           ) else
