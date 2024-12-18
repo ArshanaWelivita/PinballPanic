@@ -36,6 +36,16 @@
     core))
 
 (library
+  (name directional_bumper_tests)
+  (modules directional_bumper_tests)
+  (libraries
+    grid
+    directional_bumper
+    tunnel
+    ounit2
+    core))
+
+(library
   (name grid_cell_tests)
   (modules grid_cell_tests)
   (libraries
@@ -51,6 +61,7 @@
     core
     ounit2
     activated_bumper
+    directional_bumper
     bumper
     grid_cell
     grid
@@ -60,6 +71,7 @@
     tunnel_tests
     teleporter_tests
     activated_bumper_tests
+    directional_bumper_tests
     grid_cell_tests)
   (preprocess (pps ppx_jane))
   )
