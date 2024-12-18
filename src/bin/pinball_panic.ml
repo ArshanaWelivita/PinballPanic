@@ -1,7 +1,7 @@
 open Core
 open Grid_cell
 
-let round_num = ref 8
+let round_num = ref 1
 
 (* Return associated message given the level number *)
 let get_level_message (level : int) : string = 
@@ -154,18 +154,18 @@ let handle_command command =
     let (grid, entry_pos, correct_exit_pos, _) = Grid.generate_grid !round_num in
     let grid_size = Grid.get_grid_size !round_num in 
 
-    (* Out_channel.flush stdout; *)
+    Out_channel.flush stdout;
 
     display_grid_with_grid_objects entry_pos correct_exit_pos grid grid_size;
 
-    (* Out_channel.flush stdout;
+    Out_channel.flush stdout;
 
     (* Wait for 5 seconds before clearing the terminal *)
     let () = Core_unix.sleep 5 in
 
     (* Clear the terminal screen after the 5-second wait *)
     ignore (Core_unix.system "clear");
-    Out_channel.flush stdout; *)
+    Out_channel.flush stdout;
 
     (* Replace all grid cell objects with Empty, skipping Entry *)
     for i = 0 to grid_size do
@@ -182,15 +182,19 @@ let handle_command command =
     (* Function to parse and validate user input *)
     let parse_answer input =
       let trimmed = String.strip input in
-      let parts = String.split ~on:' ' trimmed in
-      match parts with
-      | [row_str; col_str] -> (
-          try
-            let row = Int.of_string row_str in
-            let col = Int.of_string col_str in
-            Some (row, col)
-          with Failure _ -> None)
-      | _ -> None
+      if String.equal trimmed "q" then (
+        exit 0;
+      ) else (
+        let parts = String.split ~on:' ' trimmed in
+        match parts with
+        | [row_str; col_str] -> (
+            try
+              let row = Int.of_string row_str in
+              let col = Int.of_string col_str in
+              Some (row, col)
+            with Failure _ -> None)
+        | _ -> None
+      )
     in
 
     (* Function to repeatedly prompt the user until valid input is given *)
@@ -228,12 +232,14 @@ let handle_command command =
       print_endline "Starting the game, pay attention...";
       handle_round ()
     | "c" -> 
-      if !round_num <> 17 then 
-        (print_endline "Continuing to the next round, get ready...";
-        handle_round ())
-      else 
+      if !round_num <> 17 then (
+        print_endline "Continuing to the next round, get ready...";
+        handle_round ()
+      )
+      else (
         print_endline("You're a Pinball Panic Master! Good job on completing all the levels!"); 
         exit 0
+      )
     | "q" -> 
       print_endline "See you next time!";
       exit 0
@@ -247,36 +253,7 @@ let rec main_loop () =
     | None -> print_endline "Error reading input"; main_loop ()
     | Some command -> handle_command command; main_loop ()
 
-(* Used for debugging purposes
-let display_grid_check () =
-  let (grid, entry_pos, _, _) = Grid.generate_grid round_num in
-  let grid_size = Grid.get_grid_size round_num in 
-  printf "grid size: %d " grid_size;
-  Out_channel.newline stdout;
-  printf "entry pos: %d %d" (fst entry_pos) (snd entry_pos);
-  Out_channel.newline stdout;
-
-  (* Print each cell's value in the grid *)
-  for i = 0 to Array.length grid - 1 do
-    for j = 0 to Array.length grid.(i) - 1 do
-      match to_string grid.(i).(j) with 
-      | "Entry" -> printf "  E  " 
-      | "Exit" -> printf "  X  " 
-      | "Empty" -> printf "  -  " 
-      | "InBallPath" -> printf "  -  " 
-      | "Bumper" -> printf "  %s  " (get_bumper_orientation_string grid.(i).(j).cell_type)
-      | "Tunnel" -> printf "  %s  " (get_tunnel_orientation_string grid.(i).(j).cell_type)
-      | "Teleporter" -> printf "  ★  "
-      (* 
-      | "Teleporter"
-      | "ActivatedBumper" *)
-      | _ -> failwith "Error: there shouldn't be any other grid cell type string within the grid other than the ones matched above."
-    done;
-    Out_channel.newline stdout  (* New line after each row *)
-  done     *)
-
 (* Entry point for the game *)
 let () = 
   display_sample_grid_game ();
-  (* display_grid_check (); <- used for debugging purposes *)
   main_loop ()

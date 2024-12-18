@@ -28,10 +28,10 @@ let level_bounce_settings = [
   (10, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [BumperLevelMarker; DirectionalBumperLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1; num_extra_objects = 2 });
   (11, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1; num_extra_objects = 2 });
   (12, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [TeleporterLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1; num_extra_objects = 3 });
-  (13, { grid_size = 7; min_objects = 7; max_objects = 9; grid_object_types = [TeleporterLevelMarker; TunnelLevelMarker; DirectionalBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 0; num_extra_objects = 3 });
-  (14, { grid_size = 7; min_objects = 8; max_objects = 10; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; ActivatedBumperLevelMarker; DirectionalBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1; num_extra_objects = 3 });
-  (15, { grid_size = 8; min_objects = 9; max_objects = 12; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2; num_extra_objects = 3 });
-  (16, { grid_size = 8; min_objects = 9; max_objects = 12; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker; DirectionalBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2; num_extra_objects = 3 });
+  (13, { grid_size = 8; min_objects = 7; max_objects = 9; grid_object_types = [TeleporterLevelMarker; TunnelLevelMarker; DirectionalBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 0; num_extra_objects = 3 });
+  (14, { grid_size = 8; min_objects = 8; max_objects = 10; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; ActivatedBumperLevelMarker; DirectionalBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 1; num_extra_objects = 3 });
+  (15, { grid_size = 8; min_objects = 9; max_objects = 12; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2; num_extra_objects = 4 });
+  (16, { grid_size = 10; min_objects = 10; max_objects = 12; grid_object_types = [BumperLevelMarker; TeleporterLevelMarker; TunnelLevelMarker; ActivatedBumperLevelMarker; DirectionalBumperLevelMarker]; teleporter_objects = 1; activated_bumper_objects = 2; num_extra_objects = 5 });
 ]
 
 let get_level_settings (level: int) : level_settings =
@@ -425,7 +425,7 @@ let rec simulate_ball_path (grid: grid) (pos: pos) (direction: direction) (objec
           else
           (* Place a new grid object if there are still available grid objects left to be placed *)
             begin
-              printf "Placing grid object along path from position %d %d\n" (fst next_pos) (snd next_pos); (*<- used for debugging purposes *) 
+              (* printf "Placing grid object along path from position %d %d\n" (fst next_pos) (snd next_pos); (*<- used for debugging purposes *)  *)
               (* Gets the properties of the next grid object *)
               let next_grid_object, next_orientation, next_grid_object_marker = generate_next_grid_object teleporter_objects grid_object_types new_direction activated_bumper_objects in
 
