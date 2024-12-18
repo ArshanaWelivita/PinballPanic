@@ -14,31 +14,25 @@ The following is an example sample grid of size 3 x 3 which shows the indices re
 
  <img width="160" alt="Screenshot 2024-11-11 at 2 25 41 PM" src="https://github.com/user-attachments/assets/8e2b5c0e-fa72-4029-a4ea-46d0607a6be6">
 
-The arrow ( ->🟢 ) indicates starting position and trajectory of the ball.
+The 'E' indicates starting position and trajectory of the ball.
 The bumpers ( ╲ and ╱ ) deflect the ball at a 90 degree angle (changes the trajectory in a perpendicular direction).
 An example grid can be seen as follows: 
 
 <img width="202" alt="Screenshot 2024-11-11 at 2 23 59 PM" src="https://github.com/user-attachments/assets/7eb41bad-2995-46e7-a0b1-18bc9fc723fb">
 
-After a few seconds, the bumpers in the grid will disappear, and the user will be prompted to enter the ball's ending location. In this case, the answer is [2, 4] where the answer is given in the form [row, col]. So the user would enter "[2, 4]" to move on to the next round. If the user enters the correct answer, they will need to press 'c' to move onto the next level, otherwise they are presented with a "GAME OVER".
+After a few seconds, the bumpers in the grid will disappear, and the user will be prompted to enter the ball's ending location. In this case, the answer is '2 4' where the answer is given in the form 'row col' separated by a space. So the user would enter "2 4" to move on to the next round. If the user enters the correct answer, they will need to press 'c' to move onto the next level, otherwise they are presented with a "GAME OVER".
 
 To execute the game on the command line, use: dune exec _build/default/src/bin/pinball_panic.exe
 
 To execute the server implementation of the game, use: dune exec src/server/pinball_server.exe
 
-### List of CLI Commands:
+### Example Run of Command Line Game:
+
+**List of CLI Commands:**
 
 - s : to start a new game
 - q or Ctrl-C : to quit
 - c : to move onto a harder level
-
-# Mock Use
-
-This is our current command line implementation of the game without the grid disappearing and using bumpers, teleporters and tunnels in the generated grids. We will build on this code and update this section as we add more advanced features and include the activated bumpers.
-
-Note: The command line interface that we implemented in the grid.ml and pinball_panic.ml files work up to level 8 of the game as we haven't implemented the activated bumper functionality yet. That is our main goal for the weekend and week leading up to the presentation. The web game server also uses the grid.ml for generating the grid, so that also only works until level 8 of the game. We haven't implemented the part where the grid disappears yet for the command line (it works on the front-end), but we plan to do that at the end once everything is working. Also, we realized that the row,col indices are swapped in the server so we need to go back and change that.
-
-**Example Run:**
 
 <img width="1030" alt="Screenshot 2024-11-11 at 2 42 24 PM" src="https://github.com/user-attachments/assets/8b736015-b043-4df8-b74e-5a04f72fc24e">
 
@@ -47,6 +41,8 @@ Note: The command line interface that we implemented in the grid.ml and pinball_
 <img width="1030" alt="Screenshot 2024-11-11 at 2 42 57 PM" src="https://github.com/user-attachments/assets/d0121615-f25e-4b19-bf3b-9c4d8726f3ea">
 
 <img width="1030" alt="Screenshot 2024-11-11 at 2 43 17 PM" src="https://github.com/user-attachments/assets/d4d26608-fb22-441d-8377-f383d34c7827">
+
+### Example Run of Server Game:
 
 # Technical
 
@@ -114,28 +110,3 @@ Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, a
  
  ### Generalization:
  We couldn't think of any possible ways to generalize the game as it depends on the dynamic generation of the grid where each grid object interaction is pre-defined, so it would be hard to create an abstract implementation where the user defines the interaction of each grid object as then the user would have to provide the functions that define these grid object interactions which defy the purpose of a functor. Instead of generalizing, we could increase the number of levels steadily, increasing the difficulty such that the higher levels have enormous grids with large numbers of objects with combinations of interactions between various grid objects. We can also improve it such that it places random grid objects within the grid that don't interact with the ball to throw the user off, making it more difficult for them to discern the ball's path. We would appreciate any advice on generalizing the pinball game and improving our code regarding the level progression difficulty. 
-
-# Implementation Plan:
-
-### Week 1 - November 13th: - Done
-1. Add complex features to .mli files
-  - Activated Bumper
-  - Tunnel
-  - Teleporter
-2. Change grid int values to types (make it a more abstract implementation)
-
-### Week 2: - Done
-1. Implement advanced features in grid generation
-  - Tunnel
-  - Teleporter
-2. Start on web app
-
-### Week 3
-1. Activated bumper feature implementation 
-2. Add grid.ml tests - Mostly done (need to add a lot more tests to check the error and edge cases)
-3. Finish web app
-
-### Week 4:
-1. Code cleanup
-2. Add more testing
-3. Search for edge cases
