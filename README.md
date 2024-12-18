@@ -94,21 +94,21 @@ Level 7  - 6 x 6 grid with 6-8 grid object (type: bumper, teleporter, tunnel) wi
 
 Level 8  - 6 x 6 grid with 6-8 grid object (type: bumper, activated bumper) with 0 extra grid objects 
 
-Level 9  - 7 x 7 grid with 7-9 grid object (type: bumper, tunnel, activated bumper)
+Level 9  - 7 x 7 grid with 7-9 grid object (type: bumper, tunnel, activated bumper) with 1 extra grid objects 
 
-Level 10  - 7 x 7 grid with 7-9 grid object (type: bumper, teleporter, activated bumper)
+Level 10  - 7 x 7 grid with 7-9 grid object (type: bumper, directional bumper, activated bumper) with 2 extra grid objects 
 
-Level 11  - 7 x 7 grid with 7-9 grid object (type: tunnel, teleporter, activated bumper)
+Level 11  - 7 x 7 grid with 7-9 grid object (type: bumper, teleporter, activated bumper) with 2 extra grid objects 
 
-Level 12  - 7 x 7 grid with 8-10 grid object (type: bumper, teleporter, activated bumper)
+Level 12  - 7 x 7 grid with 8-10 grid object (type: tunnel, teleporter, activated bumper) with 3 extra grid objects 
 
-Level 13 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper)
+Level 13 - 8 x 8 grid with 9-12 grid object (type: teleporter, tunnel, directional bumper) with 3 extra grid objects 
 
-Level 14 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper)
+Level 14 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, activated bumper, directional bumper) with 3 extra grid objects 
 
-Level 15 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper)
+Level 15 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper) with 4 extra grid objects 
 
-Level 16 - 8 x 8 grid with 9-12 grid object (type: bumper, teleporter, tunnel, activated bumper)
+Level 16 - 10 x 10 grid with 10-12 grid object (type: bumper, teleporter, tunnel, activated bumper, directional bumper) with 5 extra grid objects 
 
 ### OCaml Library Use
 
