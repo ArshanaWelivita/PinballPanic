@@ -70,6 +70,7 @@ let render_grid (grid : Grid.grid) : string =
           | "Bumper" -> "<td class='bumper dynamic'>" ^ (get_bumper_orientation_string cell.cell_type) ^ "</td>"
           | "ActivatedBumper" -> "<td class='activatedBumper dynamic'>" ^ (get_activated_bumper_orientation_string cell.cell_type) ^ "</td>"
           | "Tunnel" -> "<td class='tunnel dynamic'>" ^ (get_tunnel_orientation_string cell.cell_type) ^ "</td>"
+          | "DirectionalBumper" -> "<td class='directionalBumper dynamic'>" ^ (get_directional_bumper_orientation_string cell.cell_type) ^ "</td>"
           | "Teleporter" -> "<td class='teleporter dynamic'>*</td>"
           | _ -> failwith "Unexpected grid cell type."
         )
