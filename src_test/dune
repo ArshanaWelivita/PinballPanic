@@ -60,6 +60,6 @@
     tunnel_tests
     teleporter_tests
     activated_bumper_tests
-    grid_cell_tests
-  )
+    grid_cell_tests)
+  (preprocess (pps ppx_jane))
   )

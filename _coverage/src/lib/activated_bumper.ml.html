@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>tunnel.ml &mdash; Coverage report</title>
-    <meta name="description" content="100.00% coverage in src/lib/tunnel.ml">
+    <title>activated_bumper.ml &mdash; Coverage report</title>
+    <meta name="description" content="66.67% coverage in src/lib/activated_bumper.ml">
     <link rel="stylesheet" href="../../coverage.css"/>
     <script src="../../highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
@@ -12,12 +12,13 @@
     <div id="header">
       <h1>
         <a href="../../index.html">
-          <span class="dirname">src/lib/</span>tunnel.ml
+          <span class="dirname">src/lib/</span>activated_bumper.ml
         </a>
       </h1>
-      <h2>100.00%</h2>
+      <h2>66.67%</h2>
     </div>
     <div id="navbar">
+      <span class="unvisited" style="bottom:25.00%"></span>
     </div>
     <div id="report">
       <div id="lines-layer">
@@ -31,34 +32,33 @@
 <a id="L7"></a><span > </span>
 <a id="L8"></a><span > </span>
 <a id="L9"></a><span > </span>
-<a id="L10"></a><span class="visited"> </span>
-<a id="L11"></a><span class="visited"> </span>
-<a id="L12"></a><span class="visited"> </span>
+<a id="L10"></a><span > </span>
+<a id="L11"></a><span > </span>
+<a id="L12"></a><span > </span>
 <a id="L13"></a><span > </span>
 <a id="L14"></a><span > </span>
 <a id="L15"></a><span > </span>
 <a id="L16"></a><span > </span>
 <a id="L17"></a><span > </span>
 <a id="L18"></a><span > </span>
-<a id="L19"></a><span > </span>
-<a id="L20"></a><span > </span>
+<a id="L19"></a><span class="visited"> </span>
+<a id="L20"></a><span class="visited"> </span>
 <a id="L21"></a><span > </span>
 <a id="L22"></a><span > </span>
-<a id="L23"></a><span class="visited"> </span>
-<a id="L24"></a><span class="visited"> </span>
+<a id="L23"></a><span > </span>
+<a id="L24"></a><span > </span>
 <a id="L25"></a><span > </span>
 <a id="L26"></a><span > </span>
-<a id="L27"></a><span > </span>
+<a id="L27"></a><span class="unvisited"> </span>
 <a id="L28"></a><span > </span>
 <a id="L29"></a><span > </span>
 <a id="L30"></a><span > </span>
-<a id="L31"></a><span class="visited"> </span>
+<a id="L31"></a><span > </span>
 <a id="L32"></a><span > </span>
 <a id="L33"></a><span > </span>
 <a id="L34"></a><span > </span>
 <a id="L35"></a><span > </span>
 <a id="L36"></a><span > </span>
-<a id="L37"></a><span > </span>
 </pre>
       </div>
       <div id="text-layer">
@@ -99,20 +99,15 @@
 <a href="#L34">34</a>
 <a href="#L35">35</a>
 <a href="#L36">36</a>
-<a href="#L37">37</a>
 </pre>
 <pre><code class="ocaml">open Core
 
 type pos = int * int
+type is_active = bool
 
-type orientationTunnel =
-  | Vertical
-  | Horizontal
-
-let tunnel_orientation_to_string (orientation : orientationTunnel) : string =
-  <span data-count="2">m</span>atch orientation with
-  | <span data-count="1">V</span>ertical -&gt; "Vertical"
-  | <span data-count="1">H</span>orizontal -&gt; "Horizontal"
+type orientation =
+  | DownRight  (* corresponds to '⧅' *)
+  | UpRight    (* corresponds to '⧄' *)
 
 type direction =
   | Up
@@ -122,22 +117,25 @@ type direction =
 
 type direction_map = (direction, direction) Map.Poly.t
 
-let generate_directions (orientation : orientationTunnel) : direction_map =
-  <span data-count="6">m</span>atch orientation with
-    | <span data-count="4">V</span>ertical -&gt;
+let generate_directions orientation : direction_map =
+  <span data-count="1">m</span>atch orientation with
+    | <span data-count="1">D</span>ownRight -&gt;
       Map.Poly.of_alist_exn [
-        (Right, Left);
-        (Up, Up);
-        (Left, Right);
-        (Down, Down);
+        (Right, Down);
+        (Up, Left);
+        (Left, Up);
+        (Down, Right);
       ]
-    | <span data-count="2">H</span>orizontal -&gt;
+    | <span data-count="0">U</span>pRight -&gt;
       Map.Poly.of_alist_exn [
-        (Right, Right);
-        (Down, Up);
-        (Left, Left);
-        (Up, Down);
+        (Right, Up);
+        (Down, Left);
+        (Left, Down);
+        (Up, Right);
       ]
+
+(* let is_it_active (ball_pos: pos) (activated_bumper_pos: pos) : bool =
+  true *)
 </code></pre>
       </div>
     </div>
