@@ -32,13 +32,7 @@ To execute the server implementation of the game, use: dune exec src/server/pinb
 - q or Ctrl-C : to quit
 - c : to move onto a harder level
 
-# Mock Use
-
-This is our current command line implementation of the game without the grid disappearing and using bumpers, teleporters and tunnels in the generated grids. We will build on this code and update this section as we add more advanced features and include the activated bumpers.
-
-Note: The command line interface that we implemented in the grid.ml and pinball_panic.ml files work up to level 8 of the game as we haven't implemented the activated bumper functionality yet. That is our main goal for the weekend and week leading up to the presentation. The web game server also uses the grid.ml for generating the grid, so that also only works until level 8 of the game. We haven't implemented the part where the grid disappears yet for the command line (it works on the front-end), but we plan to do that at the end once everything is working. Also, we realized that the row,col indices are swapped in the server so we need to go back and change that. 
-
-**Example Run:**
+**Example Run of Command Line Game:**
 
 <img width="1030" alt="Screenshot 2024-11-11 at 2 42 24 PM" src="https://github.com/user-attachments/assets/8b736015-b043-4df8-b74e-5a04f72fc24e">
 
@@ -47,6 +41,8 @@ Note: The command line interface that we implemented in the grid.ml and pinball_
 <img width="1030" alt="Screenshot 2024-11-11 at 2 42 57 PM" src="https://github.com/user-attachments/assets/d0121615-f25e-4b19-bf3b-9c4d8726f3ea">
 
 <img width="1030" alt="Screenshot 2024-11-11 at 2 43 17 PM" src="https://github.com/user-attachments/assets/d4d26608-fb22-441d-8377-f383d34c7827">
+
+**Example Run of Server Game:**
 
 # Technical
 
