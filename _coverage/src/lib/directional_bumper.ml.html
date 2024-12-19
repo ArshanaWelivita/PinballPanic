@@ -123,15 +123,15 @@ type direction =
 type direction_map = (direction, direction) Map.Poly.t
 
 let generate_directions orientation : direction_map =
-  <span data-count="4">m</span>atch orientation with
-    | <span data-count="2">D</span>ownRight -&gt; (* ◹ *)
+  <span data-count="5140">m</span>atch orientation with
+    | <span data-count="2584">D</span>ownRight -&gt; (* ◹ *)
       Map.Poly.of_alist_exn [
         (Right, Down);
         (Up, Left);
         (Left, Left);
         (Down, Down);
       ]
-    | <span data-count="2">U</span>pRight -&gt; (* ◸ *)
+    | <span data-count="2556">U</span>pRight -&gt; (* ◸ *)
       Map.Poly.of_alist_exn [
         (Right, Right);
         (Down, Down);

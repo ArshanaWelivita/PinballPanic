@@ -26,6 +26,10 @@ To execute the game on the command line, use: dune exec _build/default/src/bin/p
 
 To execute the server implementation of the game, use: dune exec src/server/pinball_server.exe
 
+### Note Regarding Testing:
+
+Despite countless hours attempting to debug our simulate_ball_path_post_generation function (used for testing purposes). The function doesn't always work as intended for levels 8+. We postulate it is due to some of the activated_bumper and directional_bumper interactions. Note that this function is only used for testing purposes, and so there is no corresponding bug that can be found in either the command-line implementation, nor the server implementation. Furthermore, this is the reason why Grid.ml might lack some code coverage.
+
 ### Example Run of Command Line Game:
 
 <img width="1078" alt="Screenshot 2024-12-18 at 1 31 53 PM" src="https://github.com/user-attachments/assets/8c997322-967b-4d18-bc47-5d80d0266e81" />

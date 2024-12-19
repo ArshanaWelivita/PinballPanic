@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
     <title>grid_cell.ml &mdash; Coverage report</title>
-    <meta name="description" content="93.16% coverage in src/lib/grid_cell.ml">
+    <meta name="description" content="98.29% coverage in src/lib/grid_cell.ml">
     <link rel="stylesheet" href="../../coverage.css"/>
     <script src="../../highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
@@ -15,16 +15,10 @@
           <span class="dirname">src/lib/</span>grid_cell.ml
         </a>
       </h1>
-      <h2>93.16%</h2>
+      <h2>98.29%</h2>
     </div>
     <div id="navbar">
-      <span class="unvisited" style="top:48.48%"></span>
       <span class="unvisited" style="top:48.99%"></span>
-      <span class="unvisited" style="top:49.49%"></span>
-      <span class="unvisited" style="bottom:47.47%"></span>
-      <span class="unvisited" style="bottom:46.97%"></span>
-      <span class="unvisited" style="bottom:29.29%"></span>
-      <span class="unvisited" style="bottom:28.79%"></span>
       <span class="unvisited" style="bottom:25.76%"></span>
     </div>
     <div id="report">
@@ -125,16 +119,16 @@
 <a id="L93"></a><span > </span>
 <a id="L94"></a><span class="visited"> </span>
 <a id="L95"></a><span class="visited"> </span>
-<a id="L96"></a><span class="unvisited"> </span>
+<a id="L96"></a><span class="visited"> </span>
 <a id="L97"></a><span class="unvisited"> </span>
-<a id="L98"></a><span class="unvisited"> </span>
+<a id="L98"></a><span class="visited"> </span>
 <a id="L99"></a><span > </span>
 <a id="L100"></a><span > </span>
 <a id="L101"></a><span class="visited"> </span>
 <a id="L102"></a><span class="visited"> </span>
 <a id="L103"></a><span class="visited"> </span>
-<a id="L104"></a><span class="unvisited"> </span>
-<a id="L105"></a><span class="unvisited"> </span>
+<a id="L104"></a><span class="visited"> </span>
+<a id="L105"></a><span class="visited"> </span>
 <a id="L106"></a><span > </span>
 <a id="L107"></a><span > </span>
 <a id="L108"></a><span class="visited"> </span>
@@ -169,8 +163,8 @@
 <a id="L137"></a><span > </span>
 <a id="L138"></a><span > </span>
 <a id="L139"></a><span class="visited"> </span>
-<a id="L140"></a><span class="unvisited"> </span>
-<a id="L141"></a><span class="unvisited"> </span>
+<a id="L140"></a><span class="visited"> </span>
+<a id="L141"></a><span class="visited"> </span>
 <a id="L142"></a><span class="visited"> </span>
 <a id="L143"></a><span class="visited"> </span>
 <a id="L144"></a><span > </span>
@@ -482,10 +476,10 @@ let orientation_to_string (orientation : orientation) : string =
   | <span data-count="1">N</span>one -&gt; "None"
 
 let compare_grid_cell_type (a: grid_cell) (b: grid_cell_type) : bool =
-  <span data-count="2417">m</span>atch (a.cell_type, b) with
-  | <span data-count="520">E</span>mpty, Empty -&gt; true
-  | <span data-count="19">I</span>nBallPath, InBallPath -&gt; true
-  | <span data-count="65">T</span>eleporter t1, Teleporter t2 -&gt; 
+  <span data-count="481789">m</span>atch (a.cell_type, b) with
+  | <span data-count="231953">E</span>mpty, Empty -&gt; true
+  | <span data-count="67">I</span>nBallPath, InBallPath -&gt; true
+  | <span data-count="9289">T</span>eleporter t1, Teleporter t2 -&gt; 
       t1.orientation = t2.orientation (*t1.direction = t2.direction &amp;&amp; *)
   | <span data-count="1">B</span>umper b1, Bumper b2 -&gt; 
       b1.orientation = b2.orientation &amp;&amp; <span data-count="1">b</span>1.direction = b2.direction
@@ -500,97 +494,97 @@ let compare_grid_cell_type (a: grid_cell) (b: grid_cell_type) : bool =
     d1 = d2
   | <span data-count="1">E</span>xit { direction = d1 }, Exit { direction = d2 } -&gt; 
       d1 = d2
-  |<span data-count="1808">_</span>, _ -&gt; false
+  |<span data-count="240475">_</span>, _ -&gt; false
 
 let tunnel_direction_to_direction (dir: Tunnel.direction) : direction =
-  <span data-count="72">m</span>atch dir with
-  | <span data-count="21">T</span>unnel.Up -&gt; Up
-  | <span data-count="27">T</span>unnel.Down -&gt; Down
-  | <span data-count="6">T</span>unnel.Left -&gt; Left
-  | <span data-count="18">T</span>unnel.Right -&gt; Right
+  <span data-count="5461">m</span>atch dir with
+  | <span data-count="1464">T</span>unnel.Up -&gt; Up
+  | <span data-count="1360">T</span>unnel.Down -&gt; Down
+  | <span data-count="1295">T</span>unnel.Left -&gt; Left
+  | <span data-count="1342">T</span>unnel.Right -&gt; Right
 
 let direction_to_tunnel_direction (dir: direction) : Tunnel.direction =
-  <span data-count="72">m</span>atch dir with
-  | <span data-count="24">U</span>p -&gt; Tunnel.Up
-  | <span data-count="24">D</span>own -&gt; Tunnel.Down
-  | <span data-count="7">L</span>eft -&gt; Tunnel.Left
-  | <span data-count="17">R</span>ight -&gt; Tunnel.Right
+  <span data-count="5461">m</span>atch dir with
+  | <span data-count="1015">U</span>p -&gt; Tunnel.Up
+  | <span data-count="1809">D</span>own -&gt; Tunnel.Down
+  | <span data-count="1297">L</span>eft -&gt; Tunnel.Left
+  | <span data-count="1340">R</span>ight -&gt; Tunnel.Right
 
 let direction_to_bumper_direction (dir: direction) : Bumper.direction =
-  <span data-count="213">m</span>atch dir with
-  | <span data-count="52">U</span>p -&gt; Bumper.Up
-  | <span data-count="53">D</span>own -&gt; Bumper.Down
-  | <span data-count="50">L</span>eft -&gt; Bumper.Left
-  | <span data-count="58">R</span>ight -&gt; Bumper.Right
+  <span data-count="5228">m</span>atch dir with
+  | <span data-count="1029">U</span>p -&gt; Bumper.Up
+  | <span data-count="1670">D</span>own -&gt; Bumper.Down
+  | <span data-count="1268">L</span>eft -&gt; Bumper.Left
+  | <span data-count="1261">R</span>ight -&gt; Bumper.Right
 
 let direction_to_activated_bumper_direction (dir: direction) : Activated_bumper.direction =
-  <span data-count="2">m</span>atch dir with
-  | <span data-count="2">U</span>p -&gt; Activated_bumper.Up
-  | <span data-count="0">D</span>own -&gt; Activated_bumper.Down
+  <span data-count="13">m</span>atch dir with
+  | <span data-count="6">U</span>p -&gt; Activated_bumper.Up
+  | <span data-count="2">D</span>own -&gt; Activated_bumper.Down
   | <span data-count="0">L</span>eft -&gt; Activated_bumper.Left
-  | <span data-count="0">R</span>ight -&gt; Activated_bumper.Right
+  | <span data-count="5">R</span>ight -&gt; Activated_bumper.Right
 
 let direction_to_directional_bumper_direction (dir: direction) : Directional_bumper.direction =
-  <span data-count="4">m</span>atch dir with
-  | <span data-count="2">U</span>p -&gt; Directional_bumper.Up
-  | <span data-count="2">D</span>own -&gt; Directional_bumper.Down
-  | <span data-count="0">L</span>eft -&gt; Directional_bumper.Left
-  | <span data-count="0">R</span>ight -&gt; Directional_bumper.Right
+  <span data-count="5140">m</span>atch dir with
+  | <span data-count="936">U</span>p -&gt; Directional_bumper.Up
+  | <span data-count="1718">D</span>own -&gt; Directional_bumper.Down
+  | <span data-count="1220">L</span>eft -&gt; Directional_bumper.Left
+  | <span data-count="1266">R</span>ight -&gt; Directional_bumper.Right
 
 let orientation_to_tunnel_orientation (orientation: orientation) : Tunnel.orientationTunnel =
-  <span data-count="75">m</span>atch orientation with
-  | <span data-count="33">V</span>ertical -&gt; Tunnel.Vertical
-  | <span data-count="41">H</span>orizontal -&gt; Tunnel.Horizontal
+  <span data-count="5464">m</span>atch orientation with
+  | <span data-count="2730">V</span>ertical -&gt; Tunnel.Vertical
+  | <span data-count="2733">H</span>orizontal -&gt; Tunnel.Horizontal
   | <span data-count="1">_</span> -&gt; failwith "Wrong orientation for the tunnel grid object type."
 
 let orientation_to_bumper_orientation (orientation: orientation) : Bumper.orientation =
-  <span data-count="216">m</span>atch orientation with
-  | <span data-count="106">U</span>pRight -&gt; Bumper.UpRight
-  | <span data-count="109">D</span>ownRight -&gt; Bumper.DownRight
+  <span data-count="5231">m</span>atch orientation with
+  | <span data-count="2539">U</span>pRight -&gt; Bumper.UpRight
+  | <span data-count="2691">D</span>ownRight -&gt; Bumper.DownRight
   | <span data-count="1">_</span> -&gt; failwith "Wrong orientation for the bumper grid object type."
 
 let orientation_to_directional_bumper_orientation (orientation: orientation) : Directional_bumper.orientation =
-  <span data-count="7">m</span>atch orientation with
-  | <span data-count="3">U</span>pRight -&gt; Directional_bumper.UpRight
-  | <span data-count="3">D</span>ownRight -&gt; Directional_bumper.DownRight
+  <span data-count="5143">m</span>atch orientation with
+  | <span data-count="2557">U</span>pRight -&gt; Directional_bumper.UpRight
+  | <span data-count="2585">D</span>ownRight -&gt; Directional_bumper.DownRight
   | <span data-count="1">_</span> -&gt; failwith "Wrong orientation for the directional bumper grid object type."
 
 let orientation_to_activated_bumper_orientation (orientation: orientation) : Activated_bumper.orientation = 
-  <span data-count="3">m</span>atch orientation with
-  | <span data-count="1">U</span>pRight -&gt; Activated_bumper.UpRight
-  | <span data-count="1">D</span>ownRight -&gt; Activated_bumper.DownRight
+  <span data-count="14">m</span>atch orientation with
+  | <span data-count="6">U</span>pRight -&gt; Activated_bumper.UpRight
+  | <span data-count="7">D</span>ownRight -&gt; Activated_bumper.DownRight
   | <span data-count="1">_</span> -&gt; failwith "Wrong orientation for the activated bumper grid object type."
 
 let bumper_direction_to_direction (dir: Bumper.direction) : direction =
-  <span data-count="213">m</span>atch dir with
-  | <span data-count="52">B</span>umper.Up -&gt; Up
-  | <span data-count="56">B</span>umper.Down -&gt; Down
-  | <span data-count="53">B</span>umper.Left -&gt; Left
-  | <span data-count="52">B</span>umper.Right -&gt; Right
+  <span data-count="5228">m</span>atch dir with
+  | <span data-count="1293">B</span>umper.Up -&gt; Up
+  | <span data-count="1236">B</span>umper.Down -&gt; Down
+  | <span data-count="1330">B</span>umper.Left -&gt; Left
+  | <span data-count="1369">B</span>umper.Right -&gt; Right
 
 let activated_bumper_direction_to_direction (dir: Activated_bumper.direction) : direction =
-  <span data-count="2">m</span>atch dir with
-  | <span data-count="0">A</span>ctivated_bumper.Up -&gt; Up
-  | <span data-count="0">A</span>ctivated_bumper.Down -&gt; Down
-  | <span data-count="1">A</span>ctivated_bumper.Left -&gt; Left
-  | <span data-count="1">A</span>ctivated_bumper.Right -&gt; Right
+  <span data-count="13">m</span>atch dir with
+  | <span data-count="3">A</span>ctivated_bumper.Up -&gt; Up
+  | <span data-count="2">A</span>ctivated_bumper.Down -&gt; Down
+  | <span data-count="5">A</span>ctivated_bumper.Left -&gt; Left
+  | <span data-count="3">A</span>ctivated_bumper.Right -&gt; Right
 
 let directional_bumper_direction_to_direction (dir: Directional_bumper.direction) : direction =
-  <span data-count="4">m</span>atch dir with
+  <span data-count="5140">m</span>atch dir with
   | <span data-count="0">D</span>irectional_bumper.Up -&gt; Up
-  | <span data-count="2">D</span>irectional_bumper.Down -&gt; Down
-  | <span data-count="1">D</span>irectional_bumper.Left -&gt; Left
-  | <span data-count="1">D</span>irectional_bumper.Right -&gt; Right
+  | <span data-count="2960">D</span>irectional_bumper.Down -&gt; Down
+  | <span data-count="1094">D</span>irectional_bumper.Left -&gt; Left
+  | <span data-count="1086">D</span>irectional_bumper.Right -&gt; Right
   
-let to_string (cell: grid_cell) : string = <span data-count="14">m</span>atch cell.cell_type with 
-  | <span data-count="1">E</span>ntry _ -&gt; "Entry"
-  | <span data-count="1">E</span>xit _ -&gt; "Exit"
-  | <span data-count="1">E</span>mpty -&gt; "Empty" 
-  | <span data-count="1">I</span>nBallPath -&gt; "InBallPath"
-  | <span data-count="1">B</span>umper _ -&gt; "Bumper"
-  | <span data-count="1">T</span>unnel _ -&gt; "Tunnel"
+let to_string (cell: grid_cell) : string = <span data-count="95">m</span>atch cell.cell_type with 
+  | <span data-count="2">E</span>ntry _ -&gt; "Entry"
+  | <span data-count="2">E</span>xit _ -&gt; "Exit"
+  | <span data-count="62">E</span>mpty -&gt; "Empty" 
+  | <span data-count="11">I</span>nBallPath -&gt; "InBallPath"
+  | <span data-count="5">B</span>umper _ -&gt; "Bumper"
+  | <span data-count="3">T</span>unnel _ -&gt; "Tunnel"
   | <span data-count="1">T</span>eleporter _ -&gt; "Teleporter"
-  | <span data-count="1">A</span>ctivatedBumper _ -&gt; "ActivatedBumper"
+  | <span data-count="3">A</span>ctivatedBumper _ -&gt; "ActivatedBumper"
   | <span data-count="1">D</span>irectionalBumper _ -&gt; "DirectionalBumper"
   | <span data-count="1">B</span>umperLevelMarker -&gt; "BumperLevelMarker"
   | <span data-count="1">T</span>unnelLevelMarker -&gt; "TunnelLevelMarker"
@@ -598,14 +592,14 @@ let to_string (cell: grid_cell) : string = <span data-count="14">m</span>atch ce
   | <span data-count="1">T</span>eleporterLevelMarker -&gt; "TeleporterLevelMarker"
   | <span data-count="1">D</span>irectionalBumperLevelMarker -&gt; "DirectionalBumperLevelMarker"
 
-let get_bumper_orientation_string (b: grid_cell_type) : string = <span data-count="3">m</span>atch b with 
-  | <span data-count="1">B</span>umper {orientation = DownRight; _} -&gt; "⟍"
-  | <span data-count="1">B</span>umper {orientation = UpRight; _} -&gt; "⟋"
+let get_bumper_orientation_string (b: grid_cell_type) : string = <span data-count="7">m</span>atch b with 
+  | <span data-count="2">B</span>umper {orientation = DownRight; _} -&gt; "⟍"
+  | <span data-count="4">B</span>umper {orientation = UpRight; _} -&gt; "⟋"
   | <span data-count="1">_</span> -&gt; failwith "Error: bumper can only have orientation DownRight or UpRight."
 
-let get_activated_bumper_orientation_string (b: grid_cell_type) : string = <span data-count="3">m</span>atch b with 
-  | <span data-count="1">A</span>ctivatedBumper {orientation = DownRight; _} -&gt; "⧅"
-  | <span data-count="1">A</span>ctivatedBumper {orientation = UpRight; _} -&gt; "⧄"
+let get_activated_bumper_orientation_string (b: grid_cell_type) : string = <span data-count="5">m</span>atch b with 
+  | <span data-count="2">A</span>ctivatedBumper {orientation = DownRight; _} -&gt; "⧅"
+  | <span data-count="2">A</span>ctivatedBumper {orientation = UpRight; _} -&gt; "⧄"
   | <span data-count="1">_</span> -&gt; failwith "Error: activated bumper can only have orientation DownRight or UpRight."
 
 let get_directional_bumper_orientation_string (b: grid_cell_type) : string = <span data-count="3">m</span>atch b with 
@@ -613,22 +607,22 @@ let get_directional_bumper_orientation_string (b: grid_cell_type) : string = <sp
 | <span data-count="1">D</span>irectionalBumper {orientation = UpRight; _} -&gt; "◸"
 | <span data-count="1">_</span> -&gt; failwith "Error: directional bumper can only have orientation DownRight or UpRight."
 
-let get_tunnel_orientation_string (b: grid_cell_type) : string = <span data-count="3">m</span>atch b with 
-  | <span data-count="1">T</span>unnel {orientation = Vertical; _} -&gt; "𝄁"
-  | <span data-count="1">T</span>unnel {orientation = Horizontal; _} -&gt; "="
+let get_tunnel_orientation_string (b: grid_cell_type) : string = <span data-count="5">m</span>atch b with 
+  | <span data-count="2">T</span>unnel {orientation = Vertical; _} -&gt; "𝄁"
+  | <span data-count="2">T</span>unnel {orientation = Horizontal; _} -&gt; "="
   | <span data-count="1">_</span> -&gt; failwith "Error: tunnel can only have orientation DownRight or UpRight."
 
-let is_teleporter_marker (cell_type: grid_cell_type) : bool = <span data-count="474">m</span>atch cell_type with 
-  | <span data-count="61">T</span>eleporterLevelMarker -&gt; true
-  | <span data-count="413">_</span> -&gt; false
+let is_teleporter_marker (cell_type: grid_cell_type) : bool = <span data-count="68136">m</span>atch cell_type with 
+  | <span data-count="12341">T</span>eleporterLevelMarker -&gt; true
+  | <span data-count="55795">_</span> -&gt; false
 
-let is_activated_bumper (cell: grid_cell) : bool = <span data-count="644">m</span>atch cell.cell_type with 
-  | <span data-count="5">A</span>ctivatedBumper {is_active = true; _ } -&gt; true
-  | <span data-count="639">_</span> -&gt; false
+let is_activated_bumper (cell: grid_cell) : bool = <span data-count="50538">m</span>atch cell.cell_type with 
+  | <span data-count="12">A</span>ctivatedBumper {is_active = true; _ } -&gt; true
+  | <span data-count="50526">_</span> -&gt; false
 
-let is_activated_bumper_marker (cell_type: grid_cell_type) : bool = <span data-count="803">m</span>atch cell_type with 
-  | <span data-count="184">A</span>ctivatedBumperLevelMarker -&gt; true
-  | <span data-count="619">_</span> -&gt; false
+let is_activated_bumper_marker (cell_type: grid_cell_type) : bool = <span data-count="23612">m</span>atch cell_type with 
+  | <span data-count="5301">A</span>ctivatedBumperLevelMarker -&gt; true
+  | <span data-count="18311">_</span> -&gt; false
 </code></pre>
       </div>
     </div>
