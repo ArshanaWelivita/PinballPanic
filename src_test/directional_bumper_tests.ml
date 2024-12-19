@@ -1,6 +1,7 @@
 open OUnit2
 open Core
 open Grid_cell
+(* open Directional_bumper *)
 
 
 let simple_directional_bumper_test_one _ =
@@ -36,7 +37,7 @@ let simple_directional_bumper_test_two _ =
 
   (* let orientation_check =
     match grid.(1).(2).cell_type with
-    | DirectionalBumper { orientation; _ } -> DirectionalBumper.orientation_to_string (orientation_to_bumper_orientation orientation)
+    | DirectionalBumper { orientation; _ } -> orientation_to_string (orientation_to_directional_bumper_orientation orientation)
     | _ -> "NotADirectionalBumper"
   in
   assert_equal orientation_check "DownRight" 

@@ -20,5 +20,5 @@ let simple_teleporter_test_one _ =
 
 let series =
   "Teleporter tests" >::: [ 
-    "simple test one" >:: simple_teleporter_test_one;
+    "simple test one" >:: simple_teleporter_test_one
     ]

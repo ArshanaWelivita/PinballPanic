@@ -257,7 +257,8 @@ let determine_new_ball_direction (current_grid_cell: grid_cell) (direction: dire
         grid.(first_pos).(second_pos) <- { current_grid_cell with cell_type = 
         ActivatedBumper { orientation; direction; is_active = true; revisit = 0}};
         direction
-  | Entry _ -> direction (* no change as direction is preserved *)                                 
+  | Entry _ -> direction (* no change as direction is preserved *) 
+  | Exit _ -> direction (* no change as direction is preserved *)                                 
   | _ -> failwith "Grid cell type doesn't have directions."
 
 let randomly_choose_next_grid_object_marker (teleporter_objects: int) (grid_object_types: grid_cell_type list) (activated_bumper_objects: int) : grid_cell_type =
@@ -592,13 +593,9 @@ let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: 
     
               let next_pos = move pos new_direction in
     
-              (* Check if grid objects left is 0: Follow the path without placing new grid objects  *)
               begin
-                (* printf "No bumpers left; following path until exit.\n"; *)
                   if out_of_bounds_check next_pos grid_size then
                     begin
-                      (* printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos); <- used for debugging purposes
-                      printf "end pos: %d %d" (fst pos) (snd pos); *)
                       (pos, direction)
                     end
                   else
@@ -611,12 +608,10 @@ let rec simulate_ball_path_post_generation (grid : grid) (pos: pos) (direction: 
             let next_pos = move pos direction in
             if out_of_bounds_check next_pos grid_size then
               begin
-                (* printf "Next position %d %d is out of bounds, stopping.\n" (fst next_pos) (snd next_pos); <- used for debugging purposes *)
                 (pos, direction)
               end
             else
               begin
-                (* printf "No object encountered, continuing straight from position %d %d\n" row col; <- used for debugging purposes *)
                 simulate_ball_path_post_generation grid next_pos direction grid_size visited_activated_bumpers
               end
           end

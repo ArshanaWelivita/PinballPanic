@@ -2,8 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>tunnel.ml &mdash; Coverage report</title>
-    <meta name="description" content="100.00% coverage in src/lib/tunnel.ml">
+    <title>directional_bumper.ml &mdash; Coverage report</title>
+    <meta name="description" content="50.00% coverage in src/lib/directional_bumper.ml">
     <link rel="stylesheet" href="../../coverage.css"/>
     <script src="../../highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
@@ -12,12 +12,15 @@
     <div id="header">
       <h1>
         <a href="../../index.html">
-          <span class="dirname">src/lib/</span>tunnel.ml
+          <span class="dirname">src/lib/</span>directional_bumper.ml
         </a>
       </h1>
-      <h2>100.00%</h2>
+      <h2>50.00%</h2>
     </div>
     <div id="navbar">
+      <span class="unvisited" style="top:27.03%"></span>
+      <span class="unvisited" style="top:29.73%"></span>
+      <span class="unvisited" style="top:32.43%"></span>
     </div>
     <div id="report">
       <div id="lines-layer">
@@ -31,9 +34,9 @@
 <a id="L7"></a><span > </span>
 <a id="L8"></a><span > </span>
 <a id="L9"></a><span > </span>
-<a id="L10"></a><span class="visited"> </span>
-<a id="L11"></a><span class="visited"> </span>
-<a id="L12"></a><span class="visited"> </span>
+<a id="L10"></a><span class="unvisited"> </span>
+<a id="L11"></a><span class="unvisited"> </span>
+<a id="L12"></a><span class="unvisited"> </span>
 <a id="L13"></a><span > </span>
 <a id="L14"></a><span > </span>
 <a id="L15"></a><span > </span>
@@ -105,14 +108,14 @@
 
 type pos = int * int
 
-type orientationTunnel =
-  | Vertical
-  | Horizontal
+type orientation =
+  | DownRight
+  | UpRight
 
-let tunnel_orientation_to_string (orientation : orientationTunnel) : string =
-  <span data-count="2">m</span>atch orientation with
-  | <span data-count="1">V</span>ertical -&gt; "Vertical"
-  | <span data-count="1">H</span>orizontal -&gt; "Horizontal"
+let orientation_to_string (orientation : orientation) : string =
+  <span data-count="0">m</span>atch orientation with
+  | <span data-count="0">D</span>ownRight -&gt; "DownRight"
+  | <span data-count="0">U</span>pRight -&gt; "UpRight"
 
 type direction =
   | Up
@@ -122,21 +125,21 @@ type direction =
 
 type direction_map = (direction, direction) Map.Poly.t
 
-let generate_directions (orientation : orientationTunnel) : direction_map =
-  <span data-count="12">m</span>atch orientation with
-    | <span data-count="5">V</span>ertical -&gt;
+let generate_directions orientation : direction_map =
+  <span data-count="4">m</span>atch orientation with
+    | <span data-count="2">D</span>ownRight -&gt; (* ◹ *)
       Map.Poly.of_alist_exn [
-        (Right, Left);
-        (Up, Up);
-        (Left, Right);
+        (Right, Down);
+        (Up, Left);
+        (Left, Left);
         (Down, Down);
       ]
-    | <span data-count="7">H</span>orizontal -&gt;
+    | <span data-count="2">U</span>pRight -&gt; (* ◸ *)
       Map.Poly.of_alist_exn [
         (Right, Right);
-        (Down, Up);
-        (Left, Left);
-        (Up, Down);
+        (Down, Down);
+        (Left, Down);
+        (Up, Right);
       ]
 </code></pre>
       </div>

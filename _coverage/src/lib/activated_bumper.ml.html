@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8"/>
     <title>activated_bumper.ml &mdash; Coverage report</title>
-    <meta name="description" content="66.67% coverage in src/lib/activated_bumper.ml">
+    <meta name="description" content="100.00% coverage in src/lib/activated_bumper.ml">
     <link rel="stylesheet" href="../../coverage.css"/>
     <script src="../../highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
@@ -15,10 +15,9 @@
           <span class="dirname">src/lib/</span>activated_bumper.ml
         </a>
       </h1>
-      <h2>66.67%</h2>
+      <h2>100.00%</h2>
     </div>
     <div id="navbar">
-      <span class="unvisited" style="bottom:25.00%"></span>
     </div>
     <div id="report">
       <div id="lines-layer">
@@ -49,16 +48,13 @@
 <a id="L24"></a><span > </span>
 <a id="L25"></a><span > </span>
 <a id="L26"></a><span > </span>
-<a id="L27"></a><span class="unvisited"> </span>
+<a id="L27"></a><span class="visited"> </span>
 <a id="L28"></a><span > </span>
 <a id="L29"></a><span > </span>
 <a id="L30"></a><span > </span>
 <a id="L31"></a><span > </span>
 <a id="L32"></a><span > </span>
 <a id="L33"></a><span > </span>
-<a id="L34"></a><span > </span>
-<a id="L35"></a><span > </span>
-<a id="L36"></a><span > </span>
 </pre>
       </div>
       <div id="text-layer">
@@ -96,9 +92,6 @@
 <a href="#L31">31</a>
 <a href="#L32">32</a>
 <a href="#L33">33</a>
-<a href="#L34">34</a>
-<a href="#L35">35</a>
-<a href="#L36">36</a>
 </pre>
 <pre><code class="ocaml">open Core
 
@@ -118,7 +111,7 @@ type direction =
 type direction_map = (direction, direction) Map.Poly.t
 
 let generate_directions orientation : direction_map =
-  <span data-count="1">m</span>atch orientation with
+  <span data-count="2">m</span>atch orientation with
     | <span data-count="1">D</span>ownRight -&gt;
       Map.Poly.of_alist_exn [
         (Right, Down);
@@ -126,16 +119,13 @@ let generate_directions orientation : direction_map =
         (Left, Up);
         (Down, Right);
       ]
-    | <span data-count="0">U</span>pRight -&gt;
+    | <span data-count="1">U</span>pRight -&gt;
       Map.Poly.of_alist_exn [
         (Right, Up);
         (Down, Left);
         (Left, Down);
         (Up, Right);
       ]
-
-(* let is_it_active (ball_pos: pos) (activated_bumper_pos: pos) : bool =
-  true *)
 </code></pre>
       </div>
     </div>

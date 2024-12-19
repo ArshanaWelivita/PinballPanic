@@ -22,6 +22,7 @@ let series =
   ; Activated_bumper_tests.series
   ; Directional_bumper_tests.series
   ; Grid_cell_tests.series
+  ; Grid_tests.series
   ]
 
 let () = run_test_tt_main series

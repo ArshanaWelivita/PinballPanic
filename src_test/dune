@@ -54,6 +54,15 @@
     ounit2
     core))
 
+(library
+  (name grid_tests)
+  (modules grid_tests)
+  (libraries
+    grid
+    grid_cell
+    ounit2
+    core))
+
 (test
   (name pinball_tests)
   (modules pinball_tests)
@@ -72,6 +81,7 @@
     teleporter_tests
     activated_bumper_tests
     directional_bumper_tests
-    grid_cell_tests)
+    grid_cell_tests
+    grid_tests)
   (preprocess (pps ppx_jane))
   )
