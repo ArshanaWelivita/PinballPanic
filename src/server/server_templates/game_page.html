@@ -39,32 +39,29 @@
         .entry {
             background-color: #d4edda;
         }
-        .hidden {
-            visibility: hidden;
-            background-color: white;
-        }
-        .persistent.hidden {
-            visibility: visible;
-        }
         .outer-square {
             background-color: lightblue;
         }
-    </style>
-    
-    <script>
-        function hideDynamicElements() {
-          const dynamicElements = document.querySelectorAll(".dynamic");
-          dynamicElements.forEach((element) => {
-            element.classList.add("hidden");
-            });
+        .onclick {
+            background-color: lightblue;
         }
-      
-        // Automatically hide dynamic elements after 7 seconds
-        setTimeout(hideDynamicElements, 7000);
-      </script>
-      
+    </style>
+
     <script>
-      function startNewLevel() {
+    let remainingTime = 30; // Server-provided remaining time
+    const timerElement = document.getElementById('timer');
+
+    function updateTimer() {
+        if (remainingTime > 0) {
+            remainingTime--;
+            timerElement.textContent = `Time Remaining: ${remainingTime}s`;
+        } else {
+            alert("Time's up! Game Over!");
+            window.location.href = "/game-over"; // Redirect to a game-over page
+            }
+        }
+
+    function startNewLevel() {
         fetch('/generate-level')
           .then(response => response.text())
           .then(html => {
@@ -73,34 +70,25 @@
           });
       }
     
-      function revealGrid() {
-        fetch('/generate-level?revealed=true')
-          .then(response => response.text())
-          .then(html => {
-            document.getElementById('grid-container').innerHTML = html;
-          });
-      }
+    function submitAnswer(x, y) {
+          fetch(`/submit-answer?x=${x}&y=${y}`)
+            .then(response => response.text())
+            .then(data => {
+              document.body.innerHTML = data; // Replace the page content with the server's response
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
     </script>
 </head>
 
 <body>
     <h1>Pinball Panic - Level {{current_level}}</h1>
-    <div class="message-box" style="border: 2px solid black; padding: 10px; margin: 20px; background-color: lightyellow;">
+    <div class="message-box" style="border: 2px solid black; padding: 10px; margin: 20px; background-color: rgb(129, 160, 224);">
         <p>{{level_message}}</p>
-      </div>
-    <div id='grid-container'></div>
-    <button id="generate-grid-btn" onclick="startNewLevel(); this.disabled=true;">
-        Start New Level
-    </button>
-    <br>
-    <br>
-    <form method="GET" action="/submit-answer">
-        <label for="row">Row:</label>
-        <input type="text" id="row" name="row" required /><br><br>
-        <label for="col">Column:</label>
-        <input type="text" id="col" name="col" required /><br><br>
-        <input type="submit" value="Submit" />
-    </form>
+    </div>
+    <div id="timer">{{time_remaining}}</div>
+    <div id='grid-container'>{{grid_html}}</div>
 </body>
 
 </html>
