@@ -2,10 +2,6 @@
 <html>
 
 <head>
-  <nav>
-    <a href="/welcome">Home</a>
-    <a href="/rules">Rules</a>
-  </nav>
 
 <title>Pinball Panic</title>
     <style>
@@ -17,20 +13,34 @@
       font-weight: bold;
       text-decoration: none;
       color: white;
-      background: #4CAF50;
+      background: #62a7e4;
       border-radius: 5px;
+      margin:auto;
+      position:relative;
+      width: 100px;
     }
 
-    .start-game-btn:hover {
-      background: #45a049;
+    .rules-btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+      background: #77b550;
+      border-radius: 5px;
+      margin:auto;
+      position:relative;
+      width: 100px;
     }
   </style>
 </head>
 <body>
   <h1>Welcome to Pinball Panic!</h1>
-  <div class="rules-container">
+  <div class="nav-container">
     <a href="/generate-level" class="start-game-btn">Start Game</a>
-    <a href="/rules-page" class="start-game-btn">Rules</a>
+    <a href="/rules-page" class="rules-btn">Rules</a>
   </div>
 </body>
 </html>

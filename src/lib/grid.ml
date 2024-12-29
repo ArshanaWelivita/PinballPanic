@@ -35,7 +35,10 @@ let level_bounce_settings = [
 ]
 
 let get_level_settings (level: int) : level_settings =
-  List.Assoc.find_exn level_bounce_settings ~equal:Int.equal level
+  (* For endless mode: ensures levels will continue to generate with the hardest difficulty *)
+  if level > 16
+    then List.Assoc.find_exn level_bounce_settings ~equal:Int.equal 16
+    else List.Assoc.find_exn level_bounce_settings ~equal:Int.equal level
 
 let get_grid_size (level: int) : int = 
   let level_settings = get_level_settings level in 

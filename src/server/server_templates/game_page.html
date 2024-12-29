@@ -6,7 +6,7 @@
     <style>
         table.grid {
             border-collapse: collapse;
-            border: 1px solid black;
+            border: 3px solid black;
             margin: auto;
             font-size: 18px;
             font-weight: bold;
@@ -17,6 +17,7 @@
             height: 40px;
             text-align: center;
             vertical-align: middle;
+            border: 1px dashed black;
         }
         .empty {
             background-color: #ffffff;
@@ -42,24 +43,22 @@
         .outer-square {
             background-color: lightblue;
         }
-        .onclick {
+        .perimeter {
             background-color: lightblue;
         }
     </style>
 
     <script>
-    let remainingTime = 30; // Server-provided remaining time
-    const timerElement = document.getElementById('timer');
+    var count = 60;
+    var timer = $.timer(function() {
+        $('#counter').html(--count);
+    });
+    timer.set({ time : 1000, autostart : true });
+    document.getAnimations("timer").innerHTML = timer
 
-    function updateTimer() {
-        if (remainingTime > 0) {
-            remainingTime--;
-            timerElement.textContent = `Time Remaining: ${remainingTime}s`;
-        } else {
-            alert("Time's up! Game Over!");
-            window.location.href = "/game-over"; // Redirect to a game-over page
-            }
-        }
+    function stopTimer() {
+        clearInterval(timerInterval);
+    }  
 
     function startNewLevel() {
         fetch('/generate-level')
@@ -84,10 +83,7 @@
 
 <body>
     <h1>Pinball Panic - Level {{current_level}}</h1>
-    <div class="message-box" style="border: 2px solid black; padding: 10px; margin: 20px; background-color: rgb(129, 160, 224);">
-        <p>{{level_message}}</p>
-    </div>
-    <div id="timer">{{time_remaining}}</div>
+    <span id="timer"></span>
     <div id='grid-container'>{{grid_html}}</div>
 </body>
 
