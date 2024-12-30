@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rules</title>
-  <link rel="stylesheet" href="/static/styles.css">
+  <style>
+      .home-btn {
+          display: inline-block;
+          margin-top: 20px;
+          padding: 10px 20px;
+          font-size: 18px;
+          font-weight: bold;
+          text-decoration: none;
+          color: white;
+          background: #ce415f;
+          border-radius: 5px;
+          margin:auto;
+          position:relative;
+          width: 100px;
+        }
+
+        .start-game-btn {
+          display: inline-block;
+          margin-top: 20px;
+          padding: 10px 20px;
+          font-size: 18px;
+          font-weight: bold;
+          text-decoration: none;
+          color: white;
+          background: #62a7e4;
+          border-radius: 5px;
+          margin:auto;
+          position:relative;
+          width: 100px;
+        }
+  </style>
 </head>
+
 <body>
   <header>
     <h1>Game Rules</h1>
@@ -13,17 +42,34 @@
   <main>
     <section>
       <h2>Gameplay Overview</h2>
-      <p>The objective of the game is to guide the ball from the entry point to the exit point while avoiding obstacles.</p>
+      <p>The objective PinballPanic is to guess the correct ending position of a ball as it navigates through obstacles.</p>
       <ul>
-        <li>Each level features a grid with various objects.</li>
-        <li>You must input the correct coordinates for the ball's destination.</li>
-        <li>Objects like bumpers and tunnels can affect the ball's path.</li>
+        <li>Each level features a grid with various objects that will guide the path of the ball.</li>
+        <li>The levels will increase in difficulty, both in the number of objects and the size of the grid.</li>
       </ul>
     </section>
     <section>
-      <h2>How to Play</h2>
-      <p>Enter the coordinates for the destination cell and submit your answer. If correct, you progress to the next level!</p>
+        <h2>Grid Object Types (Listed in order of appearance)</h2>
+        <p>TODO: add images and animations (?)</p>
+        <ul>
+            <li>Bumper</li>
+            <li>Tunnel</li>
+            <li>Teleporter</li>
+            <li>Activated Bumper</li>
+            <li>Directional Bumper</li>
+        </ul>
     </section>
+    <section>
+      <h2>How to Play</h2>
+      <p>You have 30 seconds to complete as many levels as possible.</p>
+      <p>Click on the grid square to submit your answer.</p>
+      <p>Correct answers add 5 seconds to your timer.</p>
+      <p>Incorrect answers remove 5 seconds from your timer.</p>
+    </section>
+    <div class="nav-container">
+        <a href="/welcome" class="home-btn">Home</a>
+      </div>
   </main>
 </body>
+
 </html>

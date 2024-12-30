@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Pinball Panic</title>
+    <style>
+        .home-btn {
+          display: inline-block;
+          margin-top: 20px;
+          padding: 10px 20px;
+          font-size: 18px;
+          font-weight: bold;
+          text-decoration: none;
+          color: white;
+          background: #ce415f;
+          border-radius: 5px;
+          margin:auto;
+          position:relative;
+          width: 100px;
+        }
+
+        .start-game-btn {
+          display: inline-block;
+          margin-top: 20px;
+          padding: 10px 20px;
+          font-size: 18px;
+          font-weight: bold;
+          text-decoration: none;
+          color: white;
+          background: #62a7e4;
+          border-radius: 5px;
+          margin:auto;
+          position:relative;
+          width: 100px;
+        }
+    
+        .rules-btn {
+          display: inline-block;
+          margin-top: 20px;
+          padding: 10px 20px;
+          font-size: 18px;
+          font-weight: bold;
+          text-decoration: none;
+          color: white;
+          background: #77b550;
+          border-radius: 5px;
+          margin:auto;
+          position:relative;
+          width: 100px;
+        }
+      </style>
+</head>
+
+<body>
+    <h1>Game Over!</h1>
+    <div id="game-info">
+        <p>Level Reached: {{level_reached}}</p>
+        <p>Correct Answers: {{num_correct}}</p>
+        <p>Incorrect Answers: {{num_incorrect}}</p>
+    </div>
+    <div class="nav-container">
+        <a href="/welcome" class="home-btn">Home</a>
+        <a href="/start-new-game" class="start-game-btn">New Game</a>
+        <a href="/rules-page" class="rules-btn">Rules</a>
+      </div>
+</body>
+
+</html>
