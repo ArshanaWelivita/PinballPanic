@@ -15,6 +15,8 @@ module GameState = struct
   (* Reset function *)
   let reset () =
     current_level := 1;
+    num_correct_answers := 0;
+    num_incorrect_answers := 0;
     remaining_time := 30
 end
 
