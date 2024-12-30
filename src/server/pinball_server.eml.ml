@@ -9,12 +9,17 @@ type answer = {col : int ref; row : int ref}
 let current_answer = { col = ref 0; row = ref 0}
 let current_entry = { col = ref 0; row = ref 0}
 
+
 let render_grid (grid : Grid.grid) (is_entry_exit_equal : bool) : string =
   let n = Array.length grid.(0) in
 
   (* Helper function to check if a cell is part of the grid's perimeter *)
   let is_on_perimeter i j =
     i = 0 || i = n - 1 || j = 0 || j = n - 1
+  in
+
+  let is_corner_cell i j =
+    (i = 0 && (j = n - 1 || j = 0)) || (i = n - 1 && (j = n - 1 || j = 0))
   in
   
   (* Generate rows with clickable cells for the border *)
@@ -30,9 +35,11 @@ let render_grid (grid : Grid.grid) (is_entry_exit_equal : bool) : string =
               else Printf.sprintf "<td class='exit perimeter' onclick='%s'></td>" onClick
           | "Entry" -> Printf.sprintf "<td class='entry perimeter' onclick='%s'>E</td>" onClick
           | "Empty" -> 
-            if is_on_perimeter i j
-              then Printf.sprintf "<td class='perimeter' onclick='%s'></td>" onClick
-              else Printf.sprintf "<td class='empty'></td>"
+              if is_on_perimeter i j
+                then if is_corner_cell i j  (* Corner cells cannot be clicked *)
+                  then Printf.sprintf "<td class='corner'></td>"
+                  else Printf.sprintf "<td class='perimeter' onclick='%s'></td>" onClick
+                else Printf.sprintf "<td class='empty'></td>"
           | "InBallPath" -> "<td class='path'></td>"
           | "Bumper" -> "<td class='bumper'>" ^ (get_bumper_orientation_string cell.cell_type) ^ "</td>"
           | "ActivatedBumper" -> "<td class='activatedBumper'>" ^ (get_activated_bumper_orientation_string cell.cell_type) ^ "</td>"
@@ -53,6 +60,9 @@ let render_grid (grid : Grid.grid) (is_entry_exit_equal : bool) : string =
   (* Combine column headers and rows *)
   "<table class='grid'>\n" ^ rows ^ "\n</table>"
 
+let get_timer _ =
+  Dream.json (Printf.sprintf "{\"remaining_time\": %d}" !remaining_time)
+  
 (* Render the main page, this is where all of the gameplay will occur.
    This page will display and hide the grid when new level begins *)
 let render_game_page () =
@@ -137,4 +147,5 @@ let () =
          Dream.get "/rules-page" (fun _ -> Dream.html (render_rules_page ()));
          Dream.get "/generate-level" (fun _ -> Dream.html (render_game_page ()));
          Dream.get "/submit-answer" submit_answer_handler;
+         Dream.get "/timer" get_timer;
        ]

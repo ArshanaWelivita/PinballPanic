@@ -46,19 +46,28 @@
         .perimeter {
             background-color: lightblue;
         }
+        .corner {
+            background-color: black;
+        }
     </style>
 
     <script>
-    var count = 60;
-    var timer = $.timer(function() {
-        $('#counter').html(--count);
-    });
-    timer.set({ time : 1000, autostart : true });
-    document.getAnimations("timer").innerHTML = timer
+    function updateTimer() {
+        fetch("/timer")
+        .then(response => response.json())
+        .then(data => {
+            data.remaining_time = data.remaining_time - 1
+            document.getElementById("timer").textContent = data.remaining_time;
+            if (data.remaining_time <= 0) {
+            alert("Time's up! Game Over!");
+            window.location.href = "/game-over";
+            }
+        })
+        .catch(err => console.error("Failed to fetch timer:", err));
+    }
 
-    function stopTimer() {
-        clearInterval(timerInterval);
-    }  
+    // Timer updates every second
+    setInterval(updateTimer, 1000);
 
     function startNewLevel() {
         fetch('/generate-level')
@@ -77,13 +86,15 @@
             })
             .catch(error => console.error('Error:', error));
         }
-
     </script>
 </head>
 
 <body>
-    <h1>Pinball Panic - Level {{current_level}}</h1>
-    <span id="timer"></span>
+    <h1>Pinball Panic</h1>
+    <div id="game-info">
+        <p>Level: {{current_level}}</p>
+        <p>Time Remaining: <span id="timer">%d</span> seconds</p>
+    </div>
     <div id='grid-container'>{{grid_html}}</div>
 </body>
 
