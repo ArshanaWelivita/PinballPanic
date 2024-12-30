@@ -1,5 +1,6 @@
 open Core
 open Grid_cell
+open Lwt
 
 (* Game state information *)
 module GameState = struct
@@ -68,9 +69,20 @@ let render_grid (grid : Grid.grid) (is_entry_exit_equal : bool) : string =
   (* Combine column headers and rows *)
   "<table class='grid'>\n" ^ rows ^ "\n</table>"
 
-let get_timer _ =
-  Dream.json (Printf.sprintf "{\"remaining_time\": %d}" !GameState.remaining_time)
-  
+(* Timer functions *)
+let timer_handler _ =
+  Dream.json (Printf.sprintf {|{ "remaining_time": %d }|} !(GameState.remaining_time))
+
+let decrement_timer () =
+  let rec loop () =
+    if !(GameState.remaining_time) > 0 then (
+      decr GameState.remaining_time;
+      Lwt_unix.sleep 1.0 >>= loop
+    ) else
+      Lwt.return_unit
+  in
+  loop ()
+
 (* Render the main page, this is where all of the gameplay will occur.
    This page will display and hide the grid when new level begins *)
 let render_game_page () =
@@ -99,6 +111,7 @@ let render_game_page () =
 
 let start_new_game_handler () =
   GameState.reset ();
+  Lwt.async decrement_timer;
   render_game_page ()
 
 (* Renders game over page when time runs out *)
@@ -178,6 +191,6 @@ let () =
          Dream.get "/start-new-game" (fun _ -> Dream.html (start_new_game_handler()));
          Dream.get "/generate-level" (fun _ -> Dream.html (render_game_page ()));
          Dream.get "/submit-answer" submit_answer_handler;
-         Dream.get "/timer" get_timer;
+         Dream.get "/timer" timer_handler;
          Dream.get "/game-over" (fun _ -> Dream.html (render_game_over_page ()));
        ]

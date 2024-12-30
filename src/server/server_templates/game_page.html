@@ -56,7 +56,6 @@
         fetch("/timer")
         .then(response => response.json())
         .then(data => {
-            data.remaining_time = data.remaining_time - 1
             document.getElementById("timer").textContent = data.remaining_time;
             if (data.remaining_time <= 0) {
             alert("Time's up! Game Over!");
