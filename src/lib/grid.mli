@@ -105,6 +105,11 @@ val convert_activated_to_regular_bumper : pos -> grid -> bool  *)
 *)
 val random_orientation_for_bumper : unit -> orientation
 
+(* Function that randomly selects the orientation of the next grid object that is of type directional bumper.
+   Returns randomly generated next grid object orientation (orientation).
+*)
+val random_orientation_for_directional_bumper : unit -> orientation
+
 (* Function that randomly selects the orientation of the next grid object that is of type tunnel.
    Returns randomly generated next grid object orientation (orientation).
 *)

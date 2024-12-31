@@ -14,6 +14,10 @@ type orientation =
   | UpRight
   | Vertical
   | Horizontal
+  | TopRight
+  | TopLeft
+  | BottomRight
+  | BottomLeft
   | None
 
 (* Type to represent the grid object type of the cell and its functionality in the grid *)
@@ -46,6 +50,10 @@ let orientation_to_string (orientation : orientation) : string =
   | UpRight -> "UpRight"
   | Vertical -> "Vertical"
   | Horizontal -> "Horizontal"
+  | TopLeft -> "TopLeft"
+  | TopRight -> "TopRight"
+  | BottomLeft -> "BottomLeft"
+  | BottomRight -> "BottomRight"
   | None -> "None"
 
 let compare_grid_cell_type (a: grid_cell) (b: grid_cell_type) : bool =
@@ -118,8 +126,10 @@ let orientation_to_bumper_orientation (orientation: orientation) : Bumper.orient
 
 let orientation_to_directional_bumper_orientation (orientation: orientation) : Directional_bumper.orientation =
   match orientation with
-  | UpRight -> Directional_bumper.UpRight
-  | DownRight -> Directional_bumper.DownRight
+  | TopRight -> Directional_bumper.TopRight
+  | TopLeft -> Directional_bumper.TopLeft
+  | BottomRight -> Directional_bumper.BottomRight
+  | BottomLeft -> Directional_bumper.BottomLeft
   | _ -> failwith "Wrong orientation for the directional bumper grid object type."
 
 let orientation_to_activated_bumper_orientation (orientation: orientation) : Activated_bumper.orientation = 
@@ -176,9 +186,11 @@ let get_activated_bumper_orientation_string (b: grid_cell_type) : string = match
   | _ -> failwith "Error: activated bumper can only have orientation DownRight or UpRight."
 
 let get_directional_bumper_orientation_string (b: grid_cell_type) : string = match b with 
-| DirectionalBumper {orientation = DownRight; _} -> "◹"
-| DirectionalBumper {orientation = UpRight; _} -> "◸"
-| _ -> failwith "Error: directional bumper can only have orientation DownRight or UpRight."
+  | DirectionalBumper {orientation = TopRight; _} -> "◹"
+  | DirectionalBumper {orientation = TopLeft; _} -> "◸"
+  | DirectionalBumper {orientation = BottomLeft; _} -> "◺"
+  | DirectionalBumper {orientation = BottomRight; _} -> "◿"
+  | _ -> failwith "Error: directional bumper can only have orientation TopLeft, TopRight, BottomLeft, or BottomRight."
 
 let get_tunnel_orientation_string (b: grid_cell_type) : string = match b with 
   | Tunnel {orientation = Vertical; _} -> "𝄁"

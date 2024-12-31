@@ -14,6 +14,10 @@ type orientation =
   | UpRight
   | Vertical
   | Horizontal
+  | TopRight
+  | TopLeft
+  | BottomRight
+  | BottomLeft
   | None
 
 (* Type to represent the grid object type of the cell and its functionality in the grid *)

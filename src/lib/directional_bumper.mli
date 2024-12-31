@@ -5,8 +5,10 @@ type pos = int * int
 
 (* Type representing orientation *)
 type orientation =
-  | DownRight  (* corresponds to '◹' *)
-  | UpRight    (* corresponds to '◸' *)
+  | TopRight  (* corresponds to '◹' *)
+  | TopLeft  (* corresponds to '◸' *)
+  | BottomLeft  (* corresponds to '◺' *)
+  | BottomRight  (* corresponds to '◿' *)
 
 (* Type representing direction *)
 type direction =
