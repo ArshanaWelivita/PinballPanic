@@ -4,6 +4,18 @@
 <head>
     <title>Pinball Panic</title>
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+        }
+
         .home-btn {
           display: inline-block;
           margin-top: 20px;
@@ -12,7 +24,7 @@
           font-weight: bold;
           text-decoration: none;
           color: white;
-          background: #ce415f;
+          background: #e960f5;
           border-radius: 5px;
           margin:auto;
           position:relative;
@@ -27,7 +39,7 @@
           font-weight: bold;
           text-decoration: none;
           color: white;
-          background: #62a7e4;
+          background: #d156e9;
           border-radius: 5px;
           margin:auto;
           position:relative;
@@ -42,7 +54,7 @@
           font-weight: bold;
           text-decoration: none;
           color: white;
-          background: #77b550;
+          background: #734bd2;
           border-radius: 5px;
           margin:auto;
           position:relative;
@@ -52,17 +64,19 @@
 </head>
 
 <body>
-    <h1>Game Over!</h1>
-    <div id="game-info">
-        <p>Level Reached: {{level_reached}}</p>
-        <p>Correct Answers: {{num_correct}}</p>
-        <p>Incorrect Answers: {{num_incorrect}}</p>
+    <div class="container">
+        <h1>Game Over!</h1>
+        <div id="game-info">
+            <p>Level Reached: {{level_reached}}</p>
+            <p>Correct Answers: {{num_correct}}</p>
+            <p>Incorrect Answers: {{num_incorrect}}</p>
+        </div>
+        <div class="nav-container">
+            <a href="/welcome" class="home-btn">Home</a>
+            <a href="/start-new-game" class="start-game-btn">New Game</a>
+            <a href="/rules-page" class="rules-btn">Rules</a>
+        </div>
     </div>
-    <div class="nav-container">
-        <a href="/welcome" class="home-btn">Home</a>
-        <a href="/start-new-game" class="start-game-btn">New Game</a>
-        <a href="/rules-page" class="rules-btn">Rules</a>
-      </div>
 </body>
 
 </html>

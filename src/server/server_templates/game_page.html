@@ -4,6 +4,16 @@
 <head>
     <title>Pinball Panic</title>
     <style>
+        body {
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            text-align: center;
+        }
         table.grid {
             border-collapse: collapse;
             border: 3px solid black;
@@ -40,11 +50,12 @@
         .entry {
             background-color: #d4edda;
         }
-        .outer-square {
-            background-color: lightblue;
-        }
         .perimeter {
             background-color: lightblue;
+        }
+        .perimeter:hover {
+            background-color: yellow; /* Highlight color */
+            cursor: pointer;
         }
         .corner {
             background-color: black;
@@ -58,8 +69,9 @@
         .then(data => {
             document.getElementById("timer").textContent = data.remaining_time;
             if (data.remaining_time <= 0) {
-            alert("Time's up! Game Over!");
-            window.location.href = "/game-over";
+                // TODO: do something better than an alert
+                alert("Time's up! Game Over!");
+                window.location.href = "/game-over";
             }
         })
         .catch(err => console.error("Failed to fetch timer:", err));
@@ -89,12 +101,14 @@
 </head>
 
 <body>
-    <h1>Pinball Panic</h1>
-    <div id="game-info">
-        <p>Level: {{current_level}}</p>
-        <p>Time Remaining: <span id="timer">%d</span> seconds</p>
+    <div id='container'>
+        <h1>Pinball Panic</h1>
+        <div id="game-info">
+            <p>Level: {{current_level}}</p>
+            <p>Time Remaining: <span id="timer">%d</span> seconds</p>
+        </div>
+        <div id='grid-container'>{{grid_html}}</div>
     </div>
-    <div id='grid-container'>{{grid_html}}</div>
 </body>
 
 </html>

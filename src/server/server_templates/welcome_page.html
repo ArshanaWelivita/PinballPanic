@@ -5,6 +5,18 @@
 
 <title>Pinball Panic</title>
     <style>
+    body {
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      text-align: center;
+    }
+
     .start-game-btn {
       display: inline-block;
       margin-top: 20px;
@@ -13,7 +25,7 @@
       font-weight: bold;
       text-decoration: none;
       color: white;
-      background: #62a7e4;
+      background: #d156e9;
       border-radius: 5px;
       margin:auto;
       position:relative;
@@ -28,7 +40,7 @@
       font-weight: bold;
       text-decoration: none;
       color: white;
-      background: #77b550;
+      background: #734bd2;
       border-radius: 5px;
       margin:auto;
       position:relative;
@@ -36,9 +48,9 @@
     }
   </style>
 </head>
-<body>
-  <h1>Welcome to Pinball Panic!</h1>
-  <div class="nav-container">
+<body background="../images/background.jpg"> 
+  <div class="container">
+    <h1>PINBALL PANIC</h1>
     <a href="/start-new-game" class="start-game-btn">New Game</a>
     <a href="/rules-page" class="rules-btn">Rules</a>
   </div>
