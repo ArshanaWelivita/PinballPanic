@@ -32,6 +32,14 @@ let render_grid (grid : Grid.grid) (is_entry_exit_equal : bool) : string =
   let is_corner_cell i j =
     (i = 0 && (j = n - 1 || j = 0)) || (i = n - 1 && (j = n - 1 || j = 0))
   in
+
+  let return_arrow_orientation i j =
+    if i = 0 then "↓"
+    else if j = 0 then "→"
+    else if i > j then "↑"
+    else if j > i then "←"
+    else failwith "Invalid coordinates"
+  in
   
   (* Generate rows with clickable cells for the border *)
   let rows =
@@ -42,9 +50,13 @@ let render_grid (grid : Grid.grid) (is_entry_exit_equal : bool) : string =
           match to_string cell with
           | "Exit" -> 
             if is_entry_exit_equal
-              then Printf.sprintf "<td class='entry perimeter' onclick='%s'>E</td>" onClick
+              then 
+                let arrow = return_arrow_orientation i j in
+                Printf.sprintf "<td class='entry perimeter' onclick='%s'>%s</td>" onClick arrow
               else Printf.sprintf "<td class='exit perimeter' onclick='%s'></td>" onClick
-          | "Entry" -> Printf.sprintf "<td class='entry perimeter' onclick='%s'>E</td>" onClick
+          | "Entry" -> 
+            let arrow = return_arrow_orientation i j in
+            Printf.sprintf "<td class='entry perimeter' onclick='%s'>%s</td>" onClick arrow
           | "Empty" -> 
               if is_on_perimeter i j
                 then if is_corner_cell i j  (* Corner cells cannot be clicked *)

@@ -10,6 +10,11 @@
             min-height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            background-image: linear-gradient(rgb(187, 32, 154), rgb(114, 35, 92), rgb(70, 26, 72));
+            background-color: hsl(297, 100%, 31%);
+            background-repeat: no-repeat;
+            background-origin: content-box;
+            background-position: center;
         }
 
         .container {
@@ -65,7 +70,7 @@
 
 <body>
     <div class="container">
-        <h1>Game Over!</h1>
+        <h1 style="text-align: center;">Game Over!</h1>
         <div id="game-info">
             <p>Level Reached: {{level_reached}}</p>
             <p>Correct Answers: {{num_correct}}</p>

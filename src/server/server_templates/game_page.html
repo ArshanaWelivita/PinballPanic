@@ -10,6 +10,11 @@
             min-height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            background-image: linear-gradient(rgb(187, 32, 154), rgb(114, 35, 92), rgb(70, 26, 72));
+            background-color: hsl(297, 100%, 31%);
+            background-repeat: no-repeat;
+            background-origin: content-box;
+            background-position: center;
         }
         .container {
             text-align: center;
@@ -30,6 +35,9 @@
             border: 1px dashed black;
         }
         .empty {
+            background-color: #ffffff;
+        }
+        .path {
             background-color: #ffffff;
         }
         .bumper {
@@ -59,6 +67,9 @@
         }
         .corner {
             background-color: black;
+        }
+        .game-info {
+            margin:0px auto;
         }
     </style>
 
@@ -102,10 +113,10 @@
 
 <body>
     <div id='container'>
-        <h1>Pinball Panic</h1>
         <div id="game-info">
-            <p>Level: {{current_level}}</p>
-            <p>Time Remaining: <span id="timer">%d</span> seconds</p>
+            <h1 style="text-align: center;">Pinball Panic</h1>
+            <p style="text-align: center;">Level: {{current_level}}</p>
+            <p style="text-align: center;">Time Remaining: <span id="timer">%d</span> seconds</p>
         </div>
         <div id='grid-container'>{{grid_html}}</div>
     </div>
