@@ -1,3 +1,5 @@
+(* WARNING: DEPRECATED *)
+
 open Core
 open Grid_cell
 

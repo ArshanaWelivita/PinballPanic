@@ -2,6 +2,11 @@ open Core
 open Grid_cell
 open Lwt
 
+(* Temporary grids *)
+(* TODO: add grids here for rules page *)
+
+
+
 (* Game state information *)
 module GameState = struct
   let num_correct_answers = ref 0

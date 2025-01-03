@@ -9,10 +9,11 @@ Given a starting position and an assortment of grid objects your goal is to find
 
 ## How to play:
 
-[WARNING: OUTDATED] 
-To execute the game on the command line, use: dune exec _build/default/src/bin/pinball_panic.exe
+To execute the server implementation of the game, enter: 
 
-To execute the server implementation of the game, use: dune exec src/server/pinball_server.exe
+dune exec src/server/pinball_server.exe
+
+into your terminal and follow the link provided
 
 # Technical
 
@@ -47,9 +48,9 @@ Directional bumpers allow for the ball to pass through in 2 directions (retains 
 ### OCaml Library Use
 
 - **Core** 
-  - We will use Core to help build the grid library and its associated different grid objects that can be contained in the grid's cells. 
+  - Used to help build the grid library and its associated different grid objects that can be contained in the grid's cells.
 - **Dream**
-  - We will use this library to develop the web-version of this game. This will still utilize the grid library and all the features of the grid, but instead of a command line interactive game, it will be a web application.
+  - Used for the web server implementation.
 - **Bisect**
-  - We will use this to check our testing coverage of our game when we build our test library to test the functionality and edge cases of the game to ensure that it runs correctly.
+  - Used for unit testing.
  

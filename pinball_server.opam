@@ -2,7 +2,7 @@
 opam-version: "2.0"
 synopsis: "A web app for playing our game PinballPanic"
 description:
-  "A web app for playing our game PinballPanic. The deeper you go into the game, the harder the levels get."
+  "A web app for playing our game PinballPanic, a 2D puzzle/maze game."
 maintainer: ["kelsman@icloud.com" "awelivita04@gmail.com"]
 authors: ["Kenneth Elsman" "Arshana Welivita"]
 depends: [
