@@ -2,8 +2,39 @@ open Core
 open Grid_cell
 open Lwt
 
-(* Temporary grids *)
-(* TODO: add grids here for rules page *)
+(* Temporary grids for rules page *)
+let tmp_grids =
+
+  (* Bumpers act as a deflector, sending the ball in a different direction than before. *)
+  let bumper_example_grid = Array.init 5 ~f:(fun x -> Array.init 5 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
+  bumper_example_grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
+  bumper_example_grid.(2).(2) <- {position = (2, 2); cell_type = Bumper {direction = Down; orientation = DownRight}};
+
+  (* The ball will either pass through the tunnel, or return the way it came. *)
+  let tunnel_example_grid_one = Array.init 5 ~f:(fun x -> Array.init 5 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
+  tunnel_example_grid_one.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
+  tunnel_example_grid_one.(2).(2) <- {position = (2, 2); cell_type = Tunnel {direction = Down; orientation = Vertical}};
+  let tunnel_example_grid_two = Array.init 5 ~f:(fun x -> Array.init 5 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
+  tunnel_example_grid_two.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
+  tunnel_example_grid_two.(2).(2) <- {position = (2, 2); cell_type = Tunnel {direction = Down; orientation = Horizontal}};
+
+  (* Entering a teleporter transports the ball to the other corresponding teleporter, preserving its direction. *)
+  let teleporter_example_grid = Array.init 6 ~f:(fun x -> Array.init 5 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
+  teleporter_example_grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
+  teleporter_example_grid.(2).(2) <- {position = (2, 2); cell_type = Teleporter {direction = Down; orientation = None}};
+  teleporter_example_grid.(3).(3) <- {position = (3, 3); cell_type = Teleporter {direction = Down; orientation = None}};
+
+  (* When reaching an activated bumper a first time, the ball will pass right through. However, all subsequent encounters with it will lead to the functionality of a regular bumper. *)
+  let activated_bumper_example_grid = Array.init 5 ~f:(fun x -> Array.init 5 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
+  activated_bumper_example_grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
+  activated_bumper_example_grid.(2).(2) <- {position = (2, 2); cell_type = ActivatedBumper {direction = Down; orientation = DownRight; is_active = true; revisit = 0}};
+  activated_bumper_example_grid.(3).(2) <- {position = (3, 2); cell_type = Tunnel {direction = Down; orientation = Horizontal}};
+
+  (* The ball will either pass through or deflect off of directional bumpers, depending on the side it apporaches from. *)
+  let directional_bumper_example_grid = Array.init 5 ~f:(fun x -> Array.init 5 ~f:(fun y -> { position = (x,y); cell_type = Empty })) in
+  directional_bumper_example_grid.(0).(2) <- {position = (0, 2); cell_type = Entry {direction = Down}};
+  directional_bumper_example_grid.(2).(2) <- {position = (2, 2); cell_type = DirectionalBumper {direction = Down; orientation = TopRight}};
+  directional_bumper_example_grid.(3).(2) <- {position = (3, 2); cell_type = Tunnel {direction = Down; orientation = Horizontal}};
 
 
 
